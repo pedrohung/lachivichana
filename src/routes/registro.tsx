@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type ComponentProps } from "react";
 import { Check, Eye, EyeOff, Lock, Globe } from "lucide-react";
 
 import { Logo } from "@/components/marca/Logo";
@@ -316,7 +316,7 @@ function Campo({
   label: string;
   value?: string;
   onChange?: (v: string) => void;
-} & Omit<React.ComponentProps<typeof Input>, "value" | "onChange">) {
+} & Omit<ComponentProps<typeof Input>, "value" | "onChange">) {
   const id = label.toLowerCase().replace(/[^a-z]+/g, "-");
   return (
     <div className="space-y-2">
