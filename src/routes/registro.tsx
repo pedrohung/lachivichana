@@ -214,7 +214,7 @@ function Registro() {
                   </li>
                 ))}
               </ul>
-              <Label htmlFor="acepta" className="text-sm font-normal">
+              <Label htmlFor="acepta" className="flex items-center gap-2 text-sm font-normal">
                 <Checkbox
                   id="acepta"
                   checked={acepta}

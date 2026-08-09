@@ -177,7 +177,7 @@ function Entrar() {
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <Label htmlFor="recordar" className="text-sm font-normal">
+              <Label htmlFor="recordar" className="flex items-center gap-2 text-sm font-normal">
                 <Checkbox id="recordar" defaultChecked />
                 Recordarme
               </Label>
