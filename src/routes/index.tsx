@@ -301,7 +301,7 @@ function Bienvenida() {
       </main>
 
       <footer className="border-t border-border bg-secondary/40">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 pt-8">
           <Logo />
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <Link to="/privacidad" className="hover:text-foreground">
@@ -313,8 +313,14 @@ function Bienvenida() {
             <Link to="/entrar" className="hover:text-foreground">
               Entrar
             </Link>
+            <Link to="/registro" className="hover:text-foreground">
+              Crear mi cuenta
+            </Link>
           </nav>
         </div>
+        <p className="mx-auto max-w-6xl px-5 pt-6 pb-8 text-xs leading-relaxed text-muted-foreground">
+          {AVISO_DEMO}
+        </p>
       </footer>
     </div>
   );
