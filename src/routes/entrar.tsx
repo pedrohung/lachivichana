@@ -114,7 +114,7 @@ function Entrar() {
               className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[oklch(0.2_0.07_255)] via-[oklch(0.2_0.07_255)]/70 to-transparent"
             />
             <p className="texto-display absolute inset-x-0 bottom-0 p-5 text-center text-lg font-semibold text-crema sm:text-2xl">
-              Cuba se conecta. Cuba se ayuda. Cuba avanza.
+              Cuba se conecta. Cuba se ayuda. Cuba crece.
             </p>
           </div>
 

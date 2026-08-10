@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import hero from "@/assets/chivichana-hero.jpg";
+import { AVISO_DEMO } from "@/datos/config";
 import { Logo } from "@/components/marca/Logo";
 import { FRASES_MARTI, FraseMarti } from "@/components/marca/FrasesMarti";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "La Chivichana — Cuba se conecta, se ayuda y avanza" },
+      { title: "La Chivichana — Cuba se conecta, se ayuda y crece" },
       {
         name: "description",
         content:
@@ -30,7 +31,14 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "La Chivichana" },
       {
         property: "og:description",
-        content: "Cuba se conecta. Cuba se ayuda. Cuba avanza.",
+        content: "Cuba se conecta. Cuba se ayuda. Cuba crece.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "La Chivichana" },
+      {
+        name: "twitter:description",
+        content: "Cuba se conecta. Cuba se ayuda. Cuba crece.",
       },
     ],
   }),
@@ -103,11 +111,12 @@ function Bienvenida() {
                 <br />
                 Cuba se ayuda.
                 <br />
-                <span className="text-sol">Cuba avanza.</span>
+                <span className="text-sol">Cuba crece.</span>
               </h1>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-crema/80 sm:text-lg">
-                La comunidad donde los cubanos se conectan, se expresan, emprenden y se ayudan. Con
-                respeto entre quienes piensan distinto y con la privacidad en tus manos.
+                La comunidad donde los cubanos comparten su voz, encuentran oportunidades,
+                emprenden y convierten la solidaridad en ayuda real. Participa con respeto y decide
+                siempre cómo mostrar tu identidad.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="sol" size="lg">
@@ -119,9 +128,24 @@ function Bienvenida() {
                   variant="ghost"
                   className="border-2 border-crema/30 text-crema hover:bg-crema/10 hover:text-crema"
                 >
-                  <Link to="/entrar">Entrar</Link>
+                  <Link to="/entrar">Explorar La Chivichana</Link>
                 </Button>
               </div>
+              <ul className="mt-7 grid gap-2 text-sm text-crema/85 sm:grid-cols-3">
+                {[
+                  "Tu identidad pública la decides tú",
+                  "Ayudas con seguimiento verificable",
+                  "Todas las ideas, un mismo respeto",
+                ].map((garantia) => (
+                  <li
+                    key={garantia}
+                    className="flex items-start gap-2 rounded-xl border border-crema/15 bg-crema/5 px-3 py-2"
+                  >
+                    <ShieldCheck className="mt-0.5 size-4 shrink-0 text-sol" aria-hidden />
+                    <span>{garantia}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-crema/15 shadow-[var(--shadow-alta)]">
@@ -215,12 +239,18 @@ function Bienvenida() {
         {/* Impacto */}
         <section className="mx-auto grid max-w-6xl gap-5 px-5 py-16 sm:grid-cols-3">
           {[
-            { dato: "2 orillas", texto: "Una sola comunidad, dentro y fuera de la Isla." },
-            { dato: "100 %", texto: "De las ayudas con entrega verificable por promotores." },
-            { dato: "0", texto: "Requisitos ideológicos para ayudar o pedir ayuda." },
+            { dato: "2 orillas", texto: "Una sola comunidad, dentro y fuera de Cuba." },
+            {
+              dato: "3 formas de participar",
+              texto: "Con tu alias, con tu nombre o como negocio.",
+            },
+            {
+              dato: "1 mismo respeto",
+              texto: "Ninguna ayuda dependerá de una posición ideológica.",
+            },
           ].map(({ dato, texto }) => (
             <div key={dato} className="rounded-2xl border border-border bg-card p-6">
-              <p className="texto-display text-4xl font-bold text-rojo">{dato}</p>
+              <p className="texto-display text-3xl font-bold text-balance text-rojo">{dato}</p>
               <p className="mt-2 text-sm text-muted-foreground">{texto}</p>
             </div>
           ))}
@@ -272,7 +302,7 @@ function Bienvenida() {
       </main>
 
       <footer className="border-t border-border bg-secondary/40">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 pt-8">
           <Logo />
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <Link to="/privacidad" className="hover:text-foreground">
@@ -284,8 +314,14 @@ function Bienvenida() {
             <Link to="/entrar" className="hover:text-foreground">
               Entrar
             </Link>
+            <Link to="/registro" className="hover:text-foreground">
+              Crear mi cuenta
+            </Link>
           </nav>
         </div>
+        <p className="mx-auto max-w-6xl px-5 pt-6 pb-8 text-xs leading-relaxed text-muted-foreground">
+          {AVISO_DEMO}
+        </p>
       </footer>
     </div>
   );
