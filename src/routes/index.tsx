@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import hero from "@/assets/chivichana-hero.jpg";
+import { AVISO_DEMO } from "@/datos/config";
 import { Logo } from "@/components/marca/Logo";
 import { FRASES_MARTI, FraseMarti } from "@/components/marca/FrasesMarti";
 import { Button } from "@/components/ui/button";
