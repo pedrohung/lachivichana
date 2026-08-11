@@ -10,14 +10,31 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ColmenaRouteImport } from './routes/colmena'
 import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as LaEsquinaRouteImport } from './routes/la-esquina'
+import { Route as LaManoRouteImport } from './routes/la-mano'
+import { Route as MensajesRouteImport } from './routes/mensajes'
+import { Route as MercaditoRouteImport } from './routes/mercadito'
+import { Route as MiBarrioRouteImport } from './routes/mi-barrio'
+import { Route as MiChivichanaRouteImport } from './routes/mi-chivichana'
+import { Route as MisCaminosRouteImport } from './routes/mis-caminos'
 import { Route as NormasRouteImport } from './routes/normas'
+import { Route as NotificacionesRouteImport } from './routes/notificaciones'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as PromotoresRouteImport } from './routes/promotores'
+import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as RegistroRouteImport } from './routes/registro'
+import { Route as TallerRouteImport } from './routes/taller'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColmenaRoute = ColmenaRouteImport.update({
+  id: '/colmena',
+  path: '/colmena',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EntrarRoute = EntrarRouteImport.update({
@@ -25,9 +42,49 @@ const EntrarRoute = EntrarRouteImport.update({
   path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LaEsquinaRoute = LaEsquinaRouteImport.update({
+  id: '/la-esquina',
+  path: '/la-esquina',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LaManoRoute = LaManoRouteImport.update({
+  id: '/la-mano',
+  path: '/la-mano',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MensajesRoute = MensajesRouteImport.update({
+  id: '/mensajes',
+  path: '/mensajes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MercaditoRoute = MercaditoRouteImport.update({
+  id: '/mercadito',
+  path: '/mercadito',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiBarrioRoute = MiBarrioRouteImport.update({
+  id: '/mi-barrio',
+  path: '/mi-barrio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiChivichanaRoute = MiChivichanaRouteImport.update({
+  id: '/mi-chivichana',
+  path: '/mi-chivichana',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MisCaminosRoute = MisCaminosRouteImport.update({
+  id: '/mis-caminos',
+  path: '/mis-caminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NormasRoute = NormasRouteImport.update({
   id: '/normas',
   path: '/normas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificacionesRoute = NotificacionesRouteImport.update({
+  id: '/notificaciones',
+  path: '/notificaciones',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
@@ -35,48 +92,163 @@ const PrivacidadRoute = PrivacidadRouteImport.update({
   path: '/privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PromotoresRoute = PromotoresRouteImport.update({
+  id: '/promotores',
+  path: '/promotores',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicarRoute = PublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegistroRoute = RegistroRouteImport.update({
   id: '/registro',
   path: '/registro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TallerRoute = TallerRouteImport.update({
+  id: '/taller',
+  path: '/taller',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
+  '/la-esquina': typeof LaEsquinaRoute
+  '/la-mano': typeof LaManoRoute
+  '/mensajes': typeof MensajesRoute
+  '/mercadito': typeof MercaditoRoute
+  '/mi-barrio': typeof MiBarrioRoute
+  '/mi-chivichana': typeof MiChivichanaRoute
+  '/mis-caminos': typeof MisCaminosRoute
   '/normas': typeof NormasRoute
+  '/notificaciones': typeof NotificacionesRoute
   '/privacidad': typeof PrivacidadRoute
+  '/promotores': typeof PromotoresRoute
+  '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
+  '/taller': typeof TallerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
+  '/la-esquina': typeof LaEsquinaRoute
+  '/la-mano': typeof LaManoRoute
+  '/mensajes': typeof MensajesRoute
+  '/mercadito': typeof MercaditoRoute
+  '/mi-barrio': typeof MiBarrioRoute
+  '/mi-chivichana': typeof MiChivichanaRoute
+  '/mis-caminos': typeof MisCaminosRoute
   '/normas': typeof NormasRoute
+  '/notificaciones': typeof NotificacionesRoute
   '/privacidad': typeof PrivacidadRoute
+  '/promotores': typeof PromotoresRoute
+  '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
+  '/taller': typeof TallerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
+  '/la-esquina': typeof LaEsquinaRoute
+  '/la-mano': typeof LaManoRoute
+  '/mensajes': typeof MensajesRoute
+  '/mercadito': typeof MercaditoRoute
+  '/mi-barrio': typeof MiBarrioRoute
+  '/mi-chivichana': typeof MiChivichanaRoute
+  '/mis-caminos': typeof MisCaminosRoute
   '/normas': typeof NormasRoute
+  '/notificaciones': typeof NotificacionesRoute
   '/privacidad': typeof PrivacidadRoute
+  '/promotores': typeof PromotoresRoute
+  '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
+  '/taller': typeof TallerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/entrar' | '/normas' | '/privacidad' | '/registro'
+  fullPaths:
+    | '/'
+    | '/colmena'
+    | '/entrar'
+    | '/la-esquina'
+    | '/la-mano'
+    | '/mensajes'
+    | '/mercadito'
+    | '/mi-barrio'
+    | '/mi-chivichana'
+    | '/mis-caminos'
+    | '/normas'
+    | '/notificaciones'
+    | '/privacidad'
+    | '/promotores'
+    | '/publicar'
+    | '/registro'
+    | '/taller'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/entrar' | '/normas' | '/privacidad' | '/registro'
-  id: '__root__' | '/' | '/entrar' | '/normas' | '/privacidad' | '/registro'
+  to:
+    | '/'
+    | '/colmena'
+    | '/entrar'
+    | '/la-esquina'
+    | '/la-mano'
+    | '/mensajes'
+    | '/mercadito'
+    | '/mi-barrio'
+    | '/mi-chivichana'
+    | '/mis-caminos'
+    | '/normas'
+    | '/notificaciones'
+    | '/privacidad'
+    | '/promotores'
+    | '/publicar'
+    | '/registro'
+    | '/taller'
+  id:
+    | '__root__'
+    | '/'
+    | '/colmena'
+    | '/entrar'
+    | '/la-esquina'
+    | '/la-mano'
+    | '/mensajes'
+    | '/mercadito'
+    | '/mi-barrio'
+    | '/mi-chivichana'
+    | '/mis-caminos'
+    | '/normas'
+    | '/notificaciones'
+    | '/privacidad'
+    | '/promotores'
+    | '/publicar'
+    | '/registro'
+    | '/taller'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ColmenaRoute: typeof ColmenaRoute
   EntrarRoute: typeof EntrarRoute
+  LaEsquinaRoute: typeof LaEsquinaRoute
+  LaManoRoute: typeof LaManoRoute
+  MensajesRoute: typeof MensajesRoute
+  MercaditoRoute: typeof MercaditoRoute
+  MiBarrioRoute: typeof MiBarrioRoute
+  MiChivichanaRoute: typeof MiChivichanaRoute
+  MisCaminosRoute: typeof MisCaminosRoute
   NormasRoute: typeof NormasRoute
+  NotificacionesRoute: typeof NotificacionesRoute
   PrivacidadRoute: typeof PrivacidadRoute
+  PromotoresRoute: typeof PromotoresRoute
+  PublicarRoute: typeof PublicarRoute
   RegistroRoute: typeof RegistroRoute
+  TallerRoute: typeof TallerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -88,11 +260,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/colmena': {
+      id: '/colmena'
+      path: '/colmena'
+      fullPath: '/colmena'
+      preLoaderRoute: typeof ColmenaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entrar': {
       id: '/entrar'
       path: '/entrar'
       fullPath: '/entrar'
       preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/la-esquina': {
+      id: '/la-esquina'
+      path: '/la-esquina'
+      fullPath: '/la-esquina'
+      preLoaderRoute: typeof LaEsquinaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/la-mano': {
+      id: '/la-mano'
+      path: '/la-mano'
+      fullPath: '/la-mano'
+      preLoaderRoute: typeof LaManoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mensajes': {
+      id: '/mensajes'
+      path: '/mensajes'
+      fullPath: '/mensajes'
+      preLoaderRoute: typeof MensajesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mercadito': {
+      id: '/mercadito'
+      path: '/mercadito'
+      fullPath: '/mercadito'
+      preLoaderRoute: typeof MercaditoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mi-barrio': {
+      id: '/mi-barrio'
+      path: '/mi-barrio'
+      fullPath: '/mi-barrio'
+      preLoaderRoute: typeof MiBarrioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mi-chivichana': {
+      id: '/mi-chivichana'
+      path: '/mi-chivichana'
+      fullPath: '/mi-chivichana'
+      preLoaderRoute: typeof MiChivichanaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mis-caminos': {
+      id: '/mis-caminos'
+      path: '/mis-caminos'
+      fullPath: '/mis-caminos'
+      preLoaderRoute: typeof MisCaminosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/normas': {
@@ -102,11 +330,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NormasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notificaciones': {
+      id: '/notificaciones'
+      path: '/notificaciones'
+      fullPath: '/notificaciones'
+      preLoaderRoute: typeof NotificacionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacidad': {
       id: '/privacidad'
       path: '/privacidad'
       fullPath: '/privacidad'
       preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promotores': {
+      id: '/promotores'
+      path: '/promotores'
+      fullPath: '/promotores'
+      preLoaderRoute: typeof PromotoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publicar': {
+      id: '/publicar'
+      path: '/publicar'
+      fullPath: '/publicar'
+      preLoaderRoute: typeof PublicarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/registro': {
@@ -116,26 +365,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegistroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/taller': {
+      id: '/taller'
+      path: '/taller'
+      fullPath: '/taller'
+      preLoaderRoute: typeof TallerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ColmenaRoute: ColmenaRoute,
   EntrarRoute: EntrarRoute,
+  LaEsquinaRoute: LaEsquinaRoute,
+  LaManoRoute: LaManoRoute,
+  MensajesRoute: MensajesRoute,
+  MercaditoRoute: MercaditoRoute,
+  MiBarrioRoute: MiBarrioRoute,
+  MiChivichanaRoute: MiChivichanaRoute,
+  MisCaminosRoute: MisCaminosRoute,
   NormasRoute: NormasRoute,
+  NotificacionesRoute: NotificacionesRoute,
   PrivacidadRoute: PrivacidadRoute,
+  PromotoresRoute: PromotoresRoute,
+  PublicarRoute: PublicarRoute,
   RegistroRoute: RegistroRoute,
+  TallerRoute: TallerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
