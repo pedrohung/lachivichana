@@ -128,7 +128,7 @@ function Bienvenida() {
                   variant="ghost"
                   className="border-2 border-crema/30 text-crema hover:bg-crema/10 hover:text-crema"
                 >
-                  <Link to="/entrar">Explorar La Chivichana</Link>
+                  <Link to="/explorar">Explorar La Chivichana</Link>
                 </Button>
               </div>
               <ul className="mt-7 grid gap-2 text-sm text-crema/85 sm:grid-cols-3">
