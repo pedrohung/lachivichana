@@ -191,7 +191,7 @@ export function TarjetaPublicacion({ publicacion }: { publicacion: Publicacion }
               aria-label={img.alt}
               className={cn(
                 "flex aspect-[4/3] items-end rounded-xl p-3 text-xs font-medium text-[oklch(0.22_0.06_70)]",
-                FONDOS[img.url] ?? FONDOS.madera,
+                FONDOS[img.url] ?? FONDOS["madera"],
               )}
             >
               <span className="rounded-md bg-crema/80 px-2 py-1">{img.alt}</span>
