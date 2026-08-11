@@ -264,6 +264,7 @@ export function TarjetaPublicacion({ publicacion }: { publicacion: Publicacion }
             variant="ghost"
             size="sm"
             aria-pressed={reaccion === r.clave}
+            aria-label={r.nombre}
             className={cn("h-10 rounded-full text-xs", reaccion === r.clave && "bg-secondary")}
             onClick={() => alReaccionar(r.clave, r.nombre)}
           >
