@@ -14,6 +14,7 @@ import { Route as ColmenaRouteImport } from './routes/colmena'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as LaEsquinaRouteImport } from './routes/la-esquina'
 import { Route as LaManoRouteImport } from './routes/la-mano'
+import { Route as MaleconRouteImport } from './routes/malecon'
 import { Route as MensajesRouteImport } from './routes/mensajes'
 import { Route as MercaditoRouteImport } from './routes/mercadito'
 import { Route as MiBarrioRouteImport } from './routes/mi-barrio'
@@ -50,6 +51,11 @@ const LaEsquinaRoute = LaEsquinaRouteImport.update({
 const LaManoRoute = LaManoRouteImport.update({
   id: '/la-mano',
   path: '/la-mano',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaleconRoute = MaleconRouteImport.update({
+  id: '/malecon',
+  path: '/malecon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MensajesRoute = MensajesRouteImport.update({
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
+  '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
   '/mercadito': typeof MercaditoRoute
   '/mi-barrio': typeof MiBarrioRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
+  '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
   '/mercadito': typeof MercaditoRoute
   '/mi-barrio': typeof MiBarrioRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
+  '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
   '/mercadito': typeof MercaditoRoute
   '/mi-barrio': typeof MiBarrioRoute
@@ -179,6 +188,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/la-esquina'
     | '/la-mano'
+    | '/malecon'
     | '/mensajes'
     | '/mercadito'
     | '/mi-barrio'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/la-esquina'
     | '/la-mano'
+    | '/malecon'
     | '/mensajes'
     | '/mercadito'
     | '/mi-barrio'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/la-esquina'
     | '/la-mano'
+    | '/malecon'
     | '/mensajes'
     | '/mercadito'
     | '/mi-barrio'
@@ -237,6 +249,7 @@ export interface RootRouteChildren {
   EntrarRoute: typeof EntrarRoute
   LaEsquinaRoute: typeof LaEsquinaRoute
   LaManoRoute: typeof LaManoRoute
+  MaleconRoute: typeof MaleconRoute
   MensajesRoute: typeof MensajesRoute
   MercaditoRoute: typeof MercaditoRoute
   MiBarrioRoute: typeof MiBarrioRoute
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/la-mano'
       fullPath: '/la-mano'
       preLoaderRoute: typeof LaManoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/malecon': {
+      id: '/malecon'
+      path: '/malecon'
+      fullPath: '/malecon'
+      preLoaderRoute: typeof MaleconRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mensajes': {
@@ -381,6 +401,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntrarRoute: EntrarRoute,
   LaEsquinaRoute: LaEsquinaRoute,
   LaManoRoute: LaManoRoute,
+  MaleconRoute: MaleconRoute,
   MensajesRoute: MensajesRoute,
   MercaditoRoute: MercaditoRoute,
   MiBarrioRoute: MiBarrioRoute,
