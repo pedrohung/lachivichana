@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ColmenaRouteImport } from './routes/colmena'
 import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as LaEsquinaRouteImport } from './routes/la-esquina'
 import { Route as LaManoRouteImport } from './routes/la-mano'
 import { Route as MaleconRouteImport } from './routes/malecon'
@@ -41,6 +42,11 @@ const ColmenaRoute = ColmenaRouteImport.update({
 const EntrarRoute = EntrarRouteImport.update({
   id: '/entrar',
   path: '/entrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplorarRoute = ExplorarRouteImport.update({
+  id: '/explorar',
+  path: '/explorar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LaEsquinaRoute = LaEsquinaRouteImport.update({
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
+  '/explorar': typeof ExplorarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
+  '/explorar': typeof ExplorarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
+  '/explorar': typeof ExplorarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/colmena'
     | '/entrar'
+    | '/explorar'
     | '/la-esquina'
     | '/la-mano'
     | '/malecon'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/'
     | '/colmena'
     | '/entrar'
+    | '/explorar'
     | '/la-esquina'
     | '/la-mano'
     | '/malecon'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/'
     | '/colmena'
     | '/entrar'
+    | '/explorar'
     | '/la-esquina'
     | '/la-mano'
     | '/malecon'
@@ -247,6 +259,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ColmenaRoute: typeof ColmenaRoute
   EntrarRoute: typeof EntrarRoute
+  ExplorarRoute: typeof ExplorarRoute
   LaEsquinaRoute: typeof LaEsquinaRoute
   LaManoRoute: typeof LaManoRoute
   MaleconRoute: typeof MaleconRoute
@@ -285,6 +298,13 @@ declare module '@tanstack/react-router' {
       path: '/entrar'
       fullPath: '/entrar'
       preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explorar': {
+      id: '/explorar'
+      path: '/explorar'
+      fullPath: '/explorar'
+      preLoaderRoute: typeof ExplorarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/la-esquina': {
@@ -399,6 +419,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ColmenaRoute: ColmenaRoute,
   EntrarRoute: EntrarRoute,
+  ExplorarRoute: ExplorarRoute,
   LaEsquinaRoute: LaEsquinaRoute,
   LaManoRoute: LaManoRoute,
   MaleconRoute: MaleconRoute,
