@@ -242,6 +242,7 @@ function Cabecera({
               )}
             </Link>
           </Button>
+          )}
           {!invitado && (
           <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
             <Link to="/mensajes" aria-label={`Mensajes (${mensajesSinLeer} sin leer)`}>
