@@ -88,6 +88,32 @@ export type Publicacion = {
 
 export type ModoArticulo = "venta" | "donacion" | "intercambio" | "servicio";
 
+export type EstadoAnuncio =
+  | "activo"
+  | "reservado"
+  | "vendido"
+  | "donado"
+  | "intercambiado"
+  | "pausado"
+  | "borrador"
+  | "retirado";
+
+export type TonoImagen = "madera" | "turquesa" | "sol" | "mar";
+
+export type Anunciante = {
+  alias: string;
+  nombreVisible: string;
+  avatar: string;
+  verificado: boolean;
+  reputacion: number;
+  valoraciones: number;
+  desde: string;
+  tipo: IdentidadTipo;
+  operaciones?: number;
+  tiempoRespuesta?: string;
+  enlace?: string;
+};
+
 export type Articulo = {
   id: string;
   titulo: string;
@@ -98,20 +124,26 @@ export type Articulo = {
   moneda?: "CUP" | "USD" | "EUR";
   estado: "nuevo" | "como-nuevo" | "usado" | "para-piezas" | "no-aplica";
   zona: string;
+  pais: string;
   publicado: string;
   imagenAlt: string;
-  vendedor: {
-    alias: string;
-    nombreVisible: string;
-    avatar: string;
-    verificado: boolean;
-    reputacion: number;
-    valoraciones: number;
-    desde: string;
-    tipo: IdentidadTipo;
-  };
+  vendedor: Anunciante;
   entrega: string;
   interesados: number;
+  vistas?: number;
+  tono?: TonoImagen;
+  estadoAnuncio?: EstadoAnuncio;
+  negociable?: boolean;
+  cantidad?: string;
+  destinatario?: string;
+  ofrece?: string;
+  busca?: string;
+  alternativas?: string;
+  tipoServicio?: string;
+  precioModo?: "fijo" | "desde" | "consultar";
+  lugar?: "remoto" | "presencial" | "mixto";
+  disponibilidad?: string;
+  demostracion?: boolean;
 };
 
 export type EstadoCampana =
