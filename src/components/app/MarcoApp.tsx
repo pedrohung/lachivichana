@@ -30,16 +30,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { NAVEGACION } from "@/datos/navegacion";
 import { NOTIFICACIONES, CONVERSACIONES } from "@/datos/demo/avisos";
+import type { ModoSesion } from "@/estado/sesion";
 import { cn } from "@/lib/utils";
 import { AvatarIniciales } from "./Avatar";
 import { AvisoDemo } from "./AvisoDemo";
 import { DialogoAcceso } from "./DialogoAcceso";
-import { ProveedorApp, useApp } from "./contexto";
+import { ProveedorApp, esRutaProtegida, useApp } from "./contexto";
 
 type MarcoProps = {
   children: ReactNode;
   /** Contenido del panel contextual derecho (sólo escritorio ancho). */
   panelDerecho?: ReactNode;
+  /** Fija la modalidad de la demostración para esta ruta. */
+  modo?: ModoSesion;
+  /** Compatibilidad: equivale a modo="visitante". */
   invitado?: boolean;
 };
 
@@ -51,9 +55,10 @@ const NAV_MOVIL = [
   { ruta: "/mi-chivichana", nombre: "Mi Chivichana", icono: UserCog },
 ];
 
-export function MarcoApp({ children, panelDerecho, invitado = false }: MarcoProps) {
+export function MarcoApp({ children, panelDerecho, modo, invitado }: MarcoProps) {
+  const modoFijo: ModoSesion | undefined = modo ?? (invitado ? "visitante" : undefined);
   return (
-    <ProveedorApp invitado={invitado}>
+    <ProveedorApp modo={modoFijo}>
       <Estructura panelDerecho={panelDerecho}>{children}</Estructura>
       <DialogoAcceso />
     </ProveedorApp>
@@ -116,6 +121,16 @@ function useRutaActual() {
 
 function NavegacionLateral({ alNavegar }: { alNavegar?: () => void }) {
   const ruta = useRutaActual();
+  const { invitado, requiereCuenta } = useApp();
+
+  const alPulsar = (destino: string) => (evento: React.MouseEvent) => {
+    if (invitado && esRutaProtegida(destino)) {
+      evento.preventDefault();
+      requiereCuenta();
+      return;
+    }
+    alNavegar?.();
+  };
 
   return (
     <nav aria-label="Secciones de La Chivichana" className="rounded-2xl border border-border bg-card p-2">
@@ -127,7 +142,7 @@ function NavegacionLateral({ alNavegar }: { alNavegar?: () => void }) {
             <li key={item.ruta}>
               <Link
                 to={item.ruta}
-                onClick={alNavegar}
+                onClick={alPulsar(item.ruta)}
                 aria-current={activo ? "page" : undefined}
                 className={cn(
                   "flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
@@ -145,7 +160,7 @@ function NavegacionLateral({ alNavegar }: { alNavegar?: () => void }) {
       </ul>
       <div className="p-2">
         <Button asChild variant="sol" className="w-full">
-          <Link to="/publicar" onClick={alNavegar}>
+          <Link to="/publicar" onClick={alPulsar("/publicar")}>
             <PenLine aria-hidden="true" />
             Crear publicación
           </Link>
@@ -218,6 +233,7 @@ function Cabecera({
         </form>
 
         <div className="flex items-center gap-1">
+          {!invitado && (
           <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
             <Link to="/notificaciones" aria-label={`Notificaciones (${sinLeer} sin leer)`}>
               <Bell aria-hidden="true" />
@@ -226,6 +242,8 @@ function Cabecera({
               )}
             </Link>
           </Button>
+          )}
+          {!invitado && (
           <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
             <Link to="/mensajes" aria-label={`Mensajes (${mensajesSinLeer} sin leer)`}>
               <MessageCircle aria-hidden="true" />
@@ -234,6 +252,7 @@ function Cabecera({
               )}
             </Link>
           </Button>
+          )}
 
           {invitado ? (
             <div className="flex items-center gap-2">
@@ -301,6 +320,7 @@ function Cabecera({
 
 function NavegacionInferior() {
   const ruta = useRutaActual();
+  const { invitado, requiereCuenta } = useApp();
 
   return (
     <nav
@@ -315,6 +335,12 @@ function NavegacionInferior() {
             <li key={item.ruta}>
               <Link
                 to={item.ruta}
+                onClick={(evento) => {
+                  if (invitado && esRutaProtegida(item.ruta)) {
+                    evento.preventDefault();
+                    requiereCuenta();
+                  }
+                }}
                 aria-current={activo ? "page" : undefined}
                 className={cn(
                   "flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-2 text-[0.65rem] font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",

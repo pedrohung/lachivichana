@@ -28,6 +28,13 @@ import { Route as PromotoresRouteImport } from './routes/promotores'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as TallerRouteImport } from './routes/taller'
+import { Route as MercaditoIndexRouteImport } from './routes/mercadito.index'
+import { Route as MercaditoGuardadosRouteImport } from './routes/mercadito.guardados'
+import { Route as MercaditoMisPublicacionesRouteImport } from './routes/mercadito.mis-publicaciones'
+import { Route as MercaditoPublicarRouteImport } from './routes/mercadito.publicar'
+import { Route as NegocioSlugRouteImport } from './routes/negocio.$slug'
+import { Route as PerfilAliasRouteImport } from './routes/perfil.$alias'
+import { Route as ProductoRouteImport } from './routes/producto.'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -124,6 +131,42 @@ const TallerRoute = TallerRouteImport.update({
   path: '/taller',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MercaditoIndexRoute = MercaditoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MercaditoRoute,
+} as any)
+const MercaditoGuardadosRoute = MercaditoGuardadosRouteImport.update({
+  id: '/guardados',
+  path: '/guardados',
+  getParentRoute: () => MercaditoRoute,
+} as any)
+const MercaditoMisPublicacionesRoute =
+  MercaditoMisPublicacionesRouteImport.update({
+    id: '/mis-publicaciones',
+    path: '/mis-publicaciones',
+    getParentRoute: () => MercaditoRoute,
+  } as any)
+const MercaditoPublicarRoute = MercaditoPublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => MercaditoRoute,
+} as any)
+const NegocioSlugRoute = NegocioSlugRouteImport.update({
+  id: '/negocio/$slug',
+  path: '/negocio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilAliasRoute = PerfilAliasRouteImport.update({
+  id: '/perfil/$alias',
+  path: '/perfil/$alias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductoRoute = ProductoRouteImport.update({
+  id: '/producto/',
+  path: '/producto/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,7 +177,7 @@ export interface FileRoutesByFullPath {
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
-  '/mercadito': typeof MercaditoRoute
+  '/mercadito': typeof MercaditoRouteWithChildren
   '/mi-barrio': typeof MiBarrioRoute
   '/mi-chivichana': typeof MiChivichanaRoute
   '/mis-caminos': typeof MisCaminosRoute
@@ -145,6 +188,13 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/producto/': typeof ProductoRoute
+  '/mercadito/guardados': typeof MercaditoGuardadosRoute
+  '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
+  '/mercadito/publicar': typeof MercaditoPublicarRoute
+  '/negocio/$slug': typeof NegocioSlugRoute
+  '/perfil/$alias': typeof PerfilAliasRoute
+  '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -155,7 +205,6 @@ export interface FileRoutesByTo {
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
-  '/mercadito': typeof MercaditoRoute
   '/mi-barrio': typeof MiBarrioRoute
   '/mi-chivichana': typeof MiChivichanaRoute
   '/mis-caminos': typeof MisCaminosRoute
@@ -166,6 +215,13 @@ export interface FileRoutesByTo {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/producto': typeof ProductoRoute
+  '/mercadito/guardados': typeof MercaditoGuardadosRoute
+  '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
+  '/mercadito/publicar': typeof MercaditoPublicarRoute
+  '/negocio/$slug': typeof NegocioSlugRoute
+  '/perfil/$alias': typeof PerfilAliasRoute
+  '/mercadito': typeof MercaditoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -177,7 +233,7 @@ export interface FileRoutesById {
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
-  '/mercadito': typeof MercaditoRoute
+  '/mercadito': typeof MercaditoRouteWithChildren
   '/mi-barrio': typeof MiBarrioRoute
   '/mi-chivichana': typeof MiChivichanaRoute
   '/mis-caminos': typeof MisCaminosRoute
@@ -188,6 +244,13 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/producto/': typeof ProductoRoute
+  '/mercadito/guardados': typeof MercaditoGuardadosRoute
+  '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
+  '/mercadito/publicar': typeof MercaditoPublicarRoute
+  '/negocio/$slug': typeof NegocioSlugRoute
+  '/perfil/$alias': typeof PerfilAliasRoute
+  '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +274,13 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/producto/'
+    | '/mercadito/guardados'
+    | '/mercadito/mis-publicaciones'
+    | '/mercadito/publicar'
+    | '/negocio/$slug'
+    | '/perfil/$alias'
+    | '/mercadito/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -221,7 +291,6 @@ export interface FileRouteTypes {
     | '/la-mano'
     | '/malecon'
     | '/mensajes'
-    | '/mercadito'
     | '/mi-barrio'
     | '/mi-chivichana'
     | '/mis-caminos'
@@ -232,6 +301,13 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/producto'
+    | '/mercadito/guardados'
+    | '/mercadito/mis-publicaciones'
+    | '/mercadito/publicar'
+    | '/negocio/$slug'
+    | '/perfil/$alias'
+    | '/mercadito'
   id:
     | '__root__'
     | '/'
@@ -253,6 +329,13 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/producto/'
+    | '/mercadito/guardados'
+    | '/mercadito/mis-publicaciones'
+    | '/mercadito/publicar'
+    | '/negocio/$slug'
+    | '/perfil/$alias'
+    | '/mercadito/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -264,7 +347,7 @@ export interface RootRouteChildren {
   LaManoRoute: typeof LaManoRoute
   MaleconRoute: typeof MaleconRoute
   MensajesRoute: typeof MensajesRoute
-  MercaditoRoute: typeof MercaditoRoute
+  MercaditoRoute: typeof MercaditoRouteWithChildren
   MiBarrioRoute: typeof MiBarrioRoute
   MiChivichanaRoute: typeof MiChivichanaRoute
   MisCaminosRoute: typeof MisCaminosRoute
@@ -275,6 +358,9 @@ export interface RootRouteChildren {
   PublicarRoute: typeof PublicarRoute
   RegistroRoute: typeof RegistroRoute
   TallerRoute: typeof TallerRoute
+  ProductoRoute: typeof ProductoRoute
+  NegocioSlugRoute: typeof NegocioSlugRoute
+  PerfilAliasRoute: typeof PerfilAliasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -412,8 +498,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TallerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mercadito/': {
+      id: '/mercadito/'
+      path: '/'
+      fullPath: '/mercadito/'
+      preLoaderRoute: typeof MercaditoIndexRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
+    '/mercadito/guardados': {
+      id: '/mercadito/guardados'
+      path: '/guardados'
+      fullPath: '/mercadito/guardados'
+      preLoaderRoute: typeof MercaditoGuardadosRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
+    '/mercadito/mis-publicaciones': {
+      id: '/mercadito/mis-publicaciones'
+      path: '/mis-publicaciones'
+      fullPath: '/mercadito/mis-publicaciones'
+      preLoaderRoute: typeof MercaditoMisPublicacionesRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
+    '/mercadito/publicar': {
+      id: '/mercadito/publicar'
+      path: '/publicar'
+      fullPath: '/mercadito/publicar'
+      preLoaderRoute: typeof MercaditoPublicarRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
+    '/negocio/$slug': {
+      id: '/negocio/$slug'
+      path: '/negocio/$slug'
+      fullPath: '/negocio/$slug'
+      preLoaderRoute: typeof NegocioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil/$alias': {
+      id: '/perfil/$alias'
+      path: '/perfil/$alias'
+      fullPath: '/perfil/$alias'
+      preLoaderRoute: typeof PerfilAliasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/producto/': {
+      id: '/producto/'
+      path: '/producto'
+      fullPath: '/producto/'
+      preLoaderRoute: typeof ProductoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface MercaditoRouteChildren {
+  MercaditoGuardadosRoute: typeof MercaditoGuardadosRoute
+  MercaditoMisPublicacionesRoute: typeof MercaditoMisPublicacionesRoute
+  MercaditoPublicarRoute: typeof MercaditoPublicarRoute
+  MercaditoIndexRoute: typeof MercaditoIndexRoute
+}
+
+const MercaditoRouteChildren: MercaditoRouteChildren = {
+  MercaditoGuardadosRoute: MercaditoGuardadosRoute,
+  MercaditoMisPublicacionesRoute: MercaditoMisPublicacionesRoute,
+  MercaditoPublicarRoute: MercaditoPublicarRoute,
+  MercaditoIndexRoute: MercaditoIndexRoute,
+}
+
+const MercaditoRouteWithChildren = MercaditoRoute._addFileChildren(
+  MercaditoRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -424,7 +577,7 @@ const rootRouteChildren: RootRouteChildren = {
   LaManoRoute: LaManoRoute,
   MaleconRoute: MaleconRoute,
   MensajesRoute: MensajesRoute,
-  MercaditoRoute: MercaditoRoute,
+  MercaditoRoute: MercaditoRouteWithChildren,
   MiBarrioRoute: MiBarrioRoute,
   MiChivichanaRoute: MiChivichanaRoute,
   MisCaminosRoute: MisCaminosRoute,
@@ -435,6 +588,9 @@ const rootRouteChildren: RootRouteChildren = {
   PublicarRoute: PublicarRoute,
   RegistroRoute: RegistroRoute,
   TallerRoute: TallerRoute,
+  ProductoRoute: ProductoRoute,
+  NegocioSlugRoute: NegocioSlugRoute,
+  PerfilAliasRoute: PerfilAliasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
