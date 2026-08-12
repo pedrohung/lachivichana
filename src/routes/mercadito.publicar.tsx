@@ -109,7 +109,7 @@ function PublicarMercaditoPage() {
                   <Icono aria-hidden="true" className="mt-0.5 h-4 w-4 text-turquesa" />
                   <span>
                     <span className="block font-semibold text-foreground">{m.texto}</span>
-                    <span className="block text-xs text-muted-foreground">{m.ayuda}</span>
+                    <span className="block text-xs text-muted-foreground">{m.descripcion}</span>
                   </span>
                 </button>
               );

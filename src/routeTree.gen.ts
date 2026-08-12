@@ -32,6 +32,8 @@ import { Route as MercaditoIndexRouteImport } from './routes/mercadito.index'
 import { Route as MercaditoGuardadosRouteImport } from './routes/mercadito.guardados'
 import { Route as MercaditoMisPublicacionesRouteImport } from './routes/mercadito.mis-publicaciones'
 import { Route as MercaditoPublicarRouteImport } from './routes/mercadito.publicar'
+import { Route as NegocioSlugRouteImport } from './routes/negocio.$slug'
+import { Route as PerfilAliasRouteImport } from './routes/perfil.$alias'
 import { Route as ProductoRouteImport } from './routes/producto.'
 
 const IndexRoute = IndexRouteImport.update({
@@ -150,6 +152,16 @@ const MercaditoPublicarRoute = MercaditoPublicarRouteImport.update({
   path: '/publicar',
   getParentRoute: () => MercaditoRoute,
 } as any)
+const NegocioSlugRoute = NegocioSlugRouteImport.update({
+  id: '/negocio/$slug',
+  path: '/negocio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilAliasRoute = PerfilAliasRouteImport.update({
+  id: '/perfil/$alias',
+  path: '/perfil/$alias',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductoRoute = ProductoRouteImport.update({
   id: '/producto/',
   path: '/producto/',
@@ -180,6 +192,8 @@ export interface FileRoutesByFullPath {
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
+  '/negocio/$slug': typeof NegocioSlugRoute
+  '/perfil/$alias': typeof PerfilAliasRoute
   '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRoutesByTo {
@@ -205,6 +219,8 @@ export interface FileRoutesByTo {
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
+  '/negocio/$slug': typeof NegocioSlugRoute
+  '/perfil/$alias': typeof PerfilAliasRoute
   '/mercadito': typeof MercaditoIndexRoute
 }
 export interface FileRoutesById {
@@ -232,6 +248,8 @@ export interface FileRoutesById {
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
+  '/negocio/$slug': typeof NegocioSlugRoute
+  '/perfil/$alias': typeof PerfilAliasRoute
   '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRouteTypes {
@@ -260,6 +278,8 @@ export interface FileRouteTypes {
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
+    | '/negocio/$slug'
+    | '/perfil/$alias'
     | '/mercadito/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -285,6 +305,8 @@ export interface FileRouteTypes {
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
+    | '/negocio/$slug'
+    | '/perfil/$alias'
     | '/mercadito'
   id:
     | '__root__'
@@ -311,6 +333,8 @@ export interface FileRouteTypes {
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
+    | '/negocio/$slug'
+    | '/perfil/$alias'
     | '/mercadito/'
   fileRoutesById: FileRoutesById
 }
@@ -335,6 +359,8 @@ export interface RootRouteChildren {
   RegistroRoute: typeof RegistroRoute
   TallerRoute: typeof TallerRoute
   ProductoRoute: typeof ProductoRoute
+  NegocioSlugRoute: typeof NegocioSlugRoute
+  PerfilAliasRoute: typeof PerfilAliasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -500,6 +526,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MercaditoPublicarRouteImport
       parentRoute: typeof MercaditoRoute
     }
+    '/negocio/$slug': {
+      id: '/negocio/$slug'
+      path: '/negocio/$slug'
+      fullPath: '/negocio/$slug'
+      preLoaderRoute: typeof NegocioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil/$alias': {
+      id: '/perfil/$alias'
+      path: '/perfil/$alias'
+      fullPath: '/perfil/$alias'
+      preLoaderRoute: typeof PerfilAliasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/producto/': {
       id: '/producto/'
       path: '/producto'
@@ -549,6 +589,8 @@ const rootRouteChildren: RootRouteChildren = {
   RegistroRoute: RegistroRoute,
   TallerRoute: TallerRoute,
   ProductoRoute: ProductoRoute,
+  NegocioSlugRoute: NegocioSlugRoute,
+  PerfilAliasRoute: PerfilAliasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
