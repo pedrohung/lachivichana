@@ -28,6 +28,7 @@ import { Route as PromotoresRouteImport } from './routes/promotores'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as TallerRouteImport } from './routes/taller'
+import { Route as MercaditoIndexRouteImport } from './routes/mercadito.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -124,6 +125,11 @@ const TallerRoute = TallerRouteImport.update({
   path: '/taller',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MercaditoIndexRoute = MercaditoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MercaditoRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,7 +140,7 @@ export interface FileRoutesByFullPath {
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
-  '/mercadito': typeof MercaditoRoute
+  '/mercadito': typeof MercaditoRouteWithChildren
   '/mi-barrio': typeof MiBarrioRoute
   '/mi-chivichana': typeof MiChivichanaRoute
   '/mis-caminos': typeof MisCaminosRoute
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -155,7 +162,6 @@ export interface FileRoutesByTo {
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
-  '/mercadito': typeof MercaditoRoute
   '/mi-barrio': typeof MiBarrioRoute
   '/mi-chivichana': typeof MiChivichanaRoute
   '/mis-caminos': typeof MisCaminosRoute
@@ -166,6 +172,7 @@ export interface FileRoutesByTo {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/mercadito': typeof MercaditoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -177,7 +184,7 @@ export interface FileRoutesById {
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
   '/mensajes': typeof MensajesRoute
-  '/mercadito': typeof MercaditoRoute
+  '/mercadito': typeof MercaditoRouteWithChildren
   '/mi-barrio': typeof MiBarrioRoute
   '/mi-chivichana': typeof MiChivichanaRoute
   '/mis-caminos': typeof MisCaminosRoute
@@ -188,6 +195,7 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +219,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/mercadito/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -221,7 +230,6 @@ export interface FileRouteTypes {
     | '/la-mano'
     | '/malecon'
     | '/mensajes'
-    | '/mercadito'
     | '/mi-barrio'
     | '/mi-chivichana'
     | '/mis-caminos'
@@ -232,6 +240,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/mercadito'
   id:
     | '__root__'
     | '/'
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/mercadito/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -264,7 +274,7 @@ export interface RootRouteChildren {
   LaManoRoute: typeof LaManoRoute
   MaleconRoute: typeof MaleconRoute
   MensajesRoute: typeof MensajesRoute
-  MercaditoRoute: typeof MercaditoRoute
+  MercaditoRoute: typeof MercaditoRouteWithChildren
   MiBarrioRoute: typeof MiBarrioRoute
   MiChivichanaRoute: typeof MiChivichanaRoute
   MisCaminosRoute: typeof MisCaminosRoute
@@ -412,8 +422,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TallerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mercadito/': {
+      id: '/mercadito/'
+      path: '/'
+      fullPath: '/mercadito/'
+      preLoaderRoute: typeof MercaditoIndexRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
   }
 }
+
+interface MercaditoRouteChildren {
+  MercaditoIndexRoute: typeof MercaditoIndexRoute
+}
+
+const MercaditoRouteChildren: MercaditoRouteChildren = {
+  MercaditoIndexRoute: MercaditoIndexRoute,
+}
+
+const MercaditoRouteWithChildren = MercaditoRoute._addFileChildren(
+  MercaditoRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -424,7 +453,7 @@ const rootRouteChildren: RootRouteChildren = {
   LaManoRoute: LaManoRoute,
   MaleconRoute: MaleconRoute,
   MensajesRoute: MensajesRoute,
-  MercaditoRoute: MercaditoRoute,
+  MercaditoRoute: MercaditoRouteWithChildren,
   MiBarrioRoute: MiBarrioRoute,
   MiChivichanaRoute: MiChivichanaRoute,
   MisCaminosRoute: MisCaminosRoute,
