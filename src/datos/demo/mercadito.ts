@@ -33,7 +33,7 @@ export const ENTREGAS_SUGERIDAS = [
   "Por videollamada",
 ];
 
-const ANUNCIANTES: Record<string, Anunciante> = {
+const ANUNCIANTES = {
   mangoYMiel: {
     alias: "mango-y-miel",
     nombreVisible: "Mango y Miel",
@@ -164,7 +164,7 @@ const ANUNCIANTES: Record<string, Anunciante> = {
     tiempoRespuesta: "Suele responder el mismo día",
     enlace: "/perfil/cafeconletras",
   },
-};
+} satisfies Record<string, Anunciante>;
 
 export const ARTICULOS: Articulo[] = [
   {

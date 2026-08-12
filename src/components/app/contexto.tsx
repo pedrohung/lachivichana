@@ -47,7 +47,7 @@ export function ProveedorApp({
   children,
 }: {
   /** Si se indica, esta ruta fija la modalidad de la demostración. */
-  modo?: ModoSesion;
+  modo?: ModoSesion | undefined;
   children: ReactNode;
 }) {
   const { modo } = useModoSesion();
