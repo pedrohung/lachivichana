@@ -22,7 +22,7 @@ import { articulosSimilares, componerCatalogo } from "@/datos/servicios";
 import type { Articulo } from "@/datos/tipos";
 import { useMercaditoLocal } from "@/estado/mercadito";
 
-export const Route = createFileRoute("/producto/$id")({
+export const Route = createFileRoute("/producto/")({
   head: () => ({
     meta: [
       { title: "Anuncio de El Mercadito — La Chivichana" },
