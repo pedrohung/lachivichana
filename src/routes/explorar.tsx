@@ -27,7 +27,7 @@ export const Route = createFileRoute("/explorar")({
 
 function ExplorarPage() {
   return (
-    <MarcoApp invitado panelDerecho={<PanelDerecho />}>
+    <MarcoApp modo="visitante" panelDerecho={<PanelDerecho />}>
       <Muro
         titulo="El Malecón"
         subtitulo="Versión pública: puedes leerlo todo sin crear cuenta."

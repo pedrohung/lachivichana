@@ -27,7 +27,7 @@ export const Route = createFileRoute("/malecon")({
 
 function MaleconPage() {
   return (
-    <MarcoApp panelDerecho={<PanelDerecho />}>
+    <MarcoApp modo="demo" panelDerecho={<PanelDerecho />}>
       <Muro
         titulo="El Malecón"
         subtitulo="Lo que cuenta, ofrece, pide y celebra la comunidad hoy."
