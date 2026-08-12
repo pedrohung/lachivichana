@@ -30,16 +30,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { NAVEGACION } from "@/datos/navegacion";
 import { NOTIFICACIONES, CONVERSACIONES } from "@/datos/demo/avisos";
+import type { ModoSesion } from "@/estado/sesion";
 import { cn } from "@/lib/utils";
 import { AvatarIniciales } from "./Avatar";
 import { AvisoDemo } from "./AvisoDemo";
 import { DialogoAcceso } from "./DialogoAcceso";
-import { ProveedorApp, useApp } from "./contexto";
+import { ProveedorApp, esRutaProtegida, useApp } from "./contexto";
 
 type MarcoProps = {
   children: ReactNode;
   /** Contenido del panel contextual derecho (sólo escritorio ancho). */
   panelDerecho?: ReactNode;
+  /** Fija la modalidad de la demostración para esta ruta. */
+  modo?: ModoSesion;
+  /** Compatibilidad: equivale a modo="visitante". */
   invitado?: boolean;
 };
 
@@ -51,9 +55,10 @@ const NAV_MOVIL = [
   { ruta: "/mi-chivichana", nombre: "Mi Chivichana", icono: UserCog },
 ];
 
-export function MarcoApp({ children, panelDerecho, invitado = false }: MarcoProps) {
+export function MarcoApp({ children, panelDerecho, modo, invitado }: MarcoProps) {
+  const modoFijo: ModoSesion | undefined = modo ?? (invitado ? "visitante" : undefined);
   return (
-    <ProveedorApp invitado={invitado}>
+    <ProveedorApp modo={modoFijo}>
       <Estructura panelDerecho={panelDerecho}>{children}</Estructura>
       <DialogoAcceso />
     </ProveedorApp>
