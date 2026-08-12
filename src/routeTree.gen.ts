@@ -30,6 +30,8 @@ import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as TallerRouteImport } from './routes/taller'
 import { Route as MercaditoIndexRouteImport } from './routes/mercadito.index'
 import { Route as MercaditoGuardadosRouteImport } from './routes/mercadito.guardados'
+import { Route as MercaditoMisPublicacionesRouteImport } from './routes/mercadito.mis-publicaciones'
+import { Route as MercaditoPublicarRouteImport } from './routes/mercadito.publicar'
 import { Route as ProductoRouteImport } from './routes/producto.'
 
 const IndexRoute = IndexRouteImport.update({
@@ -137,6 +139,17 @@ const MercaditoGuardadosRoute = MercaditoGuardadosRouteImport.update({
   path: '/guardados',
   getParentRoute: () => MercaditoRoute,
 } as any)
+const MercaditoMisPublicacionesRoute =
+  MercaditoMisPublicacionesRouteImport.update({
+    id: '/mis-publicaciones',
+    path: '/mis-publicaciones',
+    getParentRoute: () => MercaditoRoute,
+  } as any)
+const MercaditoPublicarRoute = MercaditoPublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => MercaditoRoute,
+} as any)
 const ProductoRoute = ProductoRouteImport.update({
   id: '/producto/',
   path: '/producto/',
@@ -165,6 +178,8 @@ export interface FileRoutesByFullPath {
   '/taller': typeof TallerRoute
   '/producto/': typeof ProductoRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
+  '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
+  '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRoutesByTo {
@@ -188,6 +203,8 @@ export interface FileRoutesByTo {
   '/taller': typeof TallerRoute
   '/producto': typeof ProductoRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
+  '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
+  '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/mercadito': typeof MercaditoIndexRoute
 }
 export interface FileRoutesById {
@@ -213,6 +230,8 @@ export interface FileRoutesById {
   '/taller': typeof TallerRoute
   '/producto/': typeof ProductoRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
+  '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
+  '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRouteTypes {
@@ -239,6 +258,8 @@ export interface FileRouteTypes {
     | '/taller'
     | '/producto/'
     | '/mercadito/guardados'
+    | '/mercadito/mis-publicaciones'
+    | '/mercadito/publicar'
     | '/mercadito/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -262,6 +283,8 @@ export interface FileRouteTypes {
     | '/taller'
     | '/producto'
     | '/mercadito/guardados'
+    | '/mercadito/mis-publicaciones'
+    | '/mercadito/publicar'
     | '/mercadito'
   id:
     | '__root__'
@@ -286,6 +309,8 @@ export interface FileRouteTypes {
     | '/taller'
     | '/producto/'
     | '/mercadito/guardados'
+    | '/mercadito/mis-publicaciones'
+    | '/mercadito/publicar'
     | '/mercadito/'
   fileRoutesById: FileRoutesById
 }
@@ -461,6 +486,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MercaditoGuardadosRouteImport
       parentRoute: typeof MercaditoRoute
     }
+    '/mercadito/mis-publicaciones': {
+      id: '/mercadito/mis-publicaciones'
+      path: '/mis-publicaciones'
+      fullPath: '/mercadito/mis-publicaciones'
+      preLoaderRoute: typeof MercaditoMisPublicacionesRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
+    '/mercadito/publicar': {
+      id: '/mercadito/publicar'
+      path: '/publicar'
+      fullPath: '/mercadito/publicar'
+      preLoaderRoute: typeof MercaditoPublicarRouteImport
+      parentRoute: typeof MercaditoRoute
+    }
     '/producto/': {
       id: '/producto/'
       path: '/producto'
@@ -473,11 +512,15 @@ declare module '@tanstack/react-router' {
 
 interface MercaditoRouteChildren {
   MercaditoGuardadosRoute: typeof MercaditoGuardadosRoute
+  MercaditoMisPublicacionesRoute: typeof MercaditoMisPublicacionesRoute
+  MercaditoPublicarRoute: typeof MercaditoPublicarRoute
   MercaditoIndexRoute: typeof MercaditoIndexRoute
 }
 
 const MercaditoRouteChildren: MercaditoRouteChildren = {
   MercaditoGuardadosRoute: MercaditoGuardadosRoute,
+  MercaditoMisPublicacionesRoute: MercaditoMisPublicacionesRoute,
+  MercaditoPublicarRoute: MercaditoPublicarRoute,
   MercaditoIndexRoute: MercaditoIndexRoute,
 }
 
