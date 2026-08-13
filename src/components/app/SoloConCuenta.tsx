@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Lock } from "lucide-react";
 
@@ -17,11 +17,7 @@ export function SoloConCuenta({
   titulo: string;
   children: ReactNode;
 }) {
-  const { invitado, requiereCuenta } = useApp();
-
-  useEffect(() => {
-    if (invitado) requiereCuenta();
-  }, [invitado, requiereCuenta]);
+  const { invitado } = useApp();
 
   if (!invitado) return <>{children}</>;
 
