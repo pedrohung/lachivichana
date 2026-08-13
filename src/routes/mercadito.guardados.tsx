@@ -5,6 +5,7 @@ import { TarjetaArticulo } from "@/components/mercadito/TarjetaArticulo";
 import { Button } from "@/components/ui/button";
 import { componerCatalogo } from "@/datos/servicios";
 import { useMercaditoLocal } from "@/estado/mercadito";
+import { SoloConCuenta } from "@/components/app/SoloConCuenta";
 
 export const Route = createFileRoute("/mercadito/guardados")({
   head: () => ({
@@ -24,6 +25,16 @@ export const Route = createFileRoute("/mercadito/guardados")({
 });
 
 function GuardadosPage() {
+  return (
+    <MarcoApp>
+      <SoloConCuenta titulo="Artículos guardados">
+        <ListaGuardados />
+      </SoloConCuenta>
+    </MarcoApp>
+  );
+}
+
+function ListaGuardados() {
   const local = useMercaditoLocal();
   const catalogo = componerCatalogo({
     adicionales: local.creados,
@@ -33,8 +44,7 @@ function GuardadosPage() {
   const guardados = catalogo.filter((a) => local.guardados.includes(a.id));
 
   return (
-    <MarcoApp>
-      <div className="space-y-4">
+    <div className="space-y-4">
         <h1 className="texto-display text-2xl font-bold text-primary">Artículos guardados</h1>
         {guardados.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center">
@@ -52,7 +62,6 @@ function GuardadosPage() {
             ))}
           </div>
         )}
-      </div>
-    </MarcoApp>
+    </div>
   );
 }

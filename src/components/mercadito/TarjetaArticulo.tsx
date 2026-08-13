@@ -25,7 +25,14 @@ export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
   return (
     <article className="flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card">
       <div className="relative">
-        <ImagenArticulo articulo={articulo} className="h-36 w-full sm:h-40" />
+        <Link
+          to="/producto/$id"
+          params={{ id: articulo.id }}
+          aria-label={`Ver el anuncio ${articulo.titulo}`}
+          className="block focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        >
+          <ImagenArticulo articulo={articulo} className="h-36 w-full sm:h-40" />
+        </Link>
         <div className="absolute top-2 left-2 flex flex-wrap gap-1.5">
           <InsigniaModalidad modo={articulo.modo} />
           {!disponible && (
@@ -67,15 +74,34 @@ export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
         </p>
 
         <div className="mt-1 flex min-w-0 items-center gap-2 border-t border-border pt-3">
-          <AvatarIniciales
-            iniciales={articulo.vendedor.avatar}
-            nombre={articulo.vendedor.nombreVisible}
-            tamano="sm"
-          />
+          <Link
+            to={articulo.vendedor.tipo === "negocio" ? "/negocio/$slug" : "/perfil/$alias"}
+            params={
+              articulo.vendedor.tipo === "negocio"
+                ? { slug: articulo.vendedor.alias }
+                : { alias: articulo.vendedor.alias }
+            }
+            aria-label={`Ver el perfil de ${articulo.vendedor.nombreVisible}`}
+            className="shrink-0 rounded-full focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          >
+            <AvatarIniciales
+              iniciales={articulo.vendedor.avatar}
+              nombre={articulo.vendedor.nombreVisible}
+              tamano="sm"
+            />
+          </Link>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-semibold text-foreground">
+            <Link
+              to={articulo.vendedor.tipo === "negocio" ? "/negocio/$slug" : "/perfil/$alias"}
+              params={
+                articulo.vendedor.tipo === "negocio"
+                  ? { slug: articulo.vendedor.alias }
+                  : { alias: articulo.vendedor.alias }
+              }
+              className="block truncate rounded-md text-xs font-semibold text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            >
               {articulo.vendedor.nombreVisible}
-            </p>
+            </Link>
             <span className="flex items-center gap-2">
               <Estrellas valor={articulo.vendedor.reputacion} />
               <span className="truncate text-[0.7rem] text-muted-foreground">

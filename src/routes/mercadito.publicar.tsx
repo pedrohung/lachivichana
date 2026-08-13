@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { useApp } from "@/components/app/contexto";
+import { SoloConCuenta } from "@/components/app/SoloConCuenta";
 import { LISTA_MODALIDADES } from "@/components/mercadito/modalidades";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +36,16 @@ export const Route = createFileRoute("/mercadito/publicar")({
 const PATRONES = [/\+?\d[\d\s.-]{7,}/, /calle\s+\w+/i, /\bapto?\.?\s*\d+/i, /@[\w.-]+\.\w+/];
 
 function PublicarMercaditoPage() {
+  return (
+    <MarcoApp>
+      <SoloConCuenta titulo="Publicar en El Mercadito">
+        <FormularioPublicar />
+      </SoloConCuenta>
+    </MarcoApp>
+  );
+}
+
+function FormularioPublicar() {
   const navegar = useNavigate();
   const { identidad } = useApp();
   const [modo, setModo] = useState<ModoArticulo>("venta");
@@ -76,14 +87,13 @@ function PublicarMercaditoPage() {
     };
     agregarAnuncio(nuevo);
     toast.success("Publicamos tu anuncio en la demostración");
-    void navegar({ to: "/mercadito/mis-publicaciones" });
+    void navegar({ to: "/producto/$id", params: { id: nuevo.id } });
   };
 
   const listo = titulo.trim().length > 4 && descripcion.trim().length > 15;
 
   return (
-    <MarcoApp>
-      <div className="space-y-4">
+    <div className="space-y-4">
         <header>
           <h1 className="texto-display text-2xl font-bold text-primary">Publicar en El Mercadito</h1>
           <p className="text-sm text-muted-foreground">
@@ -173,7 +183,6 @@ function PublicarMercaditoPage() {
             Publicar anuncio
           </Button>
         </div>
-      </div>
-    </MarcoApp>
+    </div>
   );
 }

@@ -61,6 +61,12 @@ export function ProveedorApp({
   const modoActivo = modoFijo ?? modo;
   const invitado = modoActivo !== "demo";
 
+  // Si la sesión de demostración se activa (por ejemplo al hidratar la ruta),
+  // cerramos cualquier diálogo de acceso que se hubiera abierto antes.
+  useEffect(() => {
+    if (!invitado) setDialogoAbierto(false);
+  }, [invitado]);
+
   const identidad = useMemo(
     () => IDENTIDADES.find((i) => i.clave === clave) ?? IDENTIDADES[0]!,
     [clave],

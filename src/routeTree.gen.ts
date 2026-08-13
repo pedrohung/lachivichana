@@ -34,7 +34,7 @@ import { Route as MercaditoMisPublicacionesRouteImport } from './routes/mercadit
 import { Route as MercaditoPublicarRouteImport } from './routes/mercadito.publicar'
 import { Route as NegocioSlugRouteImport } from './routes/negocio.$slug'
 import { Route as PerfilAliasRouteImport } from './routes/perfil.$alias'
-import { Route as ProductoRouteImport } from './routes/producto.'
+import { Route as ProductoIdRouteImport } from './routes/producto.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -162,9 +162,9 @@ const PerfilAliasRoute = PerfilAliasRouteImport.update({
   path: '/perfil/$alias',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductoRoute = ProductoRouteImport.update({
-  id: '/producto/',
-  path: '/producto/',
+const ProductoIdRoute = ProductoIdRouteImport.update({
+  id: '/producto/$id',
+  path: '/producto/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -188,12 +188,12 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
-  '/producto/': typeof ProductoRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/negocio/$slug': typeof NegocioSlugRoute
   '/perfil/$alias': typeof PerfilAliasRoute
+  '/producto/$id': typeof ProductoIdRoute
   '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRoutesByTo {
@@ -215,12 +215,12 @@ export interface FileRoutesByTo {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
-  '/producto': typeof ProductoRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/negocio/$slug': typeof NegocioSlugRoute
   '/perfil/$alias': typeof PerfilAliasRoute
+  '/producto/$id': typeof ProductoIdRoute
   '/mercadito': typeof MercaditoIndexRoute
 }
 export interface FileRoutesById {
@@ -244,12 +244,12 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
-  '/producto/': typeof ProductoRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/negocio/$slug': typeof NegocioSlugRoute
   '/perfil/$alias': typeof PerfilAliasRoute
+  '/producto/$id': typeof ProductoIdRoute
   '/mercadito/': typeof MercaditoIndexRoute
 }
 export interface FileRouteTypes {
@@ -274,12 +274,12 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
-    | '/producto/'
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
     | '/negocio/$slug'
     | '/perfil/$alias'
+    | '/producto/$id'
     | '/mercadito/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -301,12 +301,12 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
-    | '/producto'
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
     | '/negocio/$slug'
     | '/perfil/$alias'
+    | '/producto/$id'
     | '/mercadito'
   id:
     | '__root__'
@@ -329,12 +329,12 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
-    | '/producto/'
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
     | '/negocio/$slug'
     | '/perfil/$alias'
+    | '/producto/$id'
     | '/mercadito/'
   fileRoutesById: FileRoutesById
 }
@@ -358,9 +358,9 @@ export interface RootRouteChildren {
   PublicarRoute: typeof PublicarRoute
   RegistroRoute: typeof RegistroRoute
   TallerRoute: typeof TallerRoute
-  ProductoRoute: typeof ProductoRoute
   NegocioSlugRoute: typeof NegocioSlugRoute
   PerfilAliasRoute: typeof PerfilAliasRoute
+  ProductoIdRoute: typeof ProductoIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -540,11 +540,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PerfilAliasRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/producto/': {
-      id: '/producto/'
-      path: '/producto'
-      fullPath: '/producto/'
-      preLoaderRoute: typeof ProductoRouteImport
+    '/producto/$id': {
+      id: '/producto/$id'
+      path: '/producto/$id'
+      fullPath: '/producto/$id'
+      preLoaderRoute: typeof ProductoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -588,10 +588,20 @@ const rootRouteChildren: RootRouteChildren = {
   PublicarRoute: PublicarRoute,
   RegistroRoute: RegistroRoute,
   TallerRoute: TallerRoute,
-  ProductoRoute: ProductoRoute,
   NegocioSlugRoute: NegocioSlugRoute,
   PerfilAliasRoute: PerfilAliasRoute,
+  ProductoIdRoute: ProductoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
