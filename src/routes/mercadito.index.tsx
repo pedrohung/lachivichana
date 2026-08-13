@@ -166,7 +166,12 @@ function Catalogo() {
       {estado === "error" && (
         <div className="rounded-2xl border border-border bg-card p-6 text-center">
           <p className="text-sm text-foreground">{mensajeError}</p>
-          <Button variant="contorno" size="sm" className="mt-3" onClick={() => setIntento((i) => i + 1)}>
+          <Button
+            variant="contorno"
+            size="sm"
+            className="mt-3"
+            onClick={() => setIntento((i) => i + 1)}
+          >
             <RefreshCw aria-hidden="true" /> Intentar otra vez
           </Button>
         </div>
@@ -185,10 +190,18 @@ function Catalogo() {
             <Button variant="contorno" size="sm" onClick={limpiar}>
               Limpiar filtros
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => cambiar({ modo: "donacion", texto: "" })}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => cambiar({ modo: "donacion", texto: "" })}
+            >
               Ver donaciones
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => cambiar({ modo: "servicio", texto: "" })}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => cambiar({ modo: "servicio", texto: "" })}
+            >
               Ver servicios
             </Button>
           </div>

@@ -3,19 +3,9 @@
 
 export type IdentidadTipo = "alias" | "nombre" | "negocio";
 
-export type Audiencia =
-  | "comunidad"
-  | "conexiones"
-  | "barrio"
-  | "grupo"
-  | "seleccionadas";
+export type Audiencia = "comunidad" | "conexiones" | "barrio" | "grupo" | "seleccionadas";
 
-export type Insignia =
-  | "verificado"
-  | "promotor"
-  | "negocio"
-  | "solidario"
-  | "fundador";
+export type Insignia = "verificado" | "promotor" | "negocio" | "solidario" | "fundador";
 
 export type Persona = {
   alias: string;
@@ -185,12 +175,7 @@ export type Campana = {
 };
 
 export type TipoPromotor =
-  | "comunitario"
-  | "entrega"
-  | "verificador"
-  | "empresarial"
-  | "internacional"
-  | "bienestar";
+  "comunitario" | "entrega" | "verificador" | "empresarial" | "internacional" | "bienestar";
 
 export type Promotor = {
   id: string;
@@ -208,13 +193,7 @@ export type Promotor = {
 };
 
 export type TipoOportunidad =
-  | "empleo"
-  | "temporal"
-  | "servicio"
-  | "mentoria"
-  | "curso"
-  | "beca"
-  | "recurso";
+  "empleo" | "temporal" | "servicio" | "mentoria" | "curso" | "beca" | "recurso";
 
 export type Oportunidad = {
   id: string;
@@ -291,14 +270,7 @@ export type Conexion = {
 
 export type Notificacion = {
   id: string;
-  clase:
-    | "reaccion"
-    | "comentario"
-    | "invitacion"
-    | "campana"
-    | "promotor"
-    | "mercadito"
-    | "empleo";
+  clase: "reaccion" | "comentario" | "invitacion" | "campana" | "promotor" | "mercadito" | "empleo";
   texto: string;
   fecha: string;
   leida: boolean;

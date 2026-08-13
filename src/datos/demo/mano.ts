@@ -59,7 +59,11 @@ export const CAMPANAS: Campana[] = [
       },
     ],
     comprobantes: [
-      { titulo: "Aval del consultorio", nota: "Documento con datos personales ocultos", protegido: true },
+      {
+        titulo: "Aval del consultorio",
+        nota: "Documento con datos personales ocultos",
+        protegido: true,
+      },
       { titulo: "Listado de insumos", nota: "Revisado por promotor verificador", protegido: false },
     ],
     mensajePromotor:
@@ -82,11 +86,32 @@ export const CAMPANAS: Campana[] = [
     entregaEstimada: "1 de septiembre de 2026",
     promotor: "Promotor comunitario de Cienfuegos",
     actualizaciones: [
-      { fecha: "18 de julio", titulo: "Solicitud recibida", detalle: "Presentada por la maestra del aula.", estado: "revision" },
-      { fecha: "21 de julio", titulo: "Campaña verificada", detalle: "Se comprueba el aula y la matrícula.", estado: "verificada" },
-      { fecha: "10 de agosto", titulo: "Compra realizada", detalle: "Se compran los primeros lotes de leche y pan.", estado: "en-camino" },
+      {
+        fecha: "18 de julio",
+        titulo: "Solicitud recibida",
+        detalle: "Presentada por la maestra del aula.",
+        estado: "revision",
+      },
+      {
+        fecha: "21 de julio",
+        titulo: "Campaña verificada",
+        detalle: "Se comprueba el aula y la matrícula.",
+        estado: "verificada",
+      },
+      {
+        fecha: "10 de agosto",
+        titulo: "Compra realizada",
+        detalle: "Se compran los primeros lotes de leche y pan.",
+        estado: "en-camino",
+      },
     ],
-    comprobantes: [{ titulo: "Factura del primer lote", nota: "Importe visible, datos privados ocultos", protegido: false }],
+    comprobantes: [
+      {
+        titulo: "Factura del primer lote",
+        nota: "Importe visible, datos privados ocultos",
+        protegido: false,
+      },
+    ],
     mensajePromotor: "El reparto empieza la primera semana de curso.",
   },
   {
@@ -106,12 +131,34 @@ export const CAMPANAS: Campana[] = [
     entregaEstimada: "20 de agosto de 2026",
     promotor: "Promotor de entrega de Granma",
     actualizaciones: [
-      { fecha: "3 de julio", titulo: "Solicitud recibida", detalle: "Presentada por un vecino con permiso de la familia.", estado: "revision" },
-      { fecha: "6 de julio", titulo: "Verificada", detalle: "Visita del verificador y fotos de la obra.", estado: "verificada" },
-      { fecha: "19 de agosto", titulo: "Materiales entregados", detalle: "Se entregan 14 planchas y la clavazón.", estado: "entregada" },
-      { fecha: "22 de agosto", titulo: "Falta el informe final", detalle: "El promotor prepara el informe con fotos de la obra terminada.", estado: "justificacion" },
+      {
+        fecha: "3 de julio",
+        titulo: "Solicitud recibida",
+        detalle: "Presentada por un vecino con permiso de la familia.",
+        estado: "revision",
+      },
+      {
+        fecha: "6 de julio",
+        titulo: "Verificada",
+        detalle: "Visita del verificador y fotos de la obra.",
+        estado: "verificada",
+      },
+      {
+        fecha: "19 de agosto",
+        titulo: "Materiales entregados",
+        detalle: "Se entregan 14 planchas y la clavazón.",
+        estado: "entregada",
+      },
+      {
+        fecha: "22 de agosto",
+        titulo: "Falta el informe final",
+        detalle: "El promotor prepara el informe con fotos de la obra terminada.",
+        estado: "justificacion",
+      },
     ],
-    comprobantes: [{ titulo: "Acta de entrega", nota: "Firmas y documento ocultos", protegido: true }],
+    comprobantes: [
+      { titulo: "Acta de entrega", nota: "Firmas y documento ocultos", protegido: true },
+    ],
     mensajePromotor: "La obra está terminada; subo el informe esta semana.",
   },
   {
@@ -131,8 +178,18 @@ export const CAMPANAS: Campana[] = [
     entregaEstimada: "30 de septiembre de 2026",
     promotor: "Dayana C. — promotora internacional",
     actualizaciones: [
-      { fecha: "9 de agosto", titulo: "Solicitud recibida", detalle: "Presentada por un grupo de vecinos del municipio.", estado: "revision" },
-      { fecha: "11 de agosto", titulo: "Campaña verificada", detalle: "Se confirman los casos con el consultorio del área.", estado: "verificada" },
+      {
+        fecha: "9 de agosto",
+        titulo: "Solicitud recibida",
+        detalle: "Presentada por un grupo de vecinos del municipio.",
+        estado: "revision",
+      },
+      {
+        fecha: "11 de agosto",
+        titulo: "Campaña verificada",
+        detalle: "Se confirman los casos con el consultorio del área.",
+        estado: "verificada",
+      },
     ],
     comprobantes: [],
     mensajePromotor: "Estamos empezando. Toda ayuda, por pequeña que sea, cuenta.",
@@ -154,7 +211,12 @@ export const CAMPANAS: Campana[] = [
     entregaEstimada: "por confirmar",
     promotor: "Pendiente de asignación",
     actualizaciones: [
-      { fecha: "10 de agosto", titulo: "Solicitud recibida", detalle: "En espera de que un verificador visite el edificio.", estado: "revision" },
+      {
+        fecha: "10 de agosto",
+        titulo: "Solicitud recibida",
+        detalle: "En espera de que un verificador visite el edificio.",
+        estado: "revision",
+      },
     ],
     comprobantes: [],
   },
@@ -175,10 +237,30 @@ export const CAMPANAS: Campana[] = [
     entregaEstimada: "30 de julio de 2026",
     promotor: "Promotor comunitario de Holguín",
     actualizaciones: [
-      { fecha: "2 de junio", titulo: "Solicitud recibida", detalle: "Presentada por el grupo del barrio.", estado: "revision" },
-      { fecha: "7 de junio", titulo: "Verificada", detalle: "Visita al local y listado de necesidades.", estado: "verificada" },
-      { fecha: "28 de julio", titulo: "Entrega realizada", detalle: "Material entregado y contado con dos testigos.", estado: "entregada" },
-      { fecha: "30 de julio", titulo: "Informe final publicado", detalle: "Cuentas y fotos del local disponibles para la comunidad.", estado: "completada" },
+      {
+        fecha: "2 de junio",
+        titulo: "Solicitud recibida",
+        detalle: "Presentada por el grupo del barrio.",
+        estado: "revision",
+      },
+      {
+        fecha: "7 de junio",
+        titulo: "Verificada",
+        detalle: "Visita al local y listado de necesidades.",
+        estado: "verificada",
+      },
+      {
+        fecha: "28 de julio",
+        titulo: "Entrega realizada",
+        detalle: "Material entregado y contado con dos testigos.",
+        estado: "entregada",
+      },
+      {
+        fecha: "30 de julio",
+        titulo: "Informe final publicado",
+        detalle: "Cuentas y fotos del local disponibles para la comunidad.",
+        estado: "completada",
+      },
     ],
     comprobantes: [
       { titulo: "Informe final", nota: "Cuentas completas de la campaña", protegido: false },

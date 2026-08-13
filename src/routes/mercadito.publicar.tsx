@@ -94,95 +94,95 @@ function FormularioPublicar() {
 
   return (
     <div className="space-y-4">
-        <header>
-          <h1 className="texto-display text-2xl font-bold text-primary">Publicar en El Mercadito</h1>
-          <p className="text-sm text-muted-foreground">
-            Publicas como <strong className="text-foreground">{identidad.nombreVisible}</strong>.
-          </p>
-        </header>
+      <header>
+        <h1 className="texto-display text-2xl font-bold text-primary">Publicar en El Mercadito</h1>
+        <p className="text-sm text-muted-foreground">
+          Publicas como <strong className="text-foreground">{identidad.nombreVisible}</strong>.
+        </p>
+      </header>
 
-        <fieldset className="rounded-2xl border border-border bg-card p-4">
-          <legend className="px-1 text-sm font-semibold text-foreground">Modalidad</legend>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2">
-            {LISTA_MODALIDADES.map((m) => {
-              const Icono = m.icono;
-              return (
-                <button
-                  key={m.clave}
-                  type="button"
-                  aria-pressed={modo === m.clave}
-                  onClick={() => setModo(m.clave as ModoArticulo)}
-                  className={`flex items-start gap-2 rounded-xl border p-3 text-left text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none ${
-                    modo === m.clave ? "border-primary bg-secondary" : "border-border"
-                  }`}
-                >
-                  <Icono aria-hidden="true" className="mt-0.5 h-4 w-4 text-turquesa" />
-                  <span>
-                    <span className="block font-semibold text-foreground">{m.texto}</span>
-                    <span className="block text-xs text-muted-foreground">{m.accion}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </fieldset>
-
-        <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="p-titulo">Título</Label>
-            <Input id="p-titulo" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="p-desc">Descripción</Label>
-            <Textarea
-              id="p-desc"
-              rows={5}
-              value={descripcion}
-              onChange={(e) => setDescripcion(e.target.value)}
-            />
-            {riesgo && (
-              <p className="flex items-start gap-2 rounded-xl border border-rojo/40 bg-rojo/10 p-3 text-xs text-foreground">
-                <ShieldAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-rojo" />
-                Parece que escribiste un teléfono, correo o dirección. Es más seguro dejarlo fuera y
-                hablarlo por mensajes.
-              </p>
-            )}
-          </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="p-cat">Categoría</Label>
-              <select
-                id="p-cat"
-                value={categoria}
-                onChange={(e) => setCategoria(e.target.value)}
-                className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+      <fieldset className="rounded-2xl border border-border bg-card p-4">
+        <legend className="px-1 text-sm font-semibold text-foreground">Modalidad</legend>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {LISTA_MODALIDADES.map((m) => {
+            const Icono = m.icono;
+            return (
+              <button
+                key={m.clave}
+                type="button"
+                aria-pressed={modo === m.clave}
+                onClick={() => setModo(m.clave as ModoArticulo)}
+                className={`flex items-start gap-2 rounded-xl border p-3 text-left text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none ${
+                  modo === m.clave ? "border-primary bg-secondary" : "border-border"
+                }`}
               >
-                {CATEGORIAS_MERCADITO.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="p-zona">Zona general</Label>
-              <Input id="p-zona" value={zona} onChange={(e) => setZona(e.target.value)} />
-            </div>
-            {modo !== "donacion" && (
-              <div className="space-y-1.5">
-                <Label htmlFor="p-precio">Precio (CUP)</Label>
-                <Input
-                  id="p-precio"
-                  type="number"
-                  min={0}
-                  value={precio}
-                  onChange={(e) => setPrecio(e.target.value)}
-                />
-              </div>
-            )}
-          </div>
-          <Button variant="sol" disabled={!listo} onClick={publicar}>
-            Publicar anuncio
-          </Button>
+                <Icono aria-hidden="true" className="mt-0.5 h-4 w-4 text-turquesa" />
+                <span>
+                  <span className="block font-semibold text-foreground">{m.texto}</span>
+                  <span className="block text-xs text-muted-foreground">{m.accion}</span>
+                </span>
+              </button>
+            );
+          })}
         </div>
+      </fieldset>
+
+      <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="p-titulo">Título</Label>
+          <Input id="p-titulo" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="p-desc">Descripción</Label>
+          <Textarea
+            id="p-desc"
+            rows={5}
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+          />
+          {riesgo && (
+            <p className="flex items-start gap-2 rounded-xl border border-rojo/40 bg-rojo/10 p-3 text-xs text-foreground">
+              <ShieldAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-rojo" />
+              Parece que escribiste un teléfono, correo o dirección. Es más seguro dejarlo fuera y
+              hablarlo por mensajes.
+            </p>
+          )}
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="space-y-1.5">
+            <Label htmlFor="p-cat">Categoría</Label>
+            <select
+              id="p-cat"
+              value={categoria}
+              onChange={(e) => setCategoria(e.target.value)}
+              className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+            >
+              {CATEGORIAS_MERCADITO.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="p-zona">Zona general</Label>
+            <Input id="p-zona" value={zona} onChange={(e) => setZona(e.target.value)} />
+          </div>
+          {modo !== "donacion" && (
+            <div className="space-y-1.5">
+              <Label htmlFor="p-precio">Precio (CUP)</Label>
+              <Input
+                id="p-precio"
+                type="number"
+                min={0}
+                value={precio}
+                onChange={(e) => setPrecio(e.target.value)}
+              />
+            </div>
+          )}
+        </div>
+        <Button variant="sol" disabled={!listo} onClick={publicar}>
+          Publicar anuncio
+        </Button>
+      </div>
     </div>
   );
 }

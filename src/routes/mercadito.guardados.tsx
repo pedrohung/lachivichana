@@ -45,23 +45,23 @@ function ListaGuardados() {
 
   return (
     <div className="space-y-4">
-        <h1 className="texto-display text-2xl font-bold text-primary">Artículos guardados</h1>
-        {guardados.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              Todavía no guardaste nada. Toca el marcador de cualquier anuncio para tenerlo a mano.
-            </p>
-            <Button asChild variant="contorno" size="sm" className="mt-3">
-              <Link to="/mercadito">Ir a El Mercadito</Link>
-            </Button>
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {guardados.map((a) => (
-              <TarjetaArticulo key={a.id} articulo={a} />
-            ))}
-          </div>
-        )}
+      <h1 className="texto-display text-2xl font-bold text-primary">Artículos guardados</h1>
+      {guardados.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Todavía no guardaste nada. Toca el marcador de cualquier anuncio para tenerlo a mano.
+          </p>
+          <Button asChild variant="contorno" size="sm" className="mt-3">
+            <Link to="/mercadito">Ir a El Mercadito</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {guardados.map((a) => (
+            <TarjetaArticulo key={a.id} articulo={a} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

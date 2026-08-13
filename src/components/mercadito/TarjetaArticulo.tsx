@@ -136,10 +136,7 @@ export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
             aria-pressed={acciones.guardado}
             onClick={acciones.guardar}
           >
-            <Bookmark
-              aria-hidden="true"
-              className={cn(acciones.guardado && "fill-sol text-sol")}
-            />
+            <Bookmark aria-hidden="true" className={cn(acciones.guardado && "fill-sol text-sol")} />
           </Button>
           <Button
             variant="ghost"

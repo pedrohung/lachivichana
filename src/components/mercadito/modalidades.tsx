@@ -44,13 +44,7 @@ export const MODALIDADES: Record<ModoArticulo, ConfigModalidad> = {
 
 export const LISTA_MODALIDADES = Object.values(MODALIDADES);
 
-export function InsigniaModalidad({
-  modo,
-  className,
-}: {
-  modo: ModoArticulo;
-  className?: string;
-}) {
+export function InsigniaModalidad({ modo, className }: { modo: ModoArticulo; className?: string }) {
   const config = MODALIDADES[modo];
   const Icono = config.icono;
   return (

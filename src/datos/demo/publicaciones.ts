@@ -25,7 +25,8 @@ export const PUBLICACIONES: Publicacion[] = [
         id: "c-1",
         autor: autor("solarhabana", "Lisbet Ferrer", "LF", "nombre"),
         fecha: "hace 12 minutos",
-        texto: "Esto es lo que quiero leer por las mañanas. Si hacen falta lápices, tengo una caja.",
+        texto:
+          "Esto es lo que quiero leer por las mañanas. Si hacen falta lápices, tengo una caja.",
       },
     ],
     guardados: 12,
@@ -105,7 +106,14 @@ export const PUBLICACIONES: Publicacion[] = [
   {
     id: "pub-5",
     tipo: "empleo",
-    autor: autor("colmena-mangoymiel", "Mango y Miel", "MM", "negocio", ["negocio", "verificado"], "/negocio/mango-y-miel"),
+    autor: autor(
+      "colmena-mangoymiel",
+      "Mango y Miel",
+      "MM",
+      "negocio",
+      ["negocio", "verificado"],
+      "/negocio/mango-y-miel",
+    ),
     fecha: "hace 5 horas",
     ubicacion: "Matanzas",
     audiencia: "comunidad",
@@ -165,7 +173,14 @@ export const PUBLICACIONES: Publicacion[] = [
   {
     id: "pub-8",
     tipo: "comunidad",
-    autor: autor("barrio-holguin", "Holguineros en cualquier parte", "HO", "negocio", [], "/mi-barrio"),
+    autor: autor(
+      "barrio-holguin",
+      "Holguineros en cualquier parte",
+      "HO",
+      "negocio",
+      [],
+      "/mi-barrio",
+    ),
     fecha: "hace 12 horas",
     audiencia: "barrio",
     texto:
@@ -199,7 +214,14 @@ export const PUBLICACIONES: Publicacion[] = [
   {
     id: "pub-10",
     tipo: "negocio",
-    autor: autor("colmena-taller-almendares", "Taller Almendares", "TA", "negocio", ["negocio", "solidario"], "/negocio/taller-almendares"),
+    autor: autor(
+      "colmena-taller-almendares",
+      "Taller Almendares",
+      "TA",
+      "negocio",
+      ["negocio", "solidario"],
+      "/negocio/taller-almendares",
+    ),
     fecha: "hace 1 día",
     ubicacion: "La Habana",
     audiencia: "comunidad",

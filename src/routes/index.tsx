@@ -114,9 +114,9 @@ function Bienvenida() {
                 <span className="text-sol">Cuba crece.</span>
               </h1>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-crema/80 sm:text-lg">
-                La comunidad donde los cubanos comparten su voz, encuentran oportunidades,
-                emprenden y convierten la solidaridad en ayuda real. Participa con respeto y decide
-                siempre cómo mostrar tu identidad.
+                La comunidad donde los cubanos comparten su voz, encuentran oportunidades, emprenden
+                y convierten la solidaridad en ayuda real. Participa con respeto y decide siempre
+                cómo mostrar tu identidad.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="sol" size="lg">
@@ -214,8 +214,8 @@ function Bienvenida() {
                 Tú decides cómo presentarte
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Participa con tu alias, con tu nombre o desde el perfil de tu negocio. Tu correo,
-                tu teléfono, tu dirección y tus documentos nunca son públicos.
+                Participa con tu alias, con tu nombre o desde el perfil de tu negocio. Tu correo, tu
+                teléfono, tu dirección y tus documentos nunca son públicos.
               </p>
             </div>
             <ul className="grid gap-3 self-center">

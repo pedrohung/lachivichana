@@ -9,9 +9,15 @@ export const Route = createFileRoute("/mi-chivichana")({
   head: () => ({
     meta: [
       { title: "Mi Chivichana — La Chivichana" },
-      { name: "description", content: "Tu perfil público y tus datos privados, siempre separados." },
+      {
+        name: "description",
+        content: "Tu perfil público y tus datos privados, siempre separados.",
+      },
       { property: "og:title", content: "Mi Chivichana — La Chivichana" },
-      { property: "og:description", content: "Tu perfil público y tus datos privados, siempre separados." },
+      {
+        property: "og:description",
+        content: "Tu perfil público y tus datos privados, siempre separados.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +26,10 @@ export const Route = createFileRoute("/mi-chivichana")({
 });
 
 function MiChivichanaPage() {
-  const vistaPrevia = PERSONAS.slice(0, 3).map((p) => ({ titulo: p.alias, detalle: `${p.ubicacion} · ${p.conexiones} conexiones` }));
+  const vistaPrevia = PERSONAS.slice(0, 3).map((p) => ({
+    titulo: p.alias,
+    detalle: `${p.ubicacion} · ${p.conexiones} conexiones`,
+  }));
 
   return (
     <MarcoApp>

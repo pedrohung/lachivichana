@@ -19,7 +19,10 @@ export function ConsejosSeguridad({ className }: { className?: string }) {
       <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
         {CONSEJOS_SEGURIDAD.map((c) => (
           <li key={c} className="flex gap-2">
-            <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-turquesa" />
+            <span
+              aria-hidden="true"
+              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-turquesa"
+            />
             <span>{c}</span>
           </li>
         ))}

@@ -9,9 +9,15 @@ export const Route = createFileRoute("/la-mano")({
   head: () => ({
     meta: [
       { title: "La Mano — La Chivichana" },
-      { name: "description", content: "Campañas de ayuda con verificación, seguimiento y entrega justificada." },
+      {
+        name: "description",
+        content: "Campañas de ayuda con verificación, seguimiento y entrega justificada.",
+      },
       { property: "og:title", content: "La Mano — La Chivichana" },
-      { property: "og:description", content: "Campañas de ayuda con verificación, seguimiento y entrega justificada." },
+      {
+        property: "og:description",
+        content: "Campañas de ayuda con verificación, seguimiento y entrega justificada.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +26,10 @@ export const Route = createFileRoute("/la-mano")({
 });
 
 function LaManoPage() {
-  const vistaPrevia = CAMPANAS.slice(0, 3).map((c) => ({ titulo: c.titulo, detalle: `${ETIQUETA_ESTADO[c.estado]} · ${c.zona}` }));
+  const vistaPrevia = CAMPANAS.slice(0, 3).map((c) => ({
+    titulo: c.titulo,
+    detalle: `${ETIQUETA_ESTADO[c.estado]} · ${c.zona}`,
+  }));
 
   return (
     <MarcoApp>

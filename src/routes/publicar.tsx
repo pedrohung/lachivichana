@@ -9,9 +9,15 @@ export const Route = createFileRoute("/publicar")({
   head: () => ({
     meta: [
       { title: "Crear publicación — La Chivichana" },
-      { name: "description", content: "Comparte algo con la comunidad eligiendo identidad y audiencia." },
+      {
+        name: "description",
+        content: "Comparte algo con la comunidad eligiendo identidad y audiencia.",
+      },
       { property: "og:title", content: "Crear publicación — La Chivichana" },
-      { property: "og:description", content: "Comparte algo con la comunidad eligiendo identidad y audiencia." },
+      {
+        property: "og:description",
+        content: "Comparte algo con la comunidad eligiendo identidad y audiencia.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +26,10 @@ export const Route = createFileRoute("/publicar")({
 });
 
 function PublicarPage() {
-  const vistaPrevia = PUBLICACIONES.slice(0, 3).map((p) => ({ titulo: p.tipo, detalle: p.texto.slice(0, 90) + "…" }));
+  const vistaPrevia = PUBLICACIONES.slice(0, 3).map((p) => ({
+    titulo: p.tipo,
+    detalle: p.texto.slice(0, 90) + "…",
+  }));
 
   return (
     <MarcoApp>

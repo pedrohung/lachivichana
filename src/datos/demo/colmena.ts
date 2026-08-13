@@ -19,7 +19,10 @@ export const NEGOCIOS: Negocio[] = [
     ],
     empleos: 2,
     proyectos: [
-      { titulo: "Merienda escolar", detalle: "Aportamos conservas a la campaña del aula de tercer grado." },
+      {
+        titulo: "Merienda escolar",
+        detalle: "Aportamos conservas a la campaña del aula de tercer grado.",
+      },
     ],
     insignias: ["Negocio verificado", "Negocio solidario"],
     contacto: ["Mensaje dentro de La Chivichana", "Formulario de pedidos"],
@@ -145,7 +148,10 @@ export const NEGOCIOS: Negocio[] = [
     representantes: [{ nombreVisible: "Lisbet Ferrer", papel: "Diseñadora", alias: "solarhabana" }],
     empleos: 1,
     proyectos: [
-      { titulo: "Clases gratis los sábados", detalle: "Formación abierta a vecinas emprendedoras." },
+      {
+        titulo: "Clases gratis los sábados",
+        detalle: "Formación abierta a vecinas emprendedoras.",
+      },
     ],
     insignias: ["Negocio verificado"],
     contacto: ["Mensaje dentro de La Chivichana"],

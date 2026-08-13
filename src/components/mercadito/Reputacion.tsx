@@ -12,7 +12,9 @@ export function InsigniaVerificado({ negocio }: { negocio?: boolean }) {
     <Popover>
       <PopoverTrigger
         className="inline-flex items-center gap-1 rounded-full border border-turquesa/40 bg-turquesa/10 px-2 py-0.5 text-[0.7rem] font-semibold text-[oklch(0.4_0.08_215)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-        aria-label={negocio ? "Negocio verificado: más información" : "Identidad verificada: más información"}
+        aria-label={
+          negocio ? "Negocio verificado: más información" : "Identidad verificada: más información"
+        }
       >
         <BadgeCheck aria-hidden="true" className="h-3.5 w-3.5" />
         {negocio ? "Negocio verificado" : "Verificado"}

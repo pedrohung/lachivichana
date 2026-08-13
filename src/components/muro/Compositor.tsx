@@ -1,11 +1,4 @@
-import {
-  PenLine,
-  Image as ImageIcon,
-  BarChart3,
-  Store,
-  HandHeart,
-  Hammer,
-} from "lucide-react";
+import { PenLine, Image as ImageIcon, BarChart3, Store, HandHeart, Hammer } from "lucide-react";
 import { toast } from "sonner";
 
 import { AvatarIniciales } from "@/components/app/Avatar";
@@ -32,7 +25,10 @@ export function Compositor() {
   };
 
   return (
-    <section aria-label="Crear publicación" className="rounded-2xl border border-border bg-card p-4">
+    <section
+      aria-label="Crear publicación"
+      className="rounded-2xl border border-border bg-card p-4"
+    >
       <div className="flex items-center gap-3">
         <AvatarIniciales iniciales={identidad.avatar} nombre={identidad.nombreVisible} />
         <button

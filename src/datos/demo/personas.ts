@@ -30,8 +30,7 @@ export const PERSONAS: Persona[] = [
     alias: "manosdealtamar",
     nombre: "Dayana Cruz",
     avatar: "DC",
-    biografia:
-      "Cubana en Sevilla. Coordino envíos de medicinas con promotores en Villa Clara.",
+    biografia: "Cubana en Sevilla. Coordino envíos de medicinas con promotores en Villa Clara.",
     ubicacion: "Sevilla, España",
     insignias: ["promotor", "solidario"],
     conexiones: 402,
@@ -43,8 +42,7 @@ export const PERSONAS: Persona[] = [
     alias: "cafeconletras",
     nombre: "Ernesto Valdés",
     avatar: "EV",
-    biografia:
-      "Escribo columnas sobre economía doméstica. Prefiero discutir ideas y no personas.",
+    biografia: "Escribo columnas sobre economía doméstica. Prefiero discutir ideas y no personas.",
     ubicacion: "La Habana, Cuba",
     insignias: ["verificado"],
     conexiones: 613,

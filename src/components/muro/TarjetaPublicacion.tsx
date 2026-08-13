@@ -122,14 +122,20 @@ export function TarjetaPublicacion({ publicacion }: { publicacion: Publicacion }
   return (
     <article className="rounded-2xl border border-border bg-card p-4">
       <header className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3">
-        <AvatarIniciales iniciales={publicacion.autor.avatar} nombre={publicacion.autor.nombreVisible} />
+        <AvatarIniciales
+          iniciales={publicacion.autor.avatar}
+          nombre={publicacion.autor.nombreVisible}
+        />
         <div className="min-w-0">
           <p className="flex min-w-0 items-center gap-1.5">
             <span className="truncate text-sm font-semibold text-foreground">
               {publicacion.autor.nombreVisible}
             </span>
             {publicacion.autor.insignias.includes("verificado") && (
-              <BadgeCheck aria-label="Perfil verificado" className="h-4 w-4 shrink-0 text-turquesa" />
+              <BadgeCheck
+                aria-label="Perfil verificado"
+                className="h-4 w-4 shrink-0 text-turquesa"
+              />
             )}
             {publicacion.autor.insignias.includes("negocio") && (
               <Store aria-label="Negocio" className="h-4 w-4 shrink-0 text-madera" />
@@ -310,10 +316,15 @@ export function TarjetaPublicacion({ publicacion }: { publicacion: Publicacion }
         <ul className="mt-3 space-y-3 border-t border-border pt-3">
           {publicacion.comentarios.map((c) => (
             <li key={c.id} className="flex gap-2">
-              <AvatarIniciales iniciales={c.autor.avatar} nombre={c.autor.nombreVisible} tamano="sm" />
+              <AvatarIniciales
+                iniciales={c.autor.avatar}
+                nombre={c.autor.nombreVisible}
+                tamano="sm"
+              />
               <div className="min-w-0 rounded-xl bg-muted/60 px-3 py-2">
                 <p className="text-xs font-semibold text-foreground">
-                  {c.autor.nombreVisible} · <span className="font-normal text-muted-foreground">{c.fecha}</span>
+                  {c.autor.nombreVisible} ·{" "}
+                  <span className="font-normal text-muted-foreground">{c.fecha}</span>
                 </p>
                 <p className="mt-0.5 text-sm text-foreground">{c.texto}</p>
               </div>
@@ -324,7 +335,10 @@ export function TarjetaPublicacion({ publicacion }: { publicacion: Publicacion }
 
       {publicacion.adjunto?.etiqueta === "La Mano" && (
         <p className="mt-3 text-xs text-muted-foreground">
-          <Link to="/la-mano" className="font-semibold text-turquesa underline-offset-4 hover:underline">
+          <Link
+            to="/la-mano"
+            className="font-semibold text-turquesa underline-offset-4 hover:underline"
+          >
             Ver la campaña completa en La Mano
           </Link>
         </p>

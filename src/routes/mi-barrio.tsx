@@ -11,7 +11,10 @@ export const Route = createFileRoute("/mi-barrio")({
       { title: "Mi Barrio — La Chivichana" },
       { name: "description", content: "Grupos y comunidades por provincia, oficio o afinidad." },
       { property: "og:title", content: "Mi Barrio — La Chivichana" },
-      { property: "og:description", content: "Grupos y comunidades por provincia, oficio o afinidad." },
+      {
+        property: "og:description",
+        content: "Grupos y comunidades por provincia, oficio o afinidad.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +23,10 @@ export const Route = createFileRoute("/mi-barrio")({
 });
 
 function MiBarrioPage() {
-  const vistaPrevia = GRUPOS.slice(0, 3).map((g) => ({ titulo: g.nombre, detalle: `${g.miembros.toLocaleString("es")} miembros · ${g.actividad}` }));
+  const vistaPrevia = GRUPOS.slice(0, 3).map((g) => ({
+    titulo: g.nombre,
+    detalle: `${g.miembros.toLocaleString("es")} miembros · ${g.actividad}`,
+  }));
 
   return (
     <MarcoApp>

@@ -9,9 +9,15 @@ export const Route = createFileRoute("/colmena")({
   head: () => ({
     meta: [
       { title: "La Colmena — La Chivichana" },
-      { name: "description", content: "Negocios, profesionales y colaboraciones que abren caminos." },
+      {
+        name: "description",
+        content: "Negocios, profesionales y colaboraciones que abren caminos.",
+      },
       { property: "og:title", content: "La Colmena — La Chivichana" },
-      { property: "og:description", content: "Negocios, profesionales y colaboraciones que abren caminos." },
+      {
+        property: "og:description",
+        content: "Negocios, profesionales y colaboraciones que abren caminos.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +26,10 @@ export const Route = createFileRoute("/colmena")({
 });
 
 function ColmenaPage() {
-  const vistaPrevia = NEGOCIOS.slice(0, 3).map((n) => ({ titulo: n.nombre, detalle: `${n.sector} · ${n.area}` }));
+  const vistaPrevia = NEGOCIOS.slice(0, 3).map((n) => ({
+    titulo: n.nombre,
+    detalle: `${n.sector} · ${n.area}`,
+  }));
 
   return (
     <MarcoApp>

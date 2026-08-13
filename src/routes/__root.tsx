@@ -81,14 +81,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "La Chivichana — Cuba se conecta" },
       {
         name: "description",
-        content:
-          "La comunidad donde los cubanos se conectan, se expresan, emprenden y se ayudan.",
+        content: "La comunidad donde los cubanos se conectan, se expresan, emprenden y se ayudan.",
       },
       { property: "og:title", content: "La Chivichana" },
       {
         property: "og:description",
-        content:
-          "La comunidad donde los cubanos se conectan, se expresan, emprenden y se ayudan.",
+        content: "La comunidad donde los cubanos se conectan, se expresan, emprenden y se ayudan.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

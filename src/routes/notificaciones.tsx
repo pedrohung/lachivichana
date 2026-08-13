@@ -20,7 +20,10 @@ export const Route = createFileRoute("/notificaciones")({
 });
 
 function NotificacionesPage() {
-  const vistaPrevia = NOTIFICACIONES.slice(0, 4).map((n) => ({ titulo: n.texto, detalle: `${n.fecha}${n.leida ? "" : " · sin leer"}` }));
+  const vistaPrevia = NOTIFICACIONES.slice(0, 4).map((n) => ({
+    titulo: n.texto,
+    detalle: `${n.fecha}${n.leida ? "" : " · sin leer"}`,
+  }));
 
   return (
     <MarcoApp>

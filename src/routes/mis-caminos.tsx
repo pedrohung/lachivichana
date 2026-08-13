@@ -20,7 +20,10 @@ export const Route = createFileRoute("/mis-caminos")({
 });
 
 function MisCaminosPage() {
-  const vistaPrevia = CONEXIONES.slice(0, 3).map((c) => ({ titulo: c.nombreVisible, detalle: `${c.detalle} · ${c.relacion}` }));
+  const vistaPrevia = CONEXIONES.slice(0, 3).map((c) => ({
+    titulo: c.nombreVisible,
+    detalle: `${c.detalle} · ${c.relacion}`,
+  }));
 
   return (
     <MarcoApp>

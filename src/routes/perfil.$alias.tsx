@@ -42,7 +42,11 @@ function PerfilPage() {
       <div className="space-y-4">
         {persona ? (
           <header className="flex items-center gap-3 rounded-2xl border border-border bg-card p-5">
-            <AvatarIniciales iniciales={persona.avatar} nombre={persona.nombreVisible} tamano="lg" />
+            <AvatarIniciales
+              iniciales={persona.avatar}
+              nombre={persona.nombreVisible}
+              tamano="lg"
+            />
             <div className="min-w-0">
               <h1 className="texto-display text-2xl font-bold text-primary">
                 {persona.nombreVisible}

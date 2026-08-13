@@ -52,7 +52,11 @@ const INTERESES = [
 const VISIBILIDADES = [
   { id: "alias", titulo: "Solo con mi alias", texto: "Nadie ve tu nombre real." },
   { id: "alias-datos", titulo: "Alias y algunos datos", texto: "Alias más lo que tú elijas." },
-  { id: "nombre", titulo: "Nombre real y datos parciales", texto: "Tu nombre y una parte de tu biografía." },
+  {
+    id: "nombre",
+    titulo: "Nombre real y datos parciales",
+    texto: "Tu nombre y una parte de tu biografía.",
+  },
   { id: "completo", titulo: "Perfil público completo", texto: "Todo lo que decidas compartir." },
 ];
 
@@ -124,8 +128,16 @@ function Registro() {
                 titulo="Crea tu alias público"
                 texto="Así te verá la comunidad. Es obligatorio y puedes cambiarlo más adelante."
               />
-              <Campo label="Alias público" value={alias} onChange={setAlias} placeholder="ej. ManoDelBarrio" />
-              <Campo label="Biografía pública (opcional)" placeholder="Cuenta en una línea quién eres" />
+              <Campo
+                label="Alias público"
+                value={alias}
+                onChange={setAlias}
+                placeholder="ej. ManoDelBarrio"
+              />
+              <Campo
+                label="Biografía pública (opcional)"
+                placeholder="Cuenta en una línea quién eres"
+              />
             </section>
           )}
 
@@ -158,7 +170,10 @@ function Registro() {
 
           {paso === 3 && (
             <section className="space-y-5">
-              <Encabezado titulo="¿Qué te interesa?" texto="Nos ayuda a mostrarte lo que importa." />
+              <Encabezado
+                titulo="¿Qué te interesa?"
+                texto="Nos ayuda a mostrarte lo que importa."
+              />
               <div className="flex flex-wrap gap-2">
                 {INTERESES.map((i) => {
                   const activo = intereses.includes(i);
@@ -192,7 +207,12 @@ function Registro() {
                 titulo="Tu país o comunidad"
                 texto="Solo mostramos una zona general, nunca tu ubicación exacta."
               />
-              <Campo label="País o comunidad" value={pais} onChange={setPais} placeholder="Cuba · La Habana" />
+              <Campo
+                label="País o comunidad"
+                value={pais}
+                onChange={setPais}
+                placeholder="Cuba · La Habana"
+              />
             </section>
           )}
 
@@ -238,7 +258,9 @@ function Registro() {
                   </span>
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-foreground">
-                      {visibilidad === "alias" ? alias || "Tu alias" : nombre || alias || "Tu nombre"}
+                      {visibilidad === "alias"
+                        ? alias || "Tu alias"
+                        : nombre || alias || "Tu nombre"}
                     </p>
                     <p className="truncate text-sm text-muted-foreground">
                       {pais || "País por definir"}

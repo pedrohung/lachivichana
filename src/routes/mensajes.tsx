@@ -9,9 +9,15 @@ export const Route = createFileRoute("/mensajes")({
   head: () => ({
     meta: [
       { title: "Mensajes — La Chivichana" },
-      { name: "description", content: "Conversaciones privadas con personas, negocios y promotores." },
+      {
+        name: "description",
+        content: "Conversaciones privadas con personas, negocios y promotores.",
+      },
       { property: "og:title", content: "Mensajes — La Chivichana" },
-      { property: "og:description", content: "Conversaciones privadas con personas, negocios y promotores." },
+      {
+        property: "og:description",
+        content: "Conversaciones privadas con personas, negocios y promotores.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +26,10 @@ export const Route = createFileRoute("/mensajes")({
 });
 
 function MensajesPage() {
-  const vistaPrevia = CONVERSACIONES.slice(0, 3).map((c) => ({ titulo: c.nombreVisible, detalle: `${c.contexto} · ${c.ultimaFecha}` }));
+  const vistaPrevia = CONVERSACIONES.slice(0, 3).map((c) => ({
+    titulo: c.nombreVisible,
+    detalle: `${c.contexto} · ${c.ultimaFecha}`,
+  }));
 
   return (
     <MarcoApp>

@@ -10,13 +10,7 @@ import { useApp } from "./contexto";
  * En modo visitante abre el diálogo de acceso y muestra un aviso
  * en español, sin revelar datos privados de la sesión de demostración.
  */
-export function SoloConCuenta({
-  titulo,
-  children,
-}: {
-  titulo: string;
-  children: ReactNode;
-}) {
+export function SoloConCuenta({ titulo, children }: { titulo: string; children: ReactNode }) {
   const { invitado } = useApp();
 
   if (!invitado) return <>{children}</>;

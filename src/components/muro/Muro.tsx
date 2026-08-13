@@ -126,7 +126,12 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
           <p className="mt-1 text-muted-foreground">
             No perdiste nada. Puedes volver a intentarlo ahora mismo.
           </p>
-          <Button variant="contorno" size="sm" className="mt-3" onClick={() => setIntentos((i) => i + 1)}>
+          <Button
+            variant="contorno"
+            size="sm"
+            className="mt-3"
+            onClick={() => setIntentos((i) => i + 1)}
+          >
             <RefreshCw aria-hidden="true" /> Reintentar
           </Button>
         </div>
@@ -142,7 +147,12 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
               ? "Cuando la comunidad empiece a contar cosas, aparecerán aquí."
               : "Prueba con otro filtro o vuelve a «Para ti» para ver todo el muro."}
           </p>
-          <Button variant="contorno" size="sm" className="mt-3" onClick={() => setFiltro("para-ti")}>
+          <Button
+            variant="contorno"
+            size="sm"
+            className="mt-3"
+            onClick={() => setFiltro("para-ti")}
+          >
             Ver todo el muro
           </Button>
         </div>

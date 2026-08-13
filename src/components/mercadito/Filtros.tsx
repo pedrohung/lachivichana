@@ -10,7 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ARTICULOS, CATEGORIAS_MERCADITO, ESTADOS_ARTICULO, PAISES_MERCADITO } from "@/datos/demo/mercadito";
+import {
+  ARTICULOS,
+  CATEGORIAS_MERCADITO,
+  ESTADOS_ARTICULO,
+  PAISES_MERCADITO,
+} from "@/datos/demo/mercadito";
 import {
   FILTROS_MERCADITO_INICIALES,
   type FiltrosMercadito,
@@ -102,7 +107,11 @@ export function FiltrosMercaditoPanel({
         </div>
       </div>
 
-      <div role="group" aria-label="Modalidad" className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+      <div
+        role="group"
+        aria-label="Modalidad"
+        className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
+      >
         <BotonModalidad
           activo={filtros.modo === "todas"}
           onClick={() => cambiar({ modo: "todas" })}
@@ -258,7 +267,9 @@ export function FiltrosMercaditoPanel({
             key={`${a.clave}-${a.texto}`}
             type="button"
             onClick={() =>
-              cambiar({ [a.clave]: FILTROS_MERCADITO_INICIALES[a.clave] } as Partial<FiltrosMercadito>)
+              cambiar({
+                [a.clave]: FILTROS_MERCADITO_INICIALES[a.clave],
+              } as Partial<FiltrosMercadito>)
             }
             className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-foreground hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
           >

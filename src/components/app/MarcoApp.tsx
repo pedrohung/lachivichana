@@ -133,7 +133,10 @@ function NavegacionLateral({ alNavegar }: { alNavegar?: () => void }) {
   };
 
   return (
-    <nav aria-label="Secciones de La Chivichana" className="rounded-2xl border border-border bg-card p-2">
+    <nav
+      aria-label="Secciones de La Chivichana"
+      className="rounded-2xl border border-border bg-card p-2"
+    >
       <ul className="space-y-0.5">
         {NAVEGACION.map((item) => {
           const activo = ruta === item.ruta;
@@ -187,7 +190,12 @@ function Cabecera({
         <div className="flex items-center gap-2">
           <Sheet open={menuAbierto} onOpenChange={setMenuAbierto}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Abrir menú de secciones">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                aria-label="Abrir menú de secciones"
+              >
                 <Menu aria-hidden="true" />
               </Button>
             </SheetTrigger>
@@ -202,7 +210,10 @@ function Cabecera({
               </div>
             </SheetContent>
           </Sheet>
-          <Link to="/" className="rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
+          <Link
+            to="/"
+            className="rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          >
             <Logo variant="compacto" className="sm:hidden" />
             <Logo variant="horizontal" className="hidden sm:inline-flex" />
           </Link>
@@ -234,24 +245,30 @@ function Cabecera({
 
         <div className="flex items-center gap-1">
           {!invitado && (
-          <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
-            <Link to="/notificaciones" aria-label={`Notificaciones (${sinLeer} sin leer)`}>
-              <Bell aria-hidden="true" />
-              {sinLeer > 0 && (
-                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-rojo" aria-hidden="true" />
-              )}
-            </Link>
-          </Button>
+            <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
+              <Link to="/notificaciones" aria-label={`Notificaciones (${sinLeer} sin leer)`}>
+                <Bell aria-hidden="true" />
+                {sinLeer > 0 && (
+                  <span
+                    className="absolute top-1 right-1 h-2 w-2 rounded-full bg-rojo"
+                    aria-hidden="true"
+                  />
+                )}
+              </Link>
+            </Button>
           )}
           {!invitado && (
-          <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
-            <Link to="/mensajes" aria-label={`Mensajes (${mensajesSinLeer} sin leer)`}>
-              <MessageCircle aria-hidden="true" />
-              {mensajesSinLeer > 0 && (
-                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-turquesa" aria-hidden="true" />
-              )}
-            </Link>
-          </Button>
+            <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
+              <Link to="/mensajes" aria-label={`Mensajes (${mensajesSinLeer} sin leer)`}>
+                <MessageCircle aria-hidden="true" />
+                {mensajesSinLeer > 0 && (
+                  <span
+                    className="absolute top-1 right-1 h-2 w-2 rounded-full bg-turquesa"
+                    aria-hidden="true"
+                  />
+                )}
+              </Link>
+            </Button>
           )}
 
           {invitado ? (
@@ -270,9 +287,15 @@ function Cabecera({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-11 gap-2 px-2">
-                  <AvatarIniciales iniciales={identidad.avatar} nombre={identidad.nombreVisible} tamano="sm" />
+                  <AvatarIniciales
+                    iniciales={identidad.avatar}
+                    nombre={identidad.nombreVisible}
+                    tamano="sm"
+                  />
                   <span className="hidden min-w-0 text-left leading-tight md:block">
-                    <span className="block truncate text-xs font-semibold">{identidad.nombreVisible}</span>
+                    <span className="block truncate text-xs font-semibold">
+                      {identidad.nombreVisible}
+                    </span>
                     <span className="block truncate text-[0.65rem] text-muted-foreground">
                       {identidad.detalle}
                     </span>
@@ -286,8 +309,12 @@ function Cabecera({
                   {identidades.map((i) => (
                     <DropdownMenuRadioItem key={i.clave} value={i.clave} className="gap-2">
                       <span className="min-w-0">
-                        <span className="block truncate text-sm font-medium">{i.nombreVisible}</span>
-                        <span className="block truncate text-xs text-muted-foreground">{i.detalle}</span>
+                        <span className="block truncate text-sm font-medium">
+                          {i.nombreVisible}
+                        </span>
+                        <span className="block truncate text-xs text-muted-foreground">
+                          {i.detalle}
+                        </span>
                       </span>
                     </DropdownMenuRadioItem>
                   ))}

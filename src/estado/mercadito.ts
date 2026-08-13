@@ -20,7 +20,8 @@ let hidratado = false;
 const oyentes = new Set<() => void>();
 
 function leer(): EstadoMercadito {
-  if (typeof window === "undefined") return { guardados: [], creados: [], estados: {}, eliminados: [] };
+  if (typeof window === "undefined")
+    return { guardados: [], creados: [], estados: {}, eliminados: [] };
   try {
     const bruto = window.sessionStorage.getItem(CLAVE);
     if (!bruto) return { guardados: [], creados: [], estados: {}, eliminados: [] };
