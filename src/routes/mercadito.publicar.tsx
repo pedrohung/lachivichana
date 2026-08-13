@@ -183,7 +183,6 @@ function FormularioPublicar() {
             Publicar anuncio
           </Button>
         </div>
-      </div>
-    </MarcoApp>
+    </div>
   );
 }
