@@ -10,6 +10,18 @@ import { componerCatalogo } from "@/datos/servicios";
 import type { EstadoAnuncio } from "@/datos/tipos";
 import { cambiarEstadoAnuncio, eliminarAnuncio, useMercaditoLocal } from "@/estado/mercadito";
 import { useApp } from "@/components/app/contexto";
+import { SoloConCuenta } from "@/components/app/SoloConCuenta";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/mercadito/mis-publicaciones")({
   head: () => ({
@@ -31,6 +43,16 @@ export const Route = createFileRoute("/mercadito/mis-publicaciones")({
 const PESTANAS: EstadoAnuncio[] = ["activo", "reservado", "vendido", "pausado"];
 
 function MisPublicacionesPage() {
+  return (
+    <MarcoApp>
+      <SoloConCuenta titulo="Mis publicaciones">
+        <ListaPublicaciones />
+      </SoloConCuenta>
+    </MarcoApp>
+  );
+}
+
+function ListaPublicaciones() {
   const { identidad } = useApp();
   const local = useMercaditoLocal();
   const [pestana, setPestana] = useState<EstadoAnuncio>("activo");
@@ -46,8 +68,7 @@ function MisPublicacionesPage() {
   const lista = mios.filter((a) => (a.estadoAnuncio ?? "activo") === pestana);
 
   return (
-    <MarcoApp>
-      <div className="space-y-4">
+    <div className="space-y-4">
         <header className="flex flex-wrap items-center justify-between gap-2">
           <h1 className="texto-display text-2xl font-bold text-primary">Mis publicaciones</h1>
           <Button asChild variant="sol" size="sm">
@@ -96,22 +117,37 @@ function MisPublicacionesPage() {
                       {TEXTOS_ESTADO_ANUNCIO[p]}
                     </Button>
                   ))}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      eliminarAnuncio(a.id);
-                      toast.success("Anuncio retirado");
-                    }}
-                  >
-                    Retirar
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        Retirar
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>¿Retirar este anuncio?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Dejará de verse en El Mercadito durante esta demostración.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => {
+                            eliminarAnuncio(a.id);
+                            toast.success("Anuncio retirado");
+                          }}
+                        >
+                          Retirar anuncio
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             ))}
           </div>
         )}
-      </div>
-    </MarcoApp>
+    </div>
   );
 }
