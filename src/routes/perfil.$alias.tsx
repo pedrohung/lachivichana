@@ -47,9 +47,6 @@ function PerfilPage() {
               <h1 className="texto-display text-2xl font-bold text-primary">
                 {persona.nombreVisible}
               </h1>
-              <p className="text-sm text-muted-foreground">
-                En La Chivichana desde {persona.desde}
-              </p>
               <ResumenReputacion persona={persona} />
             </div>
           </header>
