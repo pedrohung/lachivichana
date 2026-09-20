@@ -1,12 +1,24 @@
-import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Bookmark, Flag, MapPin, Share2, Truck } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Link, createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  Flag,
+  Heart,
+  MapPin,
+  Pencil,
+  RefreshCw,
+  Share2,
+  Trash2,
+  Truck,
+} from "lucide-react";
+import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { AvatarIniciales } from "@/components/app/Avatar";
 import { ConsejosSeguridad } from "@/components/mercadito/ConsejosSeguridad";
 import { DialogoContacto } from "@/components/mercadito/DialogoContacto";
 import { DialogoDenuncia } from "@/components/mercadito/DialogoDenuncia";
-import { ResumenReputacion } from "@/components/mercadito/Reputacion";
+import { InsigniaVerificado, ResumenReputacion } from "@/components/mercadito/Reputacion";
 import { TarjetaArticulo } from "@/components/mercadito/TarjetaArticulo";
 import { useAccionesArticulo } from "@/components/mercadito/acciones";
 import {
@@ -18,9 +30,28 @@ import {
   textoPrecio,
 } from "@/components/mercadito/modalidades";
 import { Button } from "@/components/ui/button";
-import { articulosSimilares, componerCatalogo } from "@/datos/servicios";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  articulosSimilares,
+  cambiarEstadoArticulo,
+  eliminarArticulo,
+  obtenerArticuloPorId,
+  obtenerArticulos,
+} from "@/datos/servicios";
 import type { Articulo } from "@/datos/tipos";
-import { useMercaditoLocal } from "@/estado/mercadito";
+import { useSesion } from "@/estado/sesion";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/producto/$id")({
   head: () => ({
@@ -59,25 +90,142 @@ export const Route = createFileRoute("/producto/$id")({
 
 function ProductoPage() {
   const { id } = Route.useParams();
-  const local = useMercaditoLocal();
-  const catalogo = componerCatalogo({
-    adicionales: local.creados,
-    estados: local.estados,
-    eliminados: local.eliminados,
-  });
-  const articulo = catalogo.find((a) => a.id === id);
+  const [estado, setEstado] = useState<"cargando" | "listo" | "error">("cargando");
+  const [articulo, setArticulo] = useState<Articulo | null>(null);
+  const [mensajeError, setMensajeError] = useState("");
+  const [intento, setIntento] = useState(0);
+
+  useEffect(() => {
+    let vivo = true;
+    setEstado("cargando");
+    void obtenerArticuloPorId(id)
+      .then((a) => {
+        if (!vivo) return;
+        setArticulo(a);
+        setEstado("listo");
+      })
+      .catch((e: unknown) => {
+        if (!vivo) return;
+        setMensajeError(e instanceof Error ? e.message : "No se pudo cargar el anuncio");
+        setEstado("error");
+      });
+    return () => {
+      vivo = false;
+    };
+  }, [id, intento]);
+
+  if (estado === "cargando")
+    return (
+      <MarcoApp>
+        <div className="space-y-4">
+          <Skeleton className="h-9 w-44" />
+          <Skeleton className="h-72 w-full rounded-2xl" />
+          <Skeleton className="h-40 w-full rounded-2xl" />
+        </div>
+      </MarcoApp>
+    );
+
+  if (estado === "error")
+    return (
+      <MarcoApp>
+        <div className="rounded-2xl border border-border bg-card p-8 text-center">
+          <p role="alert" className="text-sm text-foreground">
+            {mensajeError}
+          </p>
+          <Button
+            variant="contorno"
+            size="sm"
+            className="mt-3"
+            onClick={() => setIntento((i) => i + 1)}
+          >
+            <RefreshCw aria-hidden="true" /> Intentar otra vez
+          </Button>
+        </div>
+      </MarcoApp>
+    );
+
   if (!articulo) throw notFound();
 
   return (
     <MarcoApp>
-      <Detalle articulo={articulo} similares={articulosSimilares(articulo, catalogo)} />
+      <Detalle
+        articulo={articulo}
+        alCambiarArticulo={setArticulo}
+        alEliminar={() => setArticulo(null)}
+      />
     </MarcoApp>
   );
 }
 
-function Detalle({ articulo, similares }: { articulo: Articulo; similares: Articulo[] }) {
+function Detalle({
+  articulo,
+  alCambiarArticulo,
+  alEliminar,
+}: {
+  articulo: Articulo;
+  alCambiarArticulo: (a: Articulo) => void;
+  alEliminar: () => void;
+}) {
+  const navegar = useNavigate();
+  const { usuario } = useSesion();
   const acciones = useAccionesArticulo(articulo);
   const estadoAnuncio = articulo.estadoAnuncio ?? "activo";
+  const disponible = estadoAnuncio === "activo";
+  const esPropio = !!usuario && usuario.username === articulo.vendedor.alias;
+
+  const [similares, setSimilares] = useState<Articulo[]>([]);
+  const [imagenActual, setImagenActual] = useState(0);
+  const [cambiandoEstado, setCambiandoEstado] = useState(false);
+
+  useEffect(() => {
+    let vivo = true;
+    void obtenerArticulos()
+      .then((catalogo) => {
+        if (vivo) setSimilares(articulosSimilares(articulo, catalogo));
+      })
+      .catch(() => {
+        /* los similares son opcionales */
+      });
+    return () => {
+      vivo = false;
+    };
+  }, [articulo]);
+
+  const cambiarEstado = useCallback(
+    async (nuevo: "disponible" | "reservado" | "vendido" | "retirado") => {
+      setCambiandoEstado(true);
+      try {
+        await cambiarEstadoArticulo(articulo.id, nuevo);
+        const actualizado = await obtenerArticuloPorId(articulo.id);
+        if (actualizado) alCambiarArticulo(actualizado);
+        toast.success(
+          nuevo === "vendido"
+            ? "Marcado como vendido"
+            : nuevo === "disponible"
+              ? "El anuncio vuelve a estar disponible"
+              : "Estado actualizado",
+        );
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "No se pudo cambiar el estado");
+      } finally {
+        setCambiandoEstado(false);
+      }
+    },
+    [articulo, alCambiarArticulo],
+  );
+
+  const eliminar = useCallback(async () => {
+    try {
+      await eliminarArticulo(articulo.id);
+      toast.success("Anuncio eliminado");
+      alEliminar();
+      void navegar({ to: "/mercadito" });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "No se pudo eliminar el anuncio");
+    }
+  }, [articulo.id, alEliminar, navegar]);
+
+  const imagenes = articulo.imagenes ?? [];
 
   return (
     <div className="space-y-4">
@@ -88,7 +236,35 @@ function Detalle({ articulo, similares }: { articulo: Articulo; similares: Artic
       </Button>
 
       <article className="overflow-hidden rounded-2xl border border-border bg-card">
-        <ImagenArticulo articulo={articulo} className="h-56 w-full sm:h-72" />
+        {imagenes.length > 1 ? (
+          <div className="space-y-2">
+            <img
+              src={imagenes[imagenActual]?.url}
+              alt={imagenes[imagenActual]?.alt || articulo.imagenAlt}
+              className="h-56 w-full object-cover sm:h-72"
+            />
+            <div className="flex gap-2 overflow-x-auto px-5 pb-1">
+              {imagenes.map((img, i) => (
+                <button
+                  key={img.url}
+                  type="button"
+                  onClick={() => setImagenActual(i)}
+                  aria-label={`Ver foto ${i + 1}`}
+                  aria-pressed={imagenActual === i}
+                  className={cn(
+                    "shrink-0 overflow-hidden rounded-lg border-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+                    imagenActual === i ? "border-primary" : "border-transparent",
+                  )}
+                >
+                  <img src={img.url} alt="" className="h-16 w-16 object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <ImagenArticulo articulo={articulo} className="h-56 w-full sm:h-72" />
+        )}
+
         <div className="space-y-4 p-5">
           <div className="flex flex-wrap items-center gap-2">
             <InsigniaModalidad modo={articulo.modo} />
@@ -124,24 +300,81 @@ function Detalle({ articulo, similares }: { articulo: Articulo; similares: Artic
             Mostramos sólo la zona general. Nunca publicamos la dirección exacta de nadie.
           </p>
 
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="sol"
-              onClick={acciones.contactar}
-              disabled={estadoAnuncio !== "activo"}
-            >
-              {MODALIDADES[articulo.modo].accion}
-            </Button>
-            <Button variant="contorno" onClick={acciones.guardar} aria-pressed={acciones.guardado}>
-              <Bookmark aria-hidden="true" /> {acciones.guardado ? "Guardado" : "Guardar"}
-            </Button>
-            <Button variant="ghost" onClick={() => void acciones.compartir()}>
-              <Share2 aria-hidden="true" /> Compartir
-            </Button>
-            <Button variant="ghost" onClick={acciones.denunciar}>
-              <Flag aria-hidden="true" /> Denunciar
-            </Button>
-          </div>
+          {!esPropio && (
+            <div className="flex flex-wrap gap-2">
+              <Button variant="sol" onClick={acciones.contactar} disabled={!disponible}>
+                {MODALIDADES[articulo.modo].accion}
+              </Button>
+              <Button
+                variant={acciones.guardado ? "sol" : "contorno"}
+                onClick={() => void acciones.guardar()}
+                aria-pressed={acciones.guardado}
+              >
+                <Heart aria-hidden="true" className={cn(acciones.guardado && "fill-current")} />
+                {acciones.guardado ? "Guardado" : "Guardar"}
+              </Button>
+              <Button variant="ghost" onClick={() => void acciones.compartir()}>
+                <Share2 aria-hidden="true" /> Compartir
+              </Button>
+              <Button variant="ghost" onClick={acciones.denunciar}>
+                <Flag aria-hidden="true" /> Denunciar
+              </Button>
+            </div>
+          )}
+
+          {esPropio && (
+            <div className="space-y-2 rounded-2xl border border-border bg-muted/40 p-4">
+              <p className="text-sm font-semibold text-foreground">Este anuncio es tuyo</p>
+              <div className="flex flex-wrap gap-2">
+                {estadoAnuncio !== "vendido" && (
+                  <Button
+                    variant="sol"
+                    size="sm"
+                    disabled={cambiandoEstado}
+                    onClick={() => void cambiarEstado("vendido")}
+                  >
+                    Marcar vendido
+                  </Button>
+                )}
+                {estadoAnuncio !== "activo" && (
+                  <Button
+                    variant="contorno"
+                    size="sm"
+                    disabled={cambiandoEstado}
+                    onClick={() => void cambiarEstado("disponible")}
+                  >
+                    Marcar disponible
+                  </Button>
+                )}
+                <Button asChild variant="contorno" size="sm">
+                  <Link to="/producto/$id/editar" params={{ id: articulo.id }}>
+                    <Pencil aria-hidden="true" /> Editar
+                  </Link>
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      <Trash2 aria-hidden="true" /> Eliminar
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>¿Eliminar este anuncio?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Se borrará “{articulo.titulo}” de El Mercadito. No se puede deshacer.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => void eliminar()}>
+                        Eliminar anuncio
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </div>
+          )}
         </div>
       </article>
 
@@ -152,7 +385,7 @@ function Detalle({ articulo, similares }: { articulo: Articulo; similares: Artic
             iniciales={articulo.vendedor.avatar}
             nombre={articulo.vendedor.nombreVisible}
           />
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <Link
               to="/perfil/$alias"
               params={{ alias: articulo.vendedor.alias }}
@@ -160,7 +393,14 @@ function Detalle({ articulo, similares }: { articulo: Articulo; similares: Artic
             >
               {articulo.vendedor.nombreVisible}
             </Link>
-            <ResumenReputacion persona={articulo.vendedor} />
+            {articulo.vendedor.verificado && (
+              <div className="mt-1">
+                <InsigniaVerificado negocio={articulo.vendedor.tipo === "negocio"} />
+              </div>
+            )}
+            <div className="mt-2">
+              <ResumenReputacion persona={articulo.vendedor} />
+            </div>
           </div>
         </div>
       </section>
@@ -181,12 +421,11 @@ function Detalle({ articulo, similares }: { articulo: Articulo; similares: Artic
       <DialogoContacto
         articulo={articulo}
         abierto={acciones.contactoAbierto}
-        onOpenChange={acciones.setContactoAbierto}
+        alCerrar={() => acciones.setContactoAbierto(false)}
       />
       <DialogoDenuncia
         abierto={acciones.denunciaAbierta}
         onOpenChange={acciones.setDenunciaAbierta}
-        alDenunciar={acciones.confirmarDenuncia}
       />
     </div>
   );

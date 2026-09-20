@@ -1,6 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 
-import { CONSEJOS_SEGURIDAD } from "@/datos/demo/mercadito";
+import { CONSEJOS_SEGURIDAD } from "@/datos/servicios";
 import { cn } from "@/lib/utils";
 
 export function ConsejosSeguridad({ className }: { className?: string }) {

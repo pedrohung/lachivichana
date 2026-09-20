@@ -1,9 +1,10 @@
 import { Info } from "lucide-react";
 
-import { AVISO_DEMO } from "@/datos/config";
+import { MODO_DEMO } from "@/datos/config";
 import { cn } from "@/lib/utils";
 
 export function AvisoDemo({ className, corto }: { className?: string; corto?: boolean }) {
+  if (!MODO_DEMO) return null;
   return (
     <p
       className={cn(
@@ -15,7 +16,7 @@ export function AvisoDemo({ className, corto }: { className?: string; corto?: bo
       <span>
         {corto
           ? "Estás explorando una demostración. Los perfiles, publicaciones y operaciones son ficticios."
-          : AVISO_DEMO}
+          : null}
       </span>
     </p>
   );

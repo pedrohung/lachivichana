@@ -3,22 +3,27 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { Bookmark, CloudOff, LayoutList, PenLine, RefreshCw, Store } from "lucide-react";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
-import { AvisoDemo } from "@/components/app/AvisoDemo";
 import { useApp } from "@/components/app/contexto";
+import { BarraBusqueda } from "@/components/mercadito/BarraBusqueda";
 import { ConsejosSeguridad } from "@/components/mercadito/ConsejosSeguridad";
-import { FiltrosMercaditoPanel } from "@/components/mercadito/Filtros";
+import { ModalFiltros, filtrosActivos } from "@/components/mercadito/ModalFiltros";
 import { TarjetaArticulo } from "@/components/mercadito/TarjetaArticulo";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   FILTROS_MERCADITO_INICIALES,
+  filtrarArticulos,
   obtenerArticulos,
   type FiltrosMercadito,
+  type OrdenMercadito,
 } from "@/datos/servicios";
 import type { Articulo } from "@/datos/tipos";
-import { useMercaditoLocal } from "@/estado/mercadito";
 
 export const Route = createFileRoute("/mercadito/")({
+  validateSearch: (search: Record<string, unknown>): { texto?: string } => {
+    const texto = search["texto"];
+    return typeof texto === "string" ? { texto } : {};
+  },
   head: () => ({
     meta: [
       { title: "El Mercadito — La Chivichana" },
@@ -49,10 +54,14 @@ function MercaditoPage() {
 
 function Catalogo() {
   const { invitado, requiereCuenta } = useApp();
-  const local = useMercaditoLocal();
-  const [filtros, setFiltros] = useState<FiltrosMercadito>(FILTROS_MERCADITO_INICIALES);
+  const busqueda = Route.useSearch();
+  const [filtros, setFiltros] = useState<FiltrosMercadito>(() => ({
+    ...FILTROS_MERCADITO_INICIALES,
+    ...(busqueda.texto ? { texto: busqueda.texto } : {}),
+  }));
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
   const [estado, setEstado] = useState<"cargando" | "listo" | "error">("cargando");
-  const [articulos, setArticulos] = useState<Articulo[]>([]);
+  const [catalogo, setCatalogo] = useState<Articulo[]>([]);
   const [mensajeError, setMensajeError] = useState("");
   const [intento, setIntento] = useState(0);
   const [sinConexion, setSinConexion] = useState(false);
@@ -71,23 +80,20 @@ function Catalogo() {
   const cargar = useCallback(async () => {
     setEstado("cargando");
     try {
-      const datos = await obtenerArticulos({
-        filtros,
-        adicionales: local.creados,
-        estados: local.estados,
-        eliminados: local.eliminados,
-      });
-      setArticulos(datos);
+      const datos = await obtenerArticulos();
+      setCatalogo(datos);
       setEstado("listo");
     } catch (error) {
       setMensajeError(error instanceof Error ? error.message : "Algo salió mal.");
       setEstado("error");
     }
-  }, [filtros, local.creados, local.estados, local.eliminados]);
+  }, []);
 
   useEffect(() => {
     void cargar();
   }, [cargar, intento]);
+
+  const articulos = useMemo(() => filtrarArticulos(catalogo, filtros), [catalogo, filtros]);
 
   const cambiar = useCallback(
     (parcial: Partial<FiltrosMercadito>) => setFiltros((f) => ({ ...f, ...parcial })),
@@ -95,10 +101,8 @@ function Catalogo() {
   );
   const limpiar = useCallback(() => setFiltros(FILTROS_MERCADITO_INICIALES), []);
 
-  const hayFiltros = useMemo(
-    () => JSON.stringify(filtros) !== JSON.stringify(FILTROS_MERCADITO_INICIALES),
-    [filtros],
-  );
+  const cantidadFiltros = filtrosActivos(filtros).length;
+  const hayFiltros = cantidadFiltros > 0;
 
   const protegido = (evento: React.MouseEvent) => {
     if (invitado) {
@@ -138,7 +142,6 @@ function Catalogo() {
             </Link>
           </Button>
         </div>
-        <AvisoDemo corto className="mt-4" />
       </header>
 
       {sinConexion && (
@@ -148,11 +151,21 @@ function Catalogo() {
         </p>
       )}
 
-      <FiltrosMercaditoPanel
+      <BarraBusqueda
+        texto={filtros.texto}
+        alCambiarTexto={(v) => cambiar({ texto: v })}
+        orden={filtros.orden}
+        alCambiarOrden={(v: OrdenMercadito) => cambiar({ orden: v })}
+        alAbrirFiltros={() => setFiltrosAbiertos(true)}
+        cantidadFiltros={cantidadFiltros}
+      />
+
+      <ModalFiltros
+        abierto={filtrosAbiertos}
+        alCerrar={() => setFiltrosAbiertos(false)}
         filtros={filtros}
         cambiar={cambiar}
         limpiar={limpiar}
-        resultados={articulos.length}
       />
 
       {estado === "cargando" && (

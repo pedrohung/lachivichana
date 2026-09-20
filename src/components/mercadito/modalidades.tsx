@@ -1,6 +1,6 @@
 import { Gift, Handshake, ShoppingBag, Wrench, type LucideIcon } from "lucide-react";
 
-import type { Articulo, EstadoAnuncio, ModoArticulo } from "@/datos/tipos";
+import type { Articulo, ModoArticulo } from "@/datos/tipos";
 import { cn } from "@/lib/utils";
 
 export type ConfigModalidad = {
@@ -69,15 +69,12 @@ export const TEXTOS_ESTADO: Record<string, string> = {
   "no-aplica": "Estado no aplicable",
 };
 
-export const TEXTOS_ESTADO_ANUNCIO: Record<EstadoAnuncio, string> = {
+/** Estados que devuelve el servicio para un anuncio. */
+export const TEXTOS_ESTADO_ANUNCIO: Record<string, string> = {
   activo: "Disponible",
   reservado: "Reservado",
   vendido: "Vendido",
-  donado: "Donado",
-  intercambiado: "Intercambiado",
   pausado: "Pausado",
-  borrador: "Borrador",
-  retirado: "Retirado",
 };
 
 const TONOS: Record<string, string> = {
@@ -87,6 +84,7 @@ const TONOS: Record<string, string> = {
   mar: "bg-[image:linear-gradient(140deg,oklch(0.7_0.08_235),oklch(0.34_0.08_255))]",
 };
 
+/** Foto real del anuncio cuando la hay; si no, un marcador neutro con el icono de la modalidad. */
 export function ImagenArticulo({
   articulo,
   className,
@@ -94,13 +92,24 @@ export function ImagenArticulo({
   articulo: Articulo;
   className?: string;
 }) {
+  const primera = articulo.imagenes?.[0];
+  if (primera) {
+    return (
+      <img
+        src={primera.url}
+        alt={primera.alt || articulo.imagenAlt}
+        loading="lazy"
+        className={cn("object-cover", className)}
+      />
+    );
+  }
   const Icono = MODALIDADES[articulo.modo].icono;
   return (
     <div
       role="img"
       aria-label={articulo.imagenAlt}
       className={cn(
-        "grid place-items-center overflow-hidden rounded-xl text-[oklch(1_0_0)]",
+        "grid place-items-center overflow-hidden text-[oklch(1_0_0)]",
         TONOS[articulo.tono ?? "mar"],
         className,
       )}
@@ -112,12 +121,7 @@ export function ImagenArticulo({
 
 export function textoPrecio(a: Articulo) {
   if (a.modo === "donacion") return "Gratis";
-  if (a.modo === "intercambio") return a.busca ? `A cambio de: ${a.busca}` : "Intercambio";
-  if (a.modo === "servicio") {
-    if (a.precioModo === "consultar" || a.precio === undefined) return "Consultar";
-    const base = `${a.precio.toLocaleString("es")} ${a.moneda ?? "CUP"}`;
-    return a.precioModo === "desde" ? `Desde ${base}` : base;
-  }
+  if (a.modo === "intercambio") return "Intercambio";
   if (a.precio === undefined) return "Consultar";
-  return `${a.precio.toLocaleString("es")} ${a.moneda ?? "CUP"}${a.negociable ? " · negociable" : ""}`;
+  return `${a.precio.toLocaleString("es")} ${a.moneda ?? "CUP"}`;
 }

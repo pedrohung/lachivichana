@@ -1,11 +1,8 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-import { CAMPANAS } from "@/datos/demo/mano";
-import { OPORTUNIDADES } from "@/datos/demo/taller";
-import { GRUPOS } from "@/datos/demo/barrios";
-import { NEGOCIOS } from "@/datos/demo/colmena";
-import { PROMOTORES } from "@/datos/demo/promotores";
-import { Progress } from "@/components/ui/progress";
+import { listarGrupos, listarNegocios, listarSolicitudes, listarTrabajos } from "@/datos/servicios";
+import type { Grupo, Negocio, SolicitudAyuda, Trabajo } from "@/datos/tipos";
 
 function Bloque({
   titulo,
@@ -34,74 +31,109 @@ function Bloque({
   );
 }
 
-export function PanelDerecho({ className }: { className?: string }) {
-  const campanas = CAMPANAS.slice(0, 2);
-  const oportunidades = OPORTUNIDADES.slice(0, 2);
-  const grupos = GRUPOS.slice(0, 2);
-  const negocios = NEGOCIOS.slice(0, 2);
-  const promotores = PROMOTORES.slice(0, 2);
+/**
+ * Carga los primeros elementos de una lista. Mientras carga devuelve `null`
+ * (carga silenciosa); si la carga falla devuelve lista vacía y el bloque se
+ * oculta.
+ */
+function usePrimeros<T>(cargar: () => Promise<T[]>, cantidad = 2) {
+  const [datos, setDatos] = useState<T[] | null>(null);
 
+  useEffect(() => {
+    let vigente = true;
+    cargar()
+      .then((lista) => {
+        if (vigente) setDatos(lista.slice(0, cantidad));
+      })
+      .catch(() => {
+        if (vigente) setDatos([]);
+      });
+    return () => {
+      vigente = false;
+    };
+  }, [cargar, cantidad]);
+
+  return datos;
+}
+
+function linea(partes: Array<string | undefined>) {
+  return partes.filter(Boolean).join(" · ");
+}
+
+function BloqueCampanas() {
+  const campanas = usePrimeros<SolicitudAyuda>(listarSolicitudes);
+  if (!campanas || campanas.length === 0) return null;
+  return (
+    <Bloque titulo="Campañas activas" enlace="/la-mano" etiquetaEnlace="La Mano">
+      {campanas.map((c) => (
+        <article key={c.id}>
+          <p className="text-sm leading-snug font-medium text-foreground">{c.titulo}</p>
+          <p className="text-xs text-muted-foreground">
+            {linea([c.categoria, c.ubicacion, c.fecha])}
+          </p>
+        </article>
+      ))}
+    </Bloque>
+  );
+}
+
+function BloqueOportunidades() {
+  const oportunidades = usePrimeros<Trabajo>(listarTrabajos);
+  if (!oportunidades || oportunidades.length === 0) return null;
+  return (
+    <Bloque titulo="Oportunidades" enlace="/taller" etiquetaEnlace="El Taller">
+      {oportunidades.map((o) => (
+        <article key={o.id}>
+          <p className="text-sm leading-snug font-medium text-foreground">{o.titulo}</p>
+          <p className="text-xs text-muted-foreground">
+            {linea([o.autor.nombreVisible, o.ubicacion])}
+          </p>
+        </article>
+      ))}
+    </Bloque>
+  );
+}
+
+function BloqueComunidades() {
+  const grupos = usePrimeros<Grupo>(listarGrupos);
+  if (!grupos || grupos.length === 0) return null;
+  return (
+    <Bloque titulo="Comunidades" enlace="/mi-barrio" etiquetaEnlace="Mi Barrio">
+      {grupos.map((g) => (
+        <article key={g.id}>
+          <p className="text-sm leading-snug font-medium text-foreground">{g.nombre}</p>
+          <p className="text-xs text-muted-foreground">
+            {linea([`${g.miembros.toLocaleString("es")} miembros`, g.barrio])}
+          </p>
+        </article>
+      ))}
+    </Bloque>
+  );
+}
+
+function BloqueNegocios() {
+  const negocios = usePrimeros<Negocio>(listarNegocios);
+  if (!negocios || negocios.length === 0) return null;
+  return (
+    <Bloque titulo="Negocios" enlace="/colmena" etiquetaEnlace="La Colmena">
+      {negocios.map((n) => (
+        <article key={n.slug}>
+          <p className="text-sm leading-snug font-medium text-foreground">{n.nombre}</p>
+          <p className="text-xs text-muted-foreground">{linea([n.categoria, n.direccion])}</p>
+        </article>
+      ))}
+    </Bloque>
+  );
+}
+
+export function PanelDerecho({ className }: { className?: string }) {
   return (
     <div className={className}>
       <div className="space-y-4">
-        <Bloque titulo="Campañas activas" enlace="/la-mano" etiquetaEnlace="La Mano">
-          {campanas.map((c) => (
-            <article key={c.id} className="space-y-2">
-              <p className="text-sm leading-snug font-medium text-foreground">{c.titulo}</p>
-              <Progress
-                value={Math.round((c.recaudado / c.meta) * 100)}
-                aria-label={`Avance de la campaña ${c.titulo}`}
-              />
-              <p className="text-xs text-muted-foreground">
-                {Math.round((c.recaudado / c.meta) * 100)}% · {c.zona}
-              </p>
-            </article>
-          ))}
-        </Bloque>
-
-        <Bloque titulo="Oportunidades" enlace="/taller" etiquetaEnlace="El Taller">
-          {oportunidades.map((o) => (
-            <article key={o.id}>
-              <p className="text-sm leading-snug font-medium text-foreground">{o.titulo}</p>
-              <p className="text-xs text-muted-foreground">
-                {o.entidad} · {o.modalidad}
-              </p>
-            </article>
-          ))}
-        </Bloque>
-
-        <Bloque titulo="Comunidades" enlace="/mi-barrio" etiquetaEnlace="Mi Barrio">
-          {grupos.map((g) => (
-            <article key={g.id}>
-              <p className="text-sm leading-snug font-medium text-foreground">{g.nombre}</p>
-              <p className="text-xs text-muted-foreground">
-                {g.miembros.toLocaleString("es")} miembros · {g.categoria}
-              </p>
-            </article>
-          ))}
-        </Bloque>
-
-        <Bloque titulo="Negocios" enlace="/colmena" etiquetaEnlace="La Colmena">
-          {negocios.map((n) => (
-            <article key={n.slug}>
-              <p className="text-sm leading-snug font-medium text-foreground">{n.nombre}</p>
-              <p className="text-xs text-muted-foreground">
-                {n.sector} · {n.area}
-              </p>
-            </article>
-          ))}
-        </Bloque>
-
-        <Bloque titulo="Promotores" enlace="/promotores" etiquetaEnlace="Ver red">
-          {promotores.map((p) => (
-            <article key={p.id}>
-              <p className="text-sm leading-snug font-medium text-foreground">{p.nombrePublico}</p>
-              <p className="text-xs text-muted-foreground">
-                {p.zona} · {p.ayudasCompletadas} ayudas
-              </p>
-            </article>
-          ))}
-        </Bloque>
+        <BloqueCampanas />
+        <BloqueOportunidades />
+        <BloqueComunidades />
+        <BloqueNegocios />
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
+import { useSesion } from "@/estado/sesion";
+import { PATRON_ALIAS } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/registro")({
@@ -69,8 +71,38 @@ function Registro() {
   const [intereses, setIntereses] = useState<string[]>([]);
   const [pais, setPais] = useState("");
   const [acepta, setAcepta] = useState(false);
+  const [correo, setCorreo] = useState("");
+  const [clave, setClave] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [creando, setCreando] = useState(false);
+  const [exito, setExito] = useState(false);
+  const { registrar } = useSesion();
 
   const ultimo = paso === PASOS.length - 1;
+
+  async function manejarRegistro() {
+    setError(null);
+    const aliasLimpio = alias.trim();
+    if (!PATRON_ALIAS.test(aliasLimpio)) {
+      setError("El alias solo puede contener letras, números, guion, guion bajo y punto.");
+      setPaso(1);
+      return;
+    }
+    if (!correo.trim() || clave.length < 8) {
+      setError("Escribe tu correo y una contraseña de al menos 8 caracteres.");
+      setPaso(0);
+      return;
+    }
+    setCreando(true);
+    try {
+      await registrar({ alias: aliasLimpio, correo: correo.trim(), contrasena: clave });
+      setExito(true);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No pudimos crear tu cuenta. Inténtalo de nuevo.");
+    } finally {
+      setCreando(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,14 +133,25 @@ function Registro() {
               />
               <div className="grid gap-4 sm:grid-cols-2">
                 <Campo label="Nombre y apellidos" value={nombre} onChange={setNombre} />
-                <Campo label="Correo electrónico o teléfono" />
+                <Campo
+                  label="Correo electrónico"
+                  type="email"
+                  value={correo}
+                  onChange={setCorreo}
+                />
                 <Campo label="País de residencia" value={pais} onChange={setPais} />
                 <Campo label="Fecha de nacimiento" type="date" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="clave">Contraseña segura</Label>
                 <div className="relative">
-                  <Input id="clave" type={verClave ? "text" : "password"} className="pr-11" />
+                  <Input
+                    id="clave"
+                    type={verClave ? "text" : "password"}
+                    className="pr-11"
+                    value={clave}
+                    onChange={(e) => setClave(e.target.value)}
+                  />
                   <button
                     type="button"
                     onClick={() => setVerClave((v) => !v)}
@@ -279,6 +322,16 @@ function Registro() {
             </section>
           )}
 
+          {error && (
+            <p className="mt-8 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          {exito && (
+            <p className="mt-8 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm">
+              ¡Cuenta creada! Ya puedes entrar con tu correo o alias.
+            </p>
+          )}
           <div className="mt-8 flex items-center justify-between gap-3">
             <Button
               variant="ghost"
@@ -288,8 +341,13 @@ function Registro() {
               Atrás
             </Button>
             {ultimo ? (
-              <Button variant="sol" size="lg" disabled={!acepta}>
-                <Check className="size-4" /> Crear mi cuenta
+              <Button
+                variant="sol"
+                size="lg"
+                disabled={!acepta || creando}
+                onClick={manejarRegistro}
+              >
+                <Check className="size-4" /> {creando ? "Creando tu cuenta…" : "Crear mi cuenta"}
               </Button>
             ) : (
               <Button

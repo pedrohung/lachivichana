@@ -570,17 +570,10 @@ Explicar claramente qué datos son privados y cuáles serán visibles.
 
 Antes
 
-This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://lachivichana.lovable.app
 
-## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/23e55523-0316-4594-97fc-957bcfae5331).
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 

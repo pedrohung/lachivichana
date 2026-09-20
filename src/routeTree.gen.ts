@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ColmenaRouteImport } from './routes/colmena'
 import { Route as EntrarRouteImport } from './routes/entrar'
-import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as LaEsquinaRouteImport } from './routes/la-esquina'
 import { Route as LaManoRouteImport } from './routes/la-mano'
 import { Route as MaleconRouteImport } from './routes/malecon'
@@ -35,6 +34,7 @@ import { Route as MercaditoPublicarRouteImport } from './routes/mercadito.public
 import { Route as NegocioSlugRouteImport } from './routes/negocio.$slug'
 import { Route as PerfilAliasRouteImport } from './routes/perfil.$alias'
 import { Route as ProductoIdRouteImport } from './routes/producto.$id'
+import { Route as ProductoIdEditarRouteImport } from './routes/producto.$id.editar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -49,11 +49,6 @@ const ColmenaRoute = ColmenaRouteImport.update({
 const EntrarRoute = EntrarRouteImport.update({
   id: '/entrar',
   path: '/entrar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExplorarRoute = ExplorarRouteImport.update({
-  id: '/explorar',
-  path: '/explorar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LaEsquinaRoute = LaEsquinaRouteImport.update({
@@ -167,12 +162,16 @@ const ProductoIdRoute = ProductoIdRouteImport.update({
   path: '/producto/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductoIdEditarRoute = ProductoIdEditarRouteImport.update({
+  id: '/editar',
+  path: '/editar',
+  getParentRoute: () => ProductoIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
-  '/explorar': typeof ExplorarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
@@ -193,14 +192,14 @@ export interface FileRoutesByFullPath {
   '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/negocio/$slug': typeof NegocioSlugRoute
   '/perfil/$alias': typeof PerfilAliasRoute
-  '/producto/$id': typeof ProductoIdRoute
+  '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito/': typeof MercaditoIndexRoute
+  '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
-  '/explorar': typeof ExplorarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
@@ -220,15 +219,15 @@ export interface FileRoutesByTo {
   '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/negocio/$slug': typeof NegocioSlugRoute
   '/perfil/$alias': typeof PerfilAliasRoute
-  '/producto/$id': typeof ProductoIdRoute
+  '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito': typeof MercaditoIndexRoute
+  '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
-  '/explorar': typeof ExplorarRoute
   '/la-esquina': typeof LaEsquinaRoute
   '/la-mano': typeof LaManoRoute
   '/malecon': typeof MaleconRoute
@@ -249,8 +248,9 @@ export interface FileRoutesById {
   '/mercadito/publicar': typeof MercaditoPublicarRoute
   '/negocio/$slug': typeof NegocioSlugRoute
   '/perfil/$alias': typeof PerfilAliasRoute
-  '/producto/$id': typeof ProductoIdRoute
+  '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito/': typeof MercaditoIndexRoute
+  '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -258,7 +258,6 @@ export interface FileRouteTypes {
     | '/'
     | '/colmena'
     | '/entrar'
-    | '/explorar'
     | '/la-esquina'
     | '/la-mano'
     | '/malecon'
@@ -281,12 +280,12 @@ export interface FileRouteTypes {
     | '/perfil/$alias'
     | '/producto/$id'
     | '/mercadito/'
+    | '/producto/$id/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/colmena'
     | '/entrar'
-    | '/explorar'
     | '/la-esquina'
     | '/la-mano'
     | '/malecon'
@@ -308,12 +307,12 @@ export interface FileRouteTypes {
     | '/perfil/$alias'
     | '/producto/$id'
     | '/mercadito'
+    | '/producto/$id/editar'
   id:
     | '__root__'
     | '/'
     | '/colmena'
     | '/entrar'
-    | '/explorar'
     | '/la-esquina'
     | '/la-mano'
     | '/malecon'
@@ -336,13 +335,13 @@ export interface FileRouteTypes {
     | '/perfil/$alias'
     | '/producto/$id'
     | '/mercadito/'
+    | '/producto/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ColmenaRoute: typeof ColmenaRoute
   EntrarRoute: typeof EntrarRoute
-  ExplorarRoute: typeof ExplorarRoute
   LaEsquinaRoute: typeof LaEsquinaRoute
   LaManoRoute: typeof LaManoRoute
   MaleconRoute: typeof MaleconRoute
@@ -360,7 +359,7 @@ export interface RootRouteChildren {
   TallerRoute: typeof TallerRoute
   NegocioSlugRoute: typeof NegocioSlugRoute
   PerfilAliasRoute: typeof PerfilAliasRoute
-  ProductoIdRoute: typeof ProductoIdRoute
+  ProductoIdRoute: typeof ProductoIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -384,13 +383,6 @@ declare module '@tanstack/react-router' {
       path: '/entrar'
       fullPath: '/entrar'
       preLoaderRoute: typeof EntrarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/explorar': {
-      id: '/explorar'
-      path: '/explorar'
-      fullPath: '/explorar'
-      preLoaderRoute: typeof ExplorarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/la-esquina': {
@@ -547,6 +539,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/producto/$id/editar': {
+      id: '/producto/$id/editar'
+      path: '/editar'
+      fullPath: '/producto/$id/editar'
+      preLoaderRoute: typeof ProductoIdEditarRouteImport
+      parentRoute: typeof ProductoIdRoute
+    }
   }
 }
 
@@ -568,11 +567,22 @@ const MercaditoRouteWithChildren = MercaditoRoute._addFileChildren(
   MercaditoRouteChildren,
 )
 
+interface ProductoIdRouteChildren {
+  ProductoIdEditarRoute: typeof ProductoIdEditarRoute
+}
+
+const ProductoIdRouteChildren: ProductoIdRouteChildren = {
+  ProductoIdEditarRoute: ProductoIdEditarRoute,
+}
+
+const ProductoIdRouteWithChildren = ProductoIdRoute._addFileChildren(
+  ProductoIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ColmenaRoute: ColmenaRoute,
   EntrarRoute: EntrarRoute,
-  ExplorarRoute: ExplorarRoute,
   LaEsquinaRoute: LaEsquinaRoute,
   LaManoRoute: LaManoRoute,
   MaleconRoute: MaleconRoute,
@@ -590,7 +600,7 @@ const rootRouteChildren: RootRouteChildren = {
   TallerRoute: TallerRoute,
   NegocioSlugRoute: NegocioSlugRoute,
   PerfilAliasRoute: PerfilAliasRoute,
-  ProductoIdRoute: ProductoIdRoute,
+  ProductoIdRoute: ProductoIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -5,6 +5,7 @@ import { Eye, EyeOff, Loader2, ShieldCheck, CheckCircle2, AlertCircle } from "lu
 import hero from "@/assets/chivichana-hero.jpg";
 import { Logo } from "@/components/marca/Logo";
 import { FRASES_MARTI, FraseMarti } from "@/components/marca/FrasesMarti";
+import { useSesion } from "@/estado/sesion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,6 +45,7 @@ function Entrar() {
   const [verClave, setVerClave] = useState(false);
   const [estado, setEstado] = useState<Estado>({ tipo: "inactivo" });
   const [intentos, setIntentos] = useState(0);
+  const { entrar } = useSesion();
 
   const cargando = estado.tipo === "cargando";
 
@@ -52,14 +54,14 @@ function Entrar() {
     if (!usuario.trim() || !clave.trim()) {
       setEstado({
         tipo: "error",
-        mensaje: "Nos falta un dato. Escribe tu correo o teléfono y tu contraseña.",
+        mensaje: "Nos falta un dato. Escribe tu correo o alias y tu contraseña.",
       });
       return;
     }
     setEstado({ tipo: "cargando" });
-    await new Promise((r) => setTimeout(r, 900));
-
-    if (clave.length < 6) {
+    try {
+      await entrar(usuario, clave);
+    } catch (error) {
       const siguientes = intentos + 1;
       setIntentos(siguientes);
       if (siguientes >= 3) {
@@ -72,7 +74,10 @@ function Entrar() {
       }
       setEstado({
         tipo: "error",
-        mensaje: "Esos datos no coinciden. Revísalos con calma e inténtalo otra vez.",
+        mensaje:
+          error instanceof Error
+            ? error.message
+            : "Esos datos no coinciden. Revísalos con calma e inténtalo otra vez.",
       });
       return;
     }
@@ -86,7 +91,7 @@ function Entrar() {
       tipo: "recuperacion",
       mensaje: usuario.trim()
         ? `Si ${usuario.trim()} está registrado, te enviaremos un enlace para volver a entrar.`
-        : "Escribe tu correo o teléfono y te enviaremos un enlace para volver a entrar.",
+        : "Escribe tu correo o alias y te enviaremos un enlace para volver a entrar.",
     });
   }
 
@@ -143,7 +148,7 @@ function Entrar() {
 
           <form onSubmit={enviar} className="mt-7 space-y-4" noValidate>
             <div className="space-y-2">
-              <Label htmlFor="usuario">Correo electrónico o teléfono</Label>
+              <Label htmlFor="usuario">Correo electrónico o alias</Label>
               <Input
                 id="usuario"
                 autoComplete="username"

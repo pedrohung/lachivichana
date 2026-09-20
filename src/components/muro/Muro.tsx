@@ -2,12 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { CloudOff, RefreshCw, Waves } from "lucide-react";
 
-import { AvisoDemo } from "@/components/app/AvisoDemo";
 import { useApp } from "@/components/app/contexto";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FILTROS_MURO, type FiltroMuro } from "@/datos/demo/publicaciones";
-import { obtenerPublicaciones } from "@/datos/servicios";
+import { FILTROS_MURO, obtenerPublicaciones, type FiltroMuro } from "@/datos/servicios";
 import type { Publicacion } from "@/datos/tipos";
 import { cn } from "@/lib/utils";
 import { Compositor } from "./Compositor";
@@ -51,6 +49,15 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
     void cargar();
   }, [cargar, intentos]);
 
+  /** Tras publicar, recargamos el muro para mostrar lo nuevo arriba. */
+  const trasPublicar = useCallback(() => {
+    void cargar();
+  }, [cargar]);
+
+  const alEliminarPublicacion = useCallback((id: string) => {
+    setPublicaciones((lista) => lista.filter((p) => p.id !== id));
+  }, []);
+
   return (
     <div className="space-y-4">
       <header className="rounded-2xl border border-border bg-card p-4">
@@ -63,7 +70,6 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
             <p className="text-sm text-muted-foreground">{subtitulo}</p>
           </div>
         </div>
-        <AvisoDemo corto className="mt-3" />
       </header>
 
       <nav aria-label="Filtros del muro" className="-mx-1 overflow-x-auto px-1 pb-1">
@@ -105,7 +111,7 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
           </div>
         </section>
       ) : (
-        <Compositor />
+        <Compositor onPublicada={trasPublicar} />
       )}
 
       {sinConexion && (
@@ -140,11 +146,11 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
       {estado === "listo" && publicaciones.length === 0 && (
         <div className="rounded-2xl border border-dashed border-border bg-card p-6 text-center">
           <p className="texto-display text-lg font-bold text-primary">
-            {filtro === "para-ti" ? "Todavía no hay publicaciones" : "Nada por aquí con ese filtro"}
+            Todavía no hay publicaciones aquí
           </p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
             {filtro === "para-ti"
-              ? "Cuando la comunidad empiece a contar cosas, aparecerán aquí."
+              ? "Cuando la comunidad empiece a contar cosas, aparecerán aquí. ¿Por qué no eres tú quien empieza?"
               : "Prueba con otro filtro o vuelve a «Para ti» para ver todo el muro."}
           </p>
           <Button
@@ -161,10 +167,10 @@ export function Muro({ titulo, subtitulo }: { titulo: string; subtitulo: string 
       {estado === "listo" && publicaciones.length > 0 && (
         <div className="space-y-4">
           {publicaciones.map((p) => (
-            <TarjetaPublicacion key={p.id} publicacion={p} />
+            <TarjetaPublicacion key={p.id} publicacion={p} onEliminada={alEliminarPublicacion} />
           ))}
           <p className="py-4 text-center text-xs text-muted-foreground">
-            Has llegado al final de la demostración. Aquí seguiría cargándose el muro.
+            Estás al día. Esto es todo lo que hay en El Malecón por ahora.
           </p>
         </div>
       )}

@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 
 import hero from "@/assets/chivichana-hero.jpg";
-import { AVISO_DEMO } from "@/datos/config";
 import { Logo } from "@/components/marca/Logo";
 import { FRASES_MARTI, FraseMarti } from "@/components/marca/FrasesMarti";
 import { Button } from "@/components/ui/button";
@@ -121,14 +120,6 @@ function Bienvenida() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="sol" size="lg">
                   <Link to="/registro">Crear mi cuenta</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="ghost"
-                  className="border-2 border-crema/30 text-crema hover:bg-crema/10 hover:text-crema"
-                >
-                  <Link to="/explorar">Explorar La Chivichana</Link>
                 </Button>
               </div>
               <ul className="mt-7 grid gap-2 text-sm text-crema/85 sm:grid-cols-3">
@@ -320,7 +311,8 @@ function Bienvenida() {
           </nav>
         </div>
         <p className="mx-auto max-w-6xl px-5 pt-6 pb-8 text-xs leading-relaxed text-muted-foreground">
-          {AVISO_DEMO}
+          La Chivichana es una comunidad en crecimiento. Explora los espacios, conoce a la gente y,
+          cuando quieras participar, crea tu cuenta: decide tú qué se ve de ti.
         </p>
       </footer>
     </div>

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bookmark, Eye, MapPin, Share2 } from "lucide-react";
+import { Bookmark, MapPin, Share2 } from "lucide-react";
 
 import { AvatarIniciales } from "@/components/app/Avatar";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,14 @@ import {
   textoPrecio,
 } from "./modalidades";
 
-export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
-  const acciones = useAccionesArticulo(articulo);
+export function TarjetaArticulo({
+  articulo,
+  alCambiarFavorito,
+}: {
+  articulo: Articulo;
+  alCambiarFavorito?: (guardado: boolean) => void;
+}) {
+  const acciones = useAccionesArticulo(articulo, alCambiarFavorito);
   const estadoAnuncio = articulo.estadoAnuncio ?? "activo";
   const disponible = estadoAnuncio === "activo";
 
@@ -114,11 +120,6 @@ export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
           )}
         </div>
 
-        <p className="flex items-center gap-1 text-[0.7rem] text-muted-foreground">
-          <Eye aria-hidden="true" className="h-3.5 w-3.5" />
-          {(articulo.vistas ?? 0).toLocaleString("es")} visualizaciones simuladas
-        </p>
-
         <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
           <Button
             variant="sol"
@@ -134,7 +135,7 @@ export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
             size="icon"
             aria-label={acciones.guardado ? "Quitar de guardados" : "Guardar artículo"}
             aria-pressed={acciones.guardado}
-            onClick={acciones.guardar}
+            onClick={() => void acciones.guardar()}
           >
             <Bookmark aria-hidden="true" className={cn(acciones.guardado && "fill-sol text-sol")} />
           </Button>
@@ -152,7 +153,7 @@ export function TarjetaArticulo({ articulo }: { articulo: Articulo }) {
       <DialogoContacto
         articulo={articulo}
         abierto={acciones.contactoAbierto}
-        onOpenChange={acciones.setContactoAbierto}
+        alCerrar={() => acciones.setContactoAbierto(false)}
       />
     </article>
   );

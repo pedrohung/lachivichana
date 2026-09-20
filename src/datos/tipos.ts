@@ -117,6 +117,8 @@ export type Articulo = {
   pais: string;
   publicado: string;
   imagenAlt: string;
+  /** Fotos reales del anuncio (URLs de PocketBase). */
+  imagenes?: { url: string; alt: string }[];
   vendedor: Anunciante;
   entrega: string;
   interesados: number;
@@ -212,26 +214,6 @@ export type Oportunidad = {
   interesados: number;
 };
 
-export type Negocio = {
-  slug: string;
-  nombre: string;
-  descripcion: string;
-  sector: string;
-  pais: string;
-  area: string;
-  logoTexto: string;
-  verificado: boolean;
-  solidario: boolean;
-  productos: string[];
-  representantes: { nombreVisible: string; papel: string; alias: string }[];
-  empleos: number;
-  proyectos: { titulo: string; detalle: string }[];
-  insignias: string[];
-  contacto: string[];
-  impacto: { dato: string; texto: string }[];
-  colaboracion: string;
-};
-
 export type HiloEsquina = {
   id: string;
   formato: "tema" | "pregunta" | "encuesta" | "articulo" | "propuesta";
@@ -248,18 +230,6 @@ export type HiloEsquina = {
   temas: string[];
 };
 
-export type Grupo = {
-  id: string;
-  nombre: string;
-  categoria: string;
-  descripcion: string;
-  miembros: number;
-  privacidad: "abierto" | "solicitud" | "privado";
-  zona: string;
-  actividad: string;
-  unido: boolean;
-};
-
 export type Conexion = {
   alias: string;
   nombreVisible: string;
@@ -270,7 +240,17 @@ export type Conexion = {
 
 export type Notificacion = {
   id: string;
-  clase: "reaccion" | "comentario" | "invitacion" | "campana" | "promotor" | "mercadito" | "empleo";
+  clase:
+    | "reaccion"
+    | "comentario"
+    | "invitacion"
+    | "campana"
+    | "promotor"
+    | "mercadito"
+    | "empleo"
+    | "mensaje"
+    | "seguimiento"
+    | "sistema";
   texto: string;
   fecha: string;
   leida: boolean;
@@ -284,5 +264,59 @@ export type Conversacion = {
   contexto: string;
   ultimaFecha: string;
   noLeidos: number;
-  mensajes: { id: string; mio: boolean; texto: string; hora: string }[];
+  mensajes: Mensaje[];
+};
+// ===== FASE 3B: tipos reales PocketBase =====
+export type Mensaje = {
+  id: string;
+  conversacionId: string;
+  autor: Autor;
+  texto: string;
+  fecha: string;
+  propio: boolean;
+};
+export type Grupo = {
+  id: string;
+  nombre: string;
+  descripcion?: string;
+  barrio?: string;
+  imagen?: string;
+  miembros: number;
+  esMiembro: boolean;
+  fecha: string;
+};
+export type Trabajo = {
+  id: string;
+  titulo: string;
+  descripcion?: string;
+  categoria?: string;
+  tipo: "oferta" | "busqueda";
+  estado: "abierto" | "cerrado";
+  ubicacion?: string;
+  contacto?: string;
+  autor: Autor;
+  fecha: string;
+};
+export type SolicitudAyuda = {
+  id: string;
+  titulo: string;
+  descripcion?: string;
+  categoria?: string;
+  estado: "abierta" | "en_curso" | "resuelta";
+  ubicacion?: string;
+  contacto?: string;
+  autor: Autor;
+  fecha: string;
+};
+export type Negocio = {
+  id: string;
+  nombre: string;
+  slug: string;
+  descripcion?: string;
+  categoria?: string;
+  direccion?: string;
+  telefono?: string;
+  horario?: string;
+  logo?: string;
+  fecha: string;
 };

@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { Pencil, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { TarjetaArticulo } from "@/components/mercadito/TarjetaArticulo";
 import { TEXTOS_ESTADO_ANUNCIO } from "@/components/mercadito/modalidades";
 import { Button } from "@/components/ui/button";
-import { componerCatalogo } from "@/datos/servicios";
-import type { EstadoAnuncio } from "@/datos/tipos";
-import { cambiarEstadoAnuncio, eliminarAnuncio, useMercaditoLocal } from "@/estado/mercadito";
-import { useApp } from "@/components/app/contexto";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cambiarEstadoArticulo, eliminarArticulo, obtenerMisArticulos } from "@/datos/servicios";
+import type { Articulo } from "@/datos/tipos";
 import { SoloConCuenta } from "@/components/app/SoloConCuenta";
 import {
   AlertDialog,
@@ -40,7 +40,16 @@ export const Route = createFileRoute("/mercadito/mis-publicaciones")({
   component: MisPublicacionesPage,
 });
 
-const PESTANAS: EstadoAnuncio[] = ["activo", "reservado", "vendido", "pausado"];
+const PESTANAS = ["activo", "reservado", "vendido", "pausado"] as const;
+type Pestana = (typeof PESTANAS)[number];
+
+const CAMBIOS: { valor: "disponible" | "reservado" | "vendido" | "retirado"; pestana: Pestana }[] =
+  [
+    { valor: "disponible", pestana: "activo" },
+    { valor: "reservado", pestana: "reservado" },
+    { valor: "vendido", pestana: "vendido" },
+    { valor: "retirado", pestana: "pausado" },
+  ];
 
 function MisPublicacionesPage() {
   return (
@@ -53,19 +62,56 @@ function MisPublicacionesPage() {
 }
 
 function ListaPublicaciones() {
-  const { identidad } = useApp();
-  const local = useMercaditoLocal();
-  const [pestana, setPestana] = useState<EstadoAnuncio>("activo");
+  const [pestana, setPestana] = useState<Pestana>("activo");
+  const [estado, setEstado] = useState<"cargando" | "listo" | "error">("cargando");
+  const [articulos, setArticulos] = useState<Articulo[]>([]);
+  const [mensajeError, setMensajeError] = useState("");
+  const [intento, setIntento] = useState(0);
 
-  const mios = componerCatalogo({
-    adicionales: local.creados,
-    estados: local.estados,
-    eliminados: local.eliminados,
-  }).filter(
-    (a) => a.vendedor.alias === identidad.clave || local.creados.some((c) => c.id === a.id),
-  );
+  useEffect(() => {
+    let vivo = true;
+    setEstado("cargando");
+    void obtenerMisArticulos()
+      .then((lista) => {
+        if (!vivo) return;
+        setArticulos(lista);
+        setEstado("listo");
+      })
+      .catch((e: unknown) => {
+        if (!vivo) return;
+        setMensajeError(e instanceof Error ? e.message : "No se pudieron cargar tus anuncios");
+        setEstado("error");
+      });
+    return () => {
+      vivo = false;
+    };
+  }, [intento]);
 
-  const lista = mios.filter((a) => (a.estadoAnuncio ?? "activo") === pestana);
+  const lista = articulos.filter((a) => (a.estadoAnuncio ?? "activo") === pestana);
+
+  const cambiarEstado = async (
+    id: string,
+    nuevo: "disponible" | "reservado" | "vendido" | "retirado",
+  ) => {
+    try {
+      await cambiarEstadoArticulo(id, nuevo);
+      const destino = CAMBIOS.find((c) => c.valor === nuevo)!.pestana;
+      setArticulos((prev) => prev.map((a) => (a.id === id ? { ...a, estadoAnuncio: destino } : a)));
+      toast.success(`Marcado como ${TEXTOS_ESTADO_ANUNCIO[destino]?.toLowerCase()}`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "No se pudo cambiar el estado");
+    }
+  };
+
+  const eliminar = async (id: string, titulo: string) => {
+    try {
+      await eliminarArticulo(id);
+      setArticulos((prev) => prev.filter((a) => a.id !== id));
+      toast.success(`Retiramos “${titulo}”`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "No se pudo retirar el anuncio");
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -94,29 +140,55 @@ function ListaPublicaciones() {
         ))}
       </div>
 
-      {lista.length === 0 ? (
+      {estado === "cargando" && (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {[0, 1, 2].map((i) => (
+            <Skeleton key={i} className="h-80 rounded-2xl" />
+          ))}
+        </div>
+      )}
+
+      {estado === "error" && (
+        <div className="rounded-2xl border border-border bg-card p-6 text-center">
+          <p className="text-sm text-foreground">{mensajeError}</p>
+          <Button
+            variant="contorno"
+            size="sm"
+            className="mt-3"
+            onClick={() => setIntento((i) => i + 1)}
+          >
+            <RefreshCw aria-hidden="true" /> Intentar otra vez
+          </Button>
+        </div>
+      )}
+
+      {estado === "listo" && lista.length === 0 && (
         <p className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
           No tienes anuncios en este estado.
         </p>
-      ) : (
+      )}
+
+      {estado === "listo" && lista.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {lista.map((a) => (
             <div key={a.id} className="space-y-2">
               <TarjetaArticulo articulo={a} />
               <div className="flex flex-wrap gap-2">
-                {PESTANAS.filter((p) => p !== (a.estadoAnuncio ?? "activo")).map((p) => (
+                {CAMBIOS.filter((c) => c.pestana !== (a.estadoAnuncio ?? "activo")).map((c) => (
                   <Button
-                    key={p}
+                    key={c.valor}
                     variant="contorno"
                     size="sm"
-                    onClick={() => {
-                      cambiarEstadoAnuncio(a.id, p);
-                      toast.success(`Marcado como ${TEXTOS_ESTADO_ANUNCIO[p].toLowerCase()}`);
-                    }}
+                    onClick={() => void cambiarEstado(a.id, c.valor)}
                   >
-                    {TEXTOS_ESTADO_ANUNCIO[p]}
+                    {TEXTOS_ESTADO_ANUNCIO[c.pestana]}
                   </Button>
                 ))}
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/producto/$id/editar" params={{ id: a.id }}>
+                    <Pencil aria-hidden="true" /> Editar
+                  </Link>
+                </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="ghost" size="sm">
@@ -127,17 +199,13 @@ function ListaPublicaciones() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>¿Retirar este anuncio?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Dejará de verse en El Mercadito durante esta demostración.
+                        “{a.titulo}” dejará de verse en El Mercadito. Esta acción no se puede
+                        deshacer.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => {
-                          eliminarAnuncio(a.id);
-                          toast.success("Anuncio retirado");
-                        }}
-                      >
+                      <AlertDialogAction onClick={() => void eliminar(a.id, a.titulo)}>
                         Retirar anuncio
                       </AlertDialogAction>
                     </AlertDialogFooter>

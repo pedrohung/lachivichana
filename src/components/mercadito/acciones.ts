@@ -1,27 +1,47 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { useApp } from "@/components/app/contexto";
-import { alternarGuardado, useMercaditoLocal } from "@/estado/mercadito";
+import { alternarFavorito, esFavorito } from "@/datos/servicios";
 import type { Articulo } from "@/datos/tipos";
 
 /** Acciones compartidas por la tarjeta y la página de detalle. */
-export function useAccionesArticulo(articulo: Articulo) {
+export function useAccionesArticulo(
+  articulo: Articulo,
+  alCambiarFavorito?: (guardado: boolean) => void,
+) {
   const { requiereCuenta } = useApp();
-  const local = useMercaditoLocal();
   const [contactoAbierto, setContactoAbierto] = useState(false);
   const [denunciaAbierta, setDenunciaAbierta] = useState(false);
-  const [denunciado, setDenunciado] = useState(false);
+  const [guardado, setGuardado] = useState(false);
 
-  const guardado = local.guardados.includes(articulo.id);
+  useEffect(() => {
+    let vivo = true;
+    void esFavorito("producto", articulo.id)
+      .then((v) => {
+        if (vivo) setGuardado(v);
+      })
+      .catch(() => {
+        /* sin conexión o sin cuenta: se queda sin guardar */
+      });
+    return () => {
+      vivo = false;
+    };
+  }, [articulo.id]);
 
-  const guardar = () => {
+  const guardar = useCallback(async () => {
     if (!requiereCuenta()) return;
-    const ahora = alternarGuardado(articulo.id);
-    toast.success(ahora ? "Guardado en tus artículos" : "Lo quitamos de guardados");
-  };
+    try {
+      const { guardado: ahora } = await alternarFavorito("producto", articulo.id);
+      setGuardado(ahora);
+      alCambiarFavorito?.(ahora);
+      toast.success(ahora ? "Guardado en tus artículos" : "Lo quitamos de guardados");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "No se pudo guardar el artículo");
+    }
+  }, [requiereCuenta, articulo.id, alCambiarFavorito]);
 
-  const compartir = async () => {
+  const compartir = useCallback(async () => {
     const url = `${window.location.origin}/producto/${articulo.id}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -29,26 +49,17 @@ export function useAccionesArticulo(articulo: Articulo) {
     } catch {
       toast.info(url);
     }
-  };
+  }, [articulo.id]);
 
-  const contactar = () => {
+  const contactar = useCallback(() => {
     if (!requiereCuenta()) return;
     setContactoAbierto(true);
-  };
+  }, [requiereCuenta]);
 
-  const denunciar = () => {
+  const denunciar = useCallback(() => {
     if (!requiereCuenta()) return;
     setDenunciaAbierta(true);
-  };
-
-  const confirmarDenuncia = (motivo: string) => {
-    setDenunciado(true);
-    toast.success(`Denuncia simulada enviada: ${motivo}`, {
-      description: "Puedes deshacerla durante unos segundos.",
-      action: { label: "Deshacer", onClick: () => setDenunciado(false) },
-      duration: 8000,
-    });
-  };
+  }, [requiereCuenta]);
 
   return {
     guardado,
@@ -56,12 +67,9 @@ export function useAccionesArticulo(articulo: Articulo) {
     compartir,
     contactar,
     denunciar,
-    confirmarDenuncia,
     contactoAbierto,
     setContactoAbierto,
     denunciaAbierta,
     setDenunciaAbierta,
-    denunciado,
-    setDenunciado,
   };
 }

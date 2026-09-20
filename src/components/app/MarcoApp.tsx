@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   Bell,
   MessageCircle,
@@ -23,16 +23,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NAVEGACION } from "@/datos/navegacion";
-import { NOTIFICACIONES, CONVERSACIONES } from "@/datos/demo/avisos";
-import type { ModoSesion } from "@/estado/sesion";
+import { listarConversaciones, listarNotificaciones } from "@/datos/servicios";
+import { salir, type ModoSesion } from "@/estado/sesion";
 import { cn } from "@/lib/utils";
-import { AvatarIniciales } from "./Avatar";
+import { AvatarIniciales, inicialesDe } from "./Avatar";
 import { AvisoDemo } from "./AvisoDemo";
 import { DialogoAcceso } from "./DialogoAcceso";
 import { ProveedorApp, esRutaProtegida, useApp } from "./contexto";
@@ -41,10 +39,8 @@ type MarcoProps = {
   children: ReactNode;
   /** Contenido del panel contextual derecho (sólo escritorio ancho). */
   panelDerecho?: ReactNode;
-  /** Fija la modalidad de la demostración para esta ruta. */
-  modo?: ModoSesion;
-  /** Compatibilidad: equivale a modo="visitante". */
-  invitado?: boolean;
+  /** "visitante" fuerza la vista de invitado para esta ruta. */
+  modo?: "visitante";
 };
 
 const NAV_MOVIL = [
@@ -55,8 +51,8 @@ const NAV_MOVIL = [
   { ruta: "/mi-chivichana", nombre: "Mi Chivichana", icono: UserCog },
 ];
 
-export function MarcoApp({ children, panelDerecho, modo, invitado }: MarcoProps) {
-  const modoFijo: ModoSesion | undefined = modo ?? (invitado ? "visitante" : undefined);
+export function MarcoApp({ children, panelDerecho, modo }: MarcoProps) {
+  const modoFijo: ModoSesion | undefined = modo;
   return (
     <ProveedorApp modo={modoFijo}>
       <Estructura panelDerecho={panelDerecho}>{children}</Estructura>
@@ -117,6 +113,34 @@ function Estructura({ children, panelDerecho }: { children: ReactNode; panelDere
 
 function useRutaActual() {
   return useRouterState({ select: (s) => s.location.pathname });
+}
+
+/** Contadores reales de no leídos; si la carga falla, se muestran sin insignia. */
+function useContadoresNoLeidos(activo: boolean) {
+  const [contadores, setContadores] = useState<{ sinLeer: number; mensajesSinLeer: number } | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (!activo) return;
+    let vigente = true;
+    Promise.all([listarNotificaciones(), listarConversaciones()])
+      .then(([avisos, conversaciones]) => {
+        if (!vigente) return;
+        setContadores({
+          sinLeer: avisos.filter((n) => !n.leida).length,
+          mensajesSinLeer: conversaciones.reduce((total, c) => total + c.noLeidos, 0),
+        });
+      })
+      .catch(() => {
+        if (vigente) setContadores({ sinLeer: 0, mensajesSinLeer: 0 });
+      });
+    return () => {
+      vigente = false;
+    };
+  }, [activo]);
+
+  return contadores;
 }
 
 function NavegacionLateral({ alNavegar }: { alNavegar?: () => void }) {
@@ -180,9 +204,19 @@ function Cabecera({
   menuAbierto: boolean;
   setMenuAbierto: (v: boolean) => void;
 }) {
-  const { invitado, identidad, identidades, cambiarIdentidad } = useApp();
-  const sinLeer = NOTIFICACIONES.filter((n) => !n.leida).length;
-  const mensajesSinLeer = CONVERSACIONES.reduce((t, c) => t + c.noLeidos, 0);
+  const { invitado, identidad } = useApp();
+  const navegar = useNavigate();
+  const [busqueda, setBusqueda] = useState("");
+  const contadores = useContadoresNoLeidos(!invitado);
+  const sinLeer = contadores?.sinLeer ?? 0;
+  const mensajesSinLeer = contadores?.mensajesSinLeer ?? 0;
+
+  const enviarBusqueda = (evento: React.FormEvent) => {
+    evento.preventDefault();
+    const q = busqueda.trim();
+    if (!q) return;
+    navegar({ to: "/mercadito", search: { texto: q } });
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
@@ -219,13 +253,7 @@ function Cabecera({
           </Link>
         </div>
 
-        <form
-          role="search"
-          className="min-w-0"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+        <form role="search" className="min-w-0" onSubmit={enviarBusqueda}>
           <label htmlFor="buscador-global" className="sr-only">
             Buscar en La Chivichana
           </label>
@@ -239,6 +267,8 @@ function Cabecera({
               type="search"
               placeholder="Buscar personas, negocios, ayuda…"
               className="h-10 rounded-full pl-9"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
         </form>
@@ -259,7 +289,11 @@ function Cabecera({
           )}
           {!invitado && (
             <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
-              <Link to="/mensajes" aria-label={`Mensajes (${mensajesSinLeer} sin leer)`}>
+              <Link
+                to="/mensajes"
+                search={{ hilo: undefined }}
+                aria-label={`Mensajes (${mensajesSinLeer} sin leer)`}
+              >
                 <MessageCircle aria-hidden="true" />
                 {mensajesSinLeer > 0 && (
                   <span
@@ -288,7 +322,7 @@ function Cabecera({
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-11 gap-2 px-2">
                   <AvatarIniciales
-                    iniciales={identidad.avatar}
+                    iniciales={inicialesDe(identidad.nombreVisible)}
                     nombre={identidad.nombreVisible}
                     tamano="sm"
                   />
@@ -305,20 +339,10 @@ function Cabecera({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuLabel>Participando como</DropdownMenuLabel>
-                <DropdownMenuRadioGroup value={identidad.clave} onValueChange={cambiarIdentidad}>
-                  {identidades.map((i) => (
-                    <DropdownMenuRadioItem key={i.clave} value={i.clave} className="gap-2">
-                      <span className="min-w-0">
-                        <span className="block truncate text-sm font-medium">
-                          {i.nombreVisible}
-                        </span>
-                        <span className="block truncate text-xs text-muted-foreground">
-                          {i.detalle}
-                        </span>
-                      </span>
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
+                <div className="px-2 pb-2">
+                  <p className="truncate text-sm font-medium">{identidad.nombreVisible}</p>
+                  <p className="truncate text-xs text-muted-foreground">{identidad.detalle}</p>
+                </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/mi-chivichana">Mi Chivichana</Link>
@@ -327,15 +351,15 @@ function Cabecera({
                   <Link to="/notificaciones">Notificaciones</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/mensajes">Mensajes</Link>
+                  <Link to="/mensajes" search={{ hilo: undefined }}>
+                    Mensajes
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/privacidad">Privacidad</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/">Salir de la demostración</Link>
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => salir()}>Cerrar sesión</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
