@@ -93,6 +93,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "description", content: "La Chivichana — Tu tierra, tu gente, tu voz. La red social de la comunidad cubana." },
+      { name: "theme-color", content: "#1a56db" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+    ],
+    links: [
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+    ],
+    scripts: [
+      { src: "/sw-register.js", defer: true },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
