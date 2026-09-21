@@ -485,6 +485,24 @@ export async function dejarDeSeguirPorAlias(alias: string): Promise<void> {
   await Promise.all(segs.map((s) => instancia.collection("follows").delete(s.id)));
 }
 
+/**
+ * Busca una persona por alias exacto (`username` o `alias`).
+ * Devuelve el alias canónico si existe, o `null` si no se encuentra.
+ * No requiere sesión: la usa la búsqueda global.
+ */
+export async function buscarPersonaPorAlias(alias: string): Promise<string | null> {
+  const limpio = alias.trim().replace(/^@+/, "").replace(/["\\]/g, "");
+  if (!limpio) return null;
+  const u = comoRegistro(
+    await pb()
+      .collection("users")
+      .getFirstListItem(`username = "${limpio}" || alias = "${limpio}"`)
+      .catch(() => null),
+  );
+  if (!u) return null;
+  return aliasDe(u) || null;
+}
+
 // ===== LA ESQUINA (debates: publicaciones marcadas con #esquina) =====
 
 const ETIQUETA_ESQUINA = "#esquina";

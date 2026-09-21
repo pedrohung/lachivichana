@@ -27,7 +27,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NAVEGACION } from "@/datos/navegacion";
-import { listarConversaciones, listarNotificaciones } from "@/datos/servicios";
+import {
+  buscarPersonaPorAlias,
+  listarConversaciones,
+  listarNotificaciones,
+} from "@/datos/servicios";
 import { salir, type ModoSesion } from "@/estado/sesion";
 import { cn } from "@/lib/utils";
 import { AvatarIniciales, inicialesDe } from "./Avatar";
@@ -213,10 +217,17 @@ function Cabecera({
   const sinLeer = contadores?.sinLeer ?? 0;
   const mensajesSinLeer = contadores?.mensajesSinLeer ?? 0;
 
-  const enviarBusqueda = (evento: React.FormEvent) => {
+  const enviarBusqueda = async (evento: React.FormEvent) => {
     evento.preventDefault();
     const q = busqueda.trim();
     if (!q) return;
+    // Si el texto coincide con el alias exacto de una persona, ir a su perfil;
+    // si no, buscar en El Mercadito como antes.
+    const alias = await buscarPersonaPorAlias(q).catch(() => null);
+    if (alias) {
+      navegar({ to: "/perfil/$alias", params: { alias } });
+      return;
+    }
     navegar({ to: "/mercadito", search: { texto: q } });
   };
 
