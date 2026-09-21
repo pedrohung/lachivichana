@@ -6,7 +6,6 @@ export const MODO_DEMO = false;
 
 export const RETARDO_SIMULADO_MS = 260;
 
-
 export const LEMA = "Cuba se conecta. Cuba se ayuda. Cuba crece.";
 
 export const USUARIO_DEMO_ALIAS = "vientodelsur";

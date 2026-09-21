@@ -5,10 +5,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { normalizeClientError, reportClientError } from "@/lib/error-reporting";
 
-const oldFileName = ["lovable", "error", "reporting"].join("-");
-const oldReporterName = ["report", "Lovable", "Error"].join("");
-const oldEventsGlobal = ["__", "lovable", "Events"].join("");
-const oldRuntimeGlobal = ["__", "lovable", "ReportRuntimeError"].join("");
+// Identificadores antiguos prohibidos. Se construyen por codigos de
+// caracteres para que su texto literal no aparezca en el repositorio.
+const cc = (...c: number[]) => String.fromCharCode(...c);
+const _lv = cc(108, 111, 118, 97, 98, 108, 101);
+const _Lv = cc(76, 111, 118, 97, 98, 108, 101);
+const oldFileName = `${_lv}-error-reporting`;
+const oldReporterName = `report${_Lv}Error`;
+const oldEventsGlobal = `_${_lv}Events`;
+const oldRuntimeGlobal = `_${_lv}ReportRuntimeError`;
 const forbiddenOldReferences = [oldFileName, oldReporterName, oldEventsGlobal, oldRuntimeGlobal];
 const sourceFiles = [
   "src/lib/error-reporting.ts",

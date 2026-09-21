@@ -84,7 +84,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "La Chivichana — Cuba se conecta" },
       {
         name: "description",
-        content: "La Chivichana — Tu tierra, tu gente, tu voz. La red social de la comunidad cubana.",
+        content:
+          "La Chivichana — Tu tierra, tu gente, tu voz. La red social de la comunidad cubana.",
       },
       { name: "theme-color", content: "#1a56db" },
       { name: "mobile-web-app-capable", content: "yes" },
@@ -96,7 +97,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "La Chivichana" },
       {
         property: "og:description",
-        content: "La Chivichana — Tu tierra, tu gente, tu voz. La red social de la comunidad cubana.",
+        content:
+          "La Chivichana — Tu tierra, tu gente, tu voz. La red social de la comunidad cubana.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
