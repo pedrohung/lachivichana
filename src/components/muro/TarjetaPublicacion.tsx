@@ -145,7 +145,8 @@ export function TarjetaPublicacion({ publicacion, onEliminada }: Props) {
       toast.success("Publicación eliminada");
       onEliminada?.(publicacion.id);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo eliminar la publicación.");
+      console.error("Error al eliminar la publicación:", error);
+      toast.error("No se pudo eliminar la publicación. Inténtalo de nuevo.");
       setEliminando(false);
     }
   };
