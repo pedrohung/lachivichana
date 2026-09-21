@@ -135,10 +135,6 @@ export function TarjetaPublicacion({ publicacion, onEliminada }: Props) {
 
   const alEliminar = async () => {
     if (!esMio || eliminando) return;
-    const confirmar = window.confirm(
-      "¿Eliminar esta publicación? Esta acción no se puede deshacer.",
-    );
-    if (!confirmar) return;
     setEliminando(true);
     try {
       await eliminarPublicacion(publicacion.id);
