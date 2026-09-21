@@ -28,7 +28,7 @@ function AppsPage() {
 
         <div className="mt-8">
           <a
-            href="/apps/lachivichana-1.0.1.apk"
+            href="/apps/lachivichana-1.0.2.apk"
             download
             className="inline-flex items-center justify-center gap-3 rounded-2xl bg-primary px-10 py-5 text-xl font-bold text-primary-foreground shadow-lg transition hover:opacity-90"
           >
@@ -41,7 +41,7 @@ function AppsPage() {
           <section>
             <h2 className="texto-display text-xl font-semibold text-foreground">Datos</h2>
             <ul className="mt-3 grid gap-2">
-              {["Versión 1.0.1", "Android 7.0 o superior", "1,9 MB"].map((p) => (
+              {["Versión 1.0.2 · Android 7.0 o superior · 2,8 MB"].map((p) => (
                 <li
                   key={p}
                   className="rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground"
