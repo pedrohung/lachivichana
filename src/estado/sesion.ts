@@ -49,6 +49,26 @@ async function cargarPerfil(idUsuario: string): Promise<Perfil | null> {
   }
 }
 
+/**
+ * Crea la fila de profiles para un usuario autenticado que aun no tiene una.
+ * Devuelve el perfil creado, o null si no se pudo crear (la app debe tolerarlo).
+ */
+async function crearPerfilSiFalta(usuario: Usuario): Promise<Perfil | null> {
+  const pb = obtenerPocketBase();
+  if (!pb) return null;
+  try {
+    const alias = usuario.username.trim() || usuario.email.split("@")[0]?.trim() || "chivichanero";
+    return await pb.collection("profiles").create<Perfil>({
+      user: usuario.id,
+      alias,
+      accountType: usuario.accountType?.trim() || "persona",
+    });
+  } catch (error) {
+    console.error("No se pudo crear el perfil automaticamente:", error);
+    return null;
+  }
+}
+
 /** Sincroniza el estado con el authStore, fuente de verdad de la sesión. */
 function sincronizar() {
   const pb = obtenerPocketBase();
@@ -59,10 +79,16 @@ function sincronizar() {
   }
   const usuario = modelo as unknown as Usuario;
   fijarEstado({ usuario, perfil: null, cargando: true });
-  void cargarPerfil(usuario.id).then((perfil) => {
+  void cargarPerfil(usuario.id).then(async (perfil) => {
     // Evita que una respuesta tardía pise una sesión más reciente.
     if (obtenerPocketBase()?.authStore.model?.id === usuario.id) {
-      fijarEstado({ perfil, cargando: false });
+      let perfilFinal = perfil;
+      if (!perfilFinal) {
+        // Auto-reparacion: usuarios sin fila en profiles (creados fuera del
+        // registro) la obtienen al vuelo para que el muro no se rompa.
+        perfilFinal = await crearPerfilSiFalta(usuario);
+      }
+      fijarEstado({ perfil: perfilFinal, cargando: false });
     }
   });
 }

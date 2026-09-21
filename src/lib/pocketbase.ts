@@ -37,6 +37,7 @@ export interface Usuario {
   id: string;
   email: string;
   username: string;
+  accountType?: string;
   name?: string;
   avatar?: string;
   emailVisibility?: boolean;

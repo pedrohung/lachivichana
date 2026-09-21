@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff, Loader2, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react";
 
@@ -46,6 +46,7 @@ function Entrar() {
   const [estado, setEstado] = useState<Estado>({ tipo: "inactivo" });
   const [intentos, setIntentos] = useState(0);
   const { entrar } = useSesion();
+  const navegar = useNavigate();
 
   const cargando = estado.tipo === "cargando";
 
@@ -84,6 +85,10 @@ function Entrar() {
 
     setIntentos(0);
     setEstado({ tipo: "exito", mensaje: "¡Bienvenido de vuelta! Preparando El Malecón…" });
+    // Mostramos la bienvenida un instante y llevamos al usuario al muro.
+    window.setTimeout(() => {
+      void navegar({ to: "/malecon" });
+    }, 800);
   }
 
   function recuperar() {

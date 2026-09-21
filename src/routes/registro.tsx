@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type ComponentProps } from "react";
 import { Check, Eye, EyeOff, Lock, Globe } from "lucide-react";
 
@@ -77,6 +77,7 @@ function Registro() {
   const [creando, setCreando] = useState(false);
   const [exito, setExito] = useState(false);
   const { registrar } = useSesion();
+  const navegar = useNavigate();
 
   const ultimo = paso === PASOS.length - 1;
 
@@ -97,6 +98,10 @@ function Registro() {
     try {
       await registrar({ alias: aliasLimpio, correo: correo.trim(), contrasena: clave });
       setExito(true);
+      // La cuenta queda con la sesion iniciada: mostramos el exito un instante y llevamos al muro.
+      window.setTimeout(() => {
+        void navegar({ to: "/malecon" });
+      }, 800);
     } catch (e) {
       setError(e instanceof Error ? e.message : "No pudimos crear tu cuenta. Inténtalo de nuevo.");
     } finally {
