@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { AvatarIniciales } from "@/components/app/Avatar";
-import { useApp } from "@/components/app/contexto";
+import { ProveedorApp, useApp } from "@/components/app/contexto";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,6 +41,14 @@ export const Route = createFileRoute("/la-esquina")({
 });
 
 function LaEsquinaPage() {
+  return (
+    <ProveedorApp>
+      <ContenidoLaEsquina />
+    </ProveedorApp>
+  );
+}
+
+function ContenidoLaEsquina() {
   const { requiereCuenta } = useApp();
   const [hilos, setHilos] = useState<HiloEsquina[]>([]);
   const [cargando, setCargando] = useState(true);

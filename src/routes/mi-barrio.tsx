@@ -4,7 +4,7 @@ import { Home, MapPin, Plus, Users } from "lucide-react";
 import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
-import { useApp } from "@/components/app/contexto";
+import { ProveedorApp, useApp } from "@/components/app/contexto";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -37,6 +37,14 @@ export const Route = createFileRoute("/mi-barrio")({
 });
 
 function MiBarrioPage() {
+  return (
+    <ProveedorApp>
+      <ContenidoMiBarrio />
+    </ProveedorApp>
+  );
+}
+
+function ContenidoMiBarrio() {
   const { invitado, requiereCuenta } = useApp();
   const [grupos, setGrupos] = useState<Grupo[]>([]);
   const [cargando, setCargando] = useState(true);

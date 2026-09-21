@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { AvatarIniciales } from "@/components/app/Avatar";
-import { useApp } from "@/components/app/contexto";
+import { ProveedorApp, useApp } from "@/components/app/contexto";
 import { useSesion } from "@/estado/sesion";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,6 +44,14 @@ export const Route = createFileRoute("/taller")({
 });
 
 function TallerPage() {
+  return (
+    <ProveedorApp>
+      <ContenidoTaller />
+    </ProveedorApp>
+  );
+}
+
+function ContenidoTaller() {
   const { requiereCuenta } = useApp();
   const { usuario } = useSesion();
   const [trabajos, setTrabajos] = useState<Trabajo[]>([]);

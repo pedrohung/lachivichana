@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { AvatarIniciales } from "@/components/app/Avatar";
-import { useApp } from "@/components/app/contexto";
+import { ProveedorApp, useApp } from "@/components/app/contexto";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -50,6 +50,14 @@ function inicialesDe(nombre: string): string {
 }
 
 function ColmenaPage() {
+  return (
+    <ProveedorApp>
+      <ContenidoColmena />
+    </ProveedorApp>
+  );
+}
+
+function ContenidoColmena() {
   const { requiereCuenta } = useApp();
   const [negocios, setNegocios] = useState<Negocio[]>([]);
   const [cargando, setCargando] = useState(true);

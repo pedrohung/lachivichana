@@ -8,6 +8,7 @@ import { MarcoApp } from "@/components/app/MarcoApp";
 import { SoloConCuenta } from "@/components/app/SoloConCuenta";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { esPeticionCancelada } from "@/datos/errores";
 import {
   dejarDeSeguirPorAlias,
   listarCaminos,
@@ -65,7 +66,8 @@ function ContenidoCaminos() {
       setSeguidores(datos.seguidores);
       setErrorCarga("");
     } catch (error) {
-      setErrorCarga(error instanceof Error ? error.message : "No se pudieron cargar tus caminos.");
+      if (esPeticionCancelada(error)) return;
+      setErrorCarga("No se pudieron cargar tus caminos. Revisa tu conexión e inténtalo de nuevo.");
     } finally {
       setCargando(false);
     }
@@ -88,7 +90,8 @@ function ContenidoCaminos() {
       }
       await cargar();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo actualizar el seguimiento.");
+      if (esPeticionCancelada(error)) return;
+      toast.error("No se pudo actualizar el seguimiento. Inténtalo de nuevo.");
     } finally {
       setAccionando(null);
     }

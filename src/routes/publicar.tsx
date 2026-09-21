@@ -2,7 +2,7 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Lock } from "lucide-react";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
-import { useApp } from "@/components/app/contexto";
+import { ProveedorApp, useApp } from "@/components/app/contexto";
 import { Compositor } from "@/components/muro/Compositor";
 import { Button } from "@/components/ui/button";
 
@@ -27,6 +27,14 @@ export const Route = createFileRoute("/publicar")({
 });
 
 function PublicarPage() {
+  return (
+    <ProveedorApp>
+      <ContenidoPublicar />
+    </ProveedorApp>
+  );
+}
+
+function ContenidoPublicar() {
   const { invitado, requiereCuenta } = useApp();
   const navegar = useNavigate();
 

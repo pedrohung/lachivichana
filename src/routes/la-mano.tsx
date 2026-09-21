@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
 import { AvatarIniciales } from "@/components/app/Avatar";
-import { useApp } from "@/components/app/contexto";
+import { ProveedorApp, useApp } from "@/components/app/contexto";
 import { useSesion } from "@/estado/sesion";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,6 +59,14 @@ const COLOR_ESTADO: Record<SolicitudAyuda["estado"], string> = {
 };
 
 function LaManoPage() {
+  return (
+    <ProveedorApp>
+      <ContenidoLaMano />
+    </ProveedorApp>
+  );
+}
+
+function ContenidoLaMano() {
   const { requiereCuenta } = useApp();
   const { usuario } = useSesion();
   const [solicitudes, setSolicitudes] = useState<SolicitudAyuda[]>([]);

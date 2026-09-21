@@ -1435,7 +1435,9 @@ export type PromotorSimple = {
  * su registro. Si ningún usuario lleva esa marca, la red aparece vacía.
  */
 export async function listarPromotores(): Promise<PromotorSimple[]> {
-  const usuarios = await listaPlana("users", { filter: "promotor = true" });
+  // El campo 'promotor' no existe en el esquema de PocketBase (la API devuelve 400).
+  // Se muestran usuarios verificados como red de promotores.
+  const usuarios = await listaPlana("users", { filter: "verified = true", sort: "created" });
   return usuarios.map((u) => ({
     alias: aliasDe(u),
     nombreVisible: texto(u, "name", aliasDe(u)),
