@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { AvatarIniciales, inicialesDe } from "./Avatar";
 import { AvisoDemo } from "./AvisoDemo";
 import { DialogoAcceso } from "./DialogoAcceso";
+import { MensajeriaFlotante } from "./MensajeriaFlotante";
 import { ProveedorApp, esRutaProtegida, useApp } from "./contexto";
 
 type MarcoProps = {
@@ -107,6 +108,7 @@ function Estructura({ children, panelDerecho }: { children: ReactNode; panelDere
       </div>
 
       <NavegacionInferior />
+      <MensajeriaFlotante />
     </div>
   );
 }
