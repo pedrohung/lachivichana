@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { buscarPersonas } from "@/lib/personas.server";
+import { buscarPersonasDirecto } from "@/lib/personas.server";
 
 /**
  * GET /api/buscar/personas?q=
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/api/buscar/personas")({
         const url = new URL(request.url);
         const q = url.searchParams.get("q") ?? "";
         try {
-          return Response.json(await buscarPersonas({ data: { token, q } }));
+          return Response.json(await buscarPersonasDirecto(token, q));
         } catch (error) {
           if (error instanceof Response) return error;
           throw error;

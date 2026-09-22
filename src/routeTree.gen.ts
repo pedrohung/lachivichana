@@ -37,6 +37,7 @@ import { Route as NegocioSlugRouteImport } from './routes/negocio.$slug'
 import { Route as PerfilAliasRouteImport } from './routes/perfil.$alias'
 import { Route as ProductoIdRouteImport } from './routes/producto.$id'
 import { Route as ApiAdminUsuariosRouteImport } from './routes/api/admin/usuarios'
+import { Route as ApiBuscarPersonasRouteImport } from './routes/api/buscar/personas'
 import { Route as ProductoIdEditarRouteImport } from './routes/producto.$id.editar'
 
 const IndexRoute = IndexRouteImport.update({
@@ -180,6 +181,11 @@ const ApiAdminUsuariosRoute = ApiAdminUsuariosRouteImport.update({
   path: '/api/admin/usuarios',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBuscarPersonasRoute = ApiBuscarPersonasRouteImport.update({
+  id: '/api/buscar/personas',
+  path: '/api/buscar/personas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductoIdEditarRoute = ProductoIdEditarRouteImport.update({
   id: '/editar',
   path: '/editar',
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito/': typeof MercaditoIndexRoute
   '/api/admin/usuarios': typeof ApiAdminUsuariosRoute
+  '/api/buscar/personas': typeof ApiBuscarPersonasRoute
   '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRoutesByTo {
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito': typeof MercaditoIndexRoute
   '/api/admin/usuarios': typeof ApiAdminUsuariosRoute
+  '/api/buscar/personas': typeof ApiBuscarPersonasRoute
   '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRoutesById {
@@ -277,6 +285,7 @@ export interface FileRoutesById {
   '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito/': typeof MercaditoIndexRoute
   '/api/admin/usuarios': typeof ApiAdminUsuariosRoute
+  '/api/buscar/personas': typeof ApiBuscarPersonasRoute
   '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRouteTypes {
@@ -310,6 +319,7 @@ export interface FileRouteTypes {
     | '/producto/$id'
     | '/mercadito/'
     | '/api/admin/usuarios'
+    | '/api/buscar/personas'
     | '/producto/$id/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -340,6 +350,7 @@ export interface FileRouteTypes {
     | '/producto/$id'
     | '/mercadito'
     | '/api/admin/usuarios'
+    | '/api/buscar/personas'
     | '/producto/$id/editar'
   id:
     | '__root__'
@@ -371,6 +382,7 @@ export interface FileRouteTypes {
     | '/producto/$id'
     | '/mercadito/'
     | '/api/admin/usuarios'
+    | '/api/buscar/personas'
     | '/producto/$id/editar'
   fileRoutesById: FileRoutesById
 }
@@ -399,6 +411,7 @@ export interface RootRouteChildren {
   PerfilAliasRoute: typeof PerfilAliasRoute
   ProductoIdRoute: typeof ProductoIdRouteWithChildren
   ApiAdminUsuariosRoute: typeof ApiAdminUsuariosRoute
+  ApiBuscarPersonasRoute: typeof ApiBuscarPersonasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -599,6 +612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminUsuariosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/buscar/personas': {
+      id: '/api/buscar/personas'
+      path: '/api/buscar/personas'
+      fullPath: '/api/buscar/personas'
+      preLoaderRoute: typeof ApiBuscarPersonasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/producto/$id/editar': {
       id: '/producto/$id/editar'
       path: '/editar'
@@ -664,6 +684,7 @@ const rootRouteChildren: RootRouteChildren = {
   PerfilAliasRoute: PerfilAliasRoute,
   ProductoIdRoute: ProductoIdRouteWithChildren,
   ApiAdminUsuariosRoute: ApiAdminUsuariosRoute,
+  ApiBuscarPersonasRoute: ApiBuscarPersonasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

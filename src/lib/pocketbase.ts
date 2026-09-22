@@ -11,7 +11,7 @@ import PocketBase from "pocketbase";
 let instancia: PocketBase | null = null;
 
 /** URL base de PocketBase. Por defecto "/pb" (proxy del despliegue). */
-function leerUrl(): string {
+export function leerUrl(): string {
   const deEntorno = import.meta.env.VITE_POCKETBASE_URL;
   return typeof deEntorno === "string" && deEntorno.length > 0 ? deEntorno : "/pb";
 }
