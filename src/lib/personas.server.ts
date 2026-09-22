@@ -30,16 +30,18 @@ export async function buscarPersonasDirecto(
   const token = (tokenSinLimpiar ? String(tokenSinLimpiar) : "").trim();
   const q = limpiarBusqueda(qSinLimpiar ? String(qSinLimpiar) : "");
   const base = leerUrl();
+  const deEntorno = typeof process === 'undefined' ? '' : (process.env.POCKETBASE_URL || '');
+  const baseServidor = base.startsWith('http') ? base : (deEntorno || 'http://127.0.0.1:8096');
   if (!token) throw noAutorizado();
   if (q.length < 2) return { personas: [] as PersonaPublica[] };
-  const refresco = await fetch(base + "/api/collections/users/auth-refresh", {
+  const refresco = await fetch(baseServidor + "/api/collections/users/auth-refresh", {
     method: "POST",
     headers: { Authorization: token },
   });
   if (!refresco.ok) throw noAutorizado();
   const filtro = "alias ~ \"" + q + "\" && alias != \"\"";
   const params = new URLSearchParams({ filter: filtro, perPage: "12", fields: "id,user,alias,bio,avatar" });
-  const res = await fetch(base + "/api/collections/profiles/records?" + params.toString(), { headers: { Authorization: token } });
+  const res = await fetch(baseServidor + "/api/collections/profiles/records?" + params.toString(), { headers: { Authorization: token } });
   if (!res.ok) throw new Response(JSON.stringify({ error: "Error" }), { status: 502 });
   const datos = await res.json();
   const personas: PersonaPublica[] = (datos.items || []).map((p: any) => ({
