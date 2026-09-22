@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportClientError } from "../lib/error-reporting";
 import { Toaster } from "@/components/ui/sonner";
+import { useLatido } from "@/estado/sesion";
 
 function NotFoundComponent() {
   return (
@@ -157,6 +158,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useLatido();
 
   return (
     <QueryClientProvider client={queryClient}>

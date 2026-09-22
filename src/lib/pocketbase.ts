@@ -44,6 +44,7 @@ export interface Usuario {
   verified?: boolean;
   created?: string;
   updated?: string;
+  lastSeen?: string;
 }
 
 /** Registro de la colección `profiles` de PocketBase. */

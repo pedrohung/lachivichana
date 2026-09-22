@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppsRouteImport } from './routes/apps'
 import { Route as ColmenaRouteImport } from './routes/colmena'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as LaEsquinaRouteImport } from './routes/la-esquina'
@@ -27,6 +28,7 @@ import { Route as PromotoresRouteImport } from './routes/promotores'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as TallerRouteImport } from './routes/taller'
+import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as MercaditoIndexRouteImport } from './routes/mercadito.index'
 import { Route as MercaditoGuardadosRouteImport } from './routes/mercadito.guardados'
 import { Route as MercaditoMisPublicacionesRouteImport } from './routes/mercadito.mis-publicaciones'
@@ -34,11 +36,17 @@ import { Route as MercaditoPublicarRouteImport } from './routes/mercadito.public
 import { Route as NegocioSlugRouteImport } from './routes/negocio.$slug'
 import { Route as PerfilAliasRouteImport } from './routes/perfil.$alias'
 import { Route as ProductoIdRouteImport } from './routes/producto.$id'
+import { Route as ApiAdminUsuariosRouteImport } from './routes/api/admin/usuarios'
 import { Route as ProductoIdEditarRouteImport } from './routes/producto.$id.editar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsRoute = AppsRouteImport.update({
+  id: '/apps',
+  path: '/apps',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ColmenaRoute = ColmenaRouteImport.update({
@@ -126,6 +134,11 @@ const TallerRoute = TallerRouteImport.update({
   path: '/taller',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminUsuariosRoute = AdminUsuariosRouteImport.update({
+  id: '/admin/usuarios',
+  path: '/admin/usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MercaditoIndexRoute = MercaditoIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -162,6 +175,11 @@ const ProductoIdRoute = ProductoIdRouteImport.update({
   path: '/producto/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminUsuariosRoute = ApiAdminUsuariosRouteImport.update({
+  id: '/api/admin/usuarios',
+  path: '/api/admin/usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductoIdEditarRoute = ProductoIdEditarRouteImport.update({
   id: '/editar',
   path: '/editar',
@@ -170,6 +188,7 @@ const ProductoIdEditarRoute = ProductoIdEditarRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apps': typeof AppsRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
   '/la-esquina': typeof LaEsquinaRoute
@@ -187,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
@@ -194,10 +214,12 @@ export interface FileRoutesByFullPath {
   '/perfil/$alias': typeof PerfilAliasRoute
   '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito/': typeof MercaditoIndexRoute
+  '/api/admin/usuarios': typeof ApiAdminUsuariosRoute
   '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apps': typeof AppsRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
   '/la-esquina': typeof LaEsquinaRoute
@@ -214,6 +236,7 @@ export interface FileRoutesByTo {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
@@ -221,11 +244,13 @@ export interface FileRoutesByTo {
   '/perfil/$alias': typeof PerfilAliasRoute
   '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito': typeof MercaditoIndexRoute
+  '/api/admin/usuarios': typeof ApiAdminUsuariosRoute
   '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apps': typeof AppsRoute
   '/colmena': typeof ColmenaRoute
   '/entrar': typeof EntrarRoute
   '/la-esquina': typeof LaEsquinaRoute
@@ -243,6 +268,7 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/registro': typeof RegistroRoute
   '/taller': typeof TallerRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/mercadito/guardados': typeof MercaditoGuardadosRoute
   '/mercadito/mis-publicaciones': typeof MercaditoMisPublicacionesRoute
   '/mercadito/publicar': typeof MercaditoPublicarRoute
@@ -250,12 +276,14 @@ export interface FileRoutesById {
   '/perfil/$alias': typeof PerfilAliasRoute
   '/producto/$id': typeof ProductoIdRouteWithChildren
   '/mercadito/': typeof MercaditoIndexRoute
+  '/api/admin/usuarios': typeof ApiAdminUsuariosRoute
   '/producto/$id/editar': typeof ProductoIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apps'
     | '/colmena'
     | '/entrar'
     | '/la-esquina'
@@ -273,6 +301,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/admin/usuarios'
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
@@ -280,10 +309,12 @@ export interface FileRouteTypes {
     | '/perfil/$alias'
     | '/producto/$id'
     | '/mercadito/'
+    | '/api/admin/usuarios'
     | '/producto/$id/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apps'
     | '/colmena'
     | '/entrar'
     | '/la-esquina'
@@ -300,6 +331,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/admin/usuarios'
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
@@ -307,10 +339,12 @@ export interface FileRouteTypes {
     | '/perfil/$alias'
     | '/producto/$id'
     | '/mercadito'
+    | '/api/admin/usuarios'
     | '/producto/$id/editar'
   id:
     | '__root__'
     | '/'
+    | '/apps'
     | '/colmena'
     | '/entrar'
     | '/la-esquina'
@@ -328,6 +362,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/registro'
     | '/taller'
+    | '/admin/usuarios'
     | '/mercadito/guardados'
     | '/mercadito/mis-publicaciones'
     | '/mercadito/publicar'
@@ -335,11 +370,13 @@ export interface FileRouteTypes {
     | '/perfil/$alias'
     | '/producto/$id'
     | '/mercadito/'
+    | '/api/admin/usuarios'
     | '/producto/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppsRoute: typeof AppsRoute
   ColmenaRoute: typeof ColmenaRoute
   EntrarRoute: typeof EntrarRoute
   LaEsquinaRoute: typeof LaEsquinaRoute
@@ -357,9 +394,11 @@ export interface RootRouteChildren {
   PublicarRoute: typeof PublicarRoute
   RegistroRoute: typeof RegistroRoute
   TallerRoute: typeof TallerRoute
+  AdminUsuariosRoute: typeof AdminUsuariosRoute
   NegocioSlugRoute: typeof NegocioSlugRoute
   PerfilAliasRoute: typeof PerfilAliasRoute
   ProductoIdRoute: typeof ProductoIdRouteWithChildren
+  ApiAdminUsuariosRoute: typeof ApiAdminUsuariosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -369,6 +408,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps': {
+      id: '/apps'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/colmena': {
@@ -490,6 +536,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TallerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/usuarios': {
+      id: '/admin/usuarios'
+      path: '/admin/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AdminUsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mercadito/': {
       id: '/mercadito/'
       path: '/'
@@ -539,6 +592,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/usuarios': {
+      id: '/api/admin/usuarios'
+      path: '/api/admin/usuarios'
+      fullPath: '/api/admin/usuarios'
+      preLoaderRoute: typeof ApiAdminUsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/producto/$id/editar': {
       id: '/producto/$id/editar'
       path: '/editar'
@@ -581,6 +641,7 @@ const ProductoIdRouteWithChildren = ProductoIdRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppsRoute: AppsRoute,
   ColmenaRoute: ColmenaRoute,
   EntrarRoute: EntrarRoute,
   LaEsquinaRoute: LaEsquinaRoute,
@@ -598,9 +659,11 @@ const rootRouteChildren: RootRouteChildren = {
   PublicarRoute: PublicarRoute,
   RegistroRoute: RegistroRoute,
   TallerRoute: TallerRoute,
+  AdminUsuariosRoute: AdminUsuariosRoute,
   NegocioSlugRoute: NegocioSlugRoute,
   PerfilAliasRoute: PerfilAliasRoute,
   ProductoIdRoute: ProductoIdRouteWithChildren,
+  ApiAdminUsuariosRoute: ApiAdminUsuariosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

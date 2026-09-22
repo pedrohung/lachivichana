@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Camera, Loader2, LogOut, RefreshCw } from "lucide-react";
+import { Camera, Loader2, LogOut, RefreshCw, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
 import { Avatar } from "@/components/app/Avatar";
@@ -19,6 +19,7 @@ import {
   type PerfilPublico,
 } from "@/datos/servicios";
 import { useSesion } from "@/estado/sesion";
+import { esAdmin } from "@/lib/admin";
 
 export const Route = createFileRoute("/mi-chivichana")({
   head: () => ({
@@ -243,6 +244,13 @@ function ContenidoMiChivichana() {
             <Button asChild variant="ghost" size="sm">
               <Link to="/perfil/$alias" params={{ alias }}>
                 Ver mi perfil público
+              </Link>
+            </Button>
+          )}
+          {esAdmin(usuario?.email) && (
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/admin/usuarios">
+                <ShieldCheck className="mr-1 h-4 w-4" aria-hidden="true" /> Usuarios
               </Link>
             </Button>
           )}

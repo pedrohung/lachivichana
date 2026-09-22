@@ -5,7 +5,7 @@
 // `establecerModo` y `useModoSesion` por compatibilidad con los
 // consumidores actuales (p. ej. `ProveedorApp` en `contexto.tsx`).
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { obtenerPocketBase, type Perfil, type Usuario } from "@/lib/pocketbase";
 
 export type ModoSesion = "visitante" | "demo";
@@ -138,6 +138,7 @@ export async function entrar(identidad: string, contrasena: string): Promise<voi
   fijarEstado({ cargando: true });
   try {
     await pb.collection("users").authWithPassword(identidad.trim(), contrasena);
+    actualizarLastSeen();
     sincronizar();
   } catch (error) {
     fijarEstado({ cargando: false });
@@ -215,4 +216,38 @@ export function useModoSesion() {
  */
 export function establecerModo(modo: ModoSesion): void {
   if (modo === "visitante") salir();
+}
+
+/**
+ * Actualiza 'lastSeen' del usuario autenticado con la hora actual.
+ * Solo escribe sobre el propio registro (la regla 'updateRule' de PocketBase
+ * lo limita a 'id = @request.auth.id'). Nunca lanza: el latido no debe
+ * romper la app si la red falla.
+ */
+export async function actualizarLastSeen(): Promise<void> {
+  try {
+    const pb = obtenerPocketBase();
+    const id = pb?.authStore.record?.id;
+    if (!pb || !id || !pb.authStore.isValid) return;
+    await pb.collection("users").update(id, {
+      lastSeen: new Date().toISOString().replace("T", " "),
+    });
+  } catch {
+    // Silencioso: es solo un latido de presencia.
+  }
+}
+
+/**
+ * Latido de presencia: actualiza 'lastSeen' al haber sesión y cada 60 s
+ * mientras la app siga abierta con sesión. Limpia el intervalo al cerrar sesión.
+ * Usar una sola vez en el componente raíz.
+ */
+export function useLatido(): void {
+  const { usuario } = useSesion();
+  useEffect(() => {
+    if (!usuario) return;
+    actualizarLastSeen();
+    const intervalo = setInterval(actualizarLastSeen, 60_000);
+    return () => clearInterval(intervalo);
+  }, [usuario]);
 }
