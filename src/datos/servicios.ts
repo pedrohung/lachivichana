@@ -1463,3 +1463,93 @@ export async function listarPromotores(): Promise<PromotorSimple[]> {
     desde: texto(u, "created").slice(0, 10),
   }));
 }
+
+// ---------------------------------------------------------------------------
+// Búsqueda de personas (colección pública "profiles").
+// La colección "users" tiene la listRule restringida al admin (migración
+// 1789927200): la resolución alias -> usuario se hace SIEMPRE contra
+// "profiles", que solo contiene datos públicos (migración 1790072188).
+// ---------------------------------------------------------------------------
+
+export type PerfilBusqueda = {
+  id: string; // id del usuario (profiles.user)
+  alias: string;
+  bio: string;
+  avatarUrl: string | null;
+};
+
+/** Llama al endpoint /api/buscar/personas (requiere sesión). */
+export async function buscarPersonasPorAlias(q: string): Promise<PerfilBusqueda[]> {
+  const instancia = pb();
+  const token = instancia?.authStore.token;
+  if (!token || q.trim().length < 2) return [];
+  try {
+    const res = await fetch("/api/buscar/personas?q=" + encodeURIComponent(q.trim()), {
+      headers: { Authorization: "Bearer " + token },
+    });
+    if (!res.ok) return [];
+    const datos = await res.json();
+    return (datos.personas ?? []) as PerfilBusqueda[];
+  } catch {
+    return [];
+  }
+}
+
+/** Perfil público por alias exacto (cabeceras de perfil y redirecciones). */
+export async function obtenerPerfilPublicoPorAlias(alias: string): Promise<PerfilBusqueda | null> {
+  const lista = await buscarPersonasPorAlias(alias.trim());
+  const limpio = alias.trim().toLowerCase();
+  return lista.find((p) => p.alias.toLowerCase() === limpio) ?? null;
+}
+
+/** ¿Sigo ya a este usuario? (reutiliza la colección "follows"). */
+export async function estoySiguiendoA(userId: string): Promise<boolean> {
+  const instancia = pb();
+  const uid = miId();
+  if (!uid || !userId || uid === userId) return false;
+  const r = await instancia.collection("follows")
+    .getFirstListItem("follower = \"" + uid + "\" && following = \"" + userId + "\"")
+    .catch(() => null);
+  return !!r;
+}
+
+export async function seguirAUsuario(userId: string): Promise<void> {
+  const instancia = pb();
+  const uid = miId();
+  if (!uid || !userId || uid === userId) return;
+  const existente = await instancia.collection("follows")
+    .getFirstListItem("follower = \"" + uid + "\" && following = \"" + userId + "\"")
+    .catch(() => null);
+  if (existente) return;
+  await instancia.collection("follows").create({ follower: uid, following: userId });
+}
+
+export async function dejarDeSeguirAUsuario(userId: string): Promise<void> {
+  const instancia = pb();
+  const uid = miId();
+  if (!uid || !userId) return;
+  const existente = await instancia.collection("follows")
+    .getFirstListItem("follower = \"" + uid + "\" && following = \"" + userId + "\"")
+    .catch(() => null);
+  if (existente?.id) await instancia.collection("follows").delete(existente.id);
+}
+
+/** Abre o crea la conversación directa con un usuario (por id). Reutiliza conversations. */
+export async function iniciarConversacionCon(userId: string): Promise<string> {
+  const instancia = pb();
+  const uid = miId();
+  if (!uid) throw new Error("Debes iniciar sesión para escribir mensajes.");
+  if (!userId || userId === uid) throw new Error("No puedes escribirte a ti mismo.");
+  const existentes = await instancia.collection("conversations")
+    .getList(1, 20, { filter: "participants.id ?= \"" + uid + "\" && participants.id ?= \"" + userId + "\" && tipo = \"directo\"" })
+    .catch(() => ({ items: [] as any[] }));
+  const ya = (existentes.items ?? [])[0];
+  if (ya?.id) return ya.id;
+  const conversacion = await instancia.collection("conversations").create({
+    participants: [uid, userId],
+    title: "Mensaje directo",
+    ultimoMensaje: "",
+    tipo: "directo",
+  });
+  return conversacion.id;
+}

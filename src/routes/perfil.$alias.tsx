@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { RefreshCw } from "lucide-react";
 
 import { MarcoApp } from "@/components/app/MarcoApp";
+import CabeceraPerfilSocial from "@/components/app/CabeceraPerfilSocial";
 import { AvatarIniciales } from "@/components/app/Avatar";
 import { ResumenReputacion } from "@/components/mercadito/Reputacion";
 import { TarjetaArticulo } from "@/components/mercadito/TarjetaArticulo";
@@ -60,6 +61,7 @@ function PerfilPage() {
   return (
     <MarcoApp>
       <div className="space-y-4">
+          <CabeceraPerfilSocial alias={alias} />
         {estado === "cargando" && (
           <div className="space-y-3">
             <Skeleton className="h-28 w-full rounded-2xl" />

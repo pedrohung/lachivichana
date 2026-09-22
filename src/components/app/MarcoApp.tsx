@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { NAVEGACION } from "@/datos/navegacion";
 import {
-  buscarPersonaPorAlias,
+  obtenerPerfilPublicoPorAlias,
   listarConversaciones,
   listarNotificaciones,
 } from "@/datos/servicios";
@@ -38,6 +38,7 @@ import { AvatarIniciales, inicialesDe } from "./Avatar";
 import { AvisoDemo } from "./AvisoDemo";
 import { DialogoAcceso } from "./DialogoAcceso";
 import { MensajeriaFlotante } from "./MensajeriaFlotante";
+import SugerenciasPersonas from "./SugerenciasPersonas";
 import { ProveedorApp, esRutaProtegida, useApp } from "./contexto";
 
 type MarcoProps = {
@@ -223,9 +224,9 @@ function Cabecera({
     if (!q) return;
     // Si el texto coincide con el alias exacto de una persona, ir a su perfil;
     // si no, buscar en El Mercadito como antes.
-    const alias = await buscarPersonaPorAlias(q).catch(() => null);
-    if (alias) {
-      navegar({ to: "/perfil/$alias", params: { alias } });
+    const persona = await obtenerPerfilPublicoPorAlias(q).catch(() => null);
+    if (persona) {
+      navegar({ to: "/perfil/$alias", params: { alias: persona.alias } });
       return;
     }
     navegar({ to: "/mercadito", search: { texto: q } });
@@ -283,6 +284,7 @@ function Cabecera({
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
             />
+            <SugerenciasPersonas texto={busqueda} alElegir={() => setBusqueda("")} />
           </div>
         </form>
 
