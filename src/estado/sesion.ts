@@ -78,6 +78,14 @@ function sincronizar() {
     return;
   }
   const usuario = modelo as unknown as Usuario;
+  const actual = estado.usuario;
+  if (actual && actual.id === usuario.id) {
+    // La sesion sigue siendo la misma (el latido de lastSeen hace que el SDK
+    // reemplace el modelo y dispare onChange): actualiza el modelo sin
+    // reiniciar el perfil ni el estado de carga para no hacer parpadear la web.
+    if (actual !== usuario) fijarEstado({ usuario });
+    return;
+  }
   fijarEstado({ usuario, perfil: null, cargando: true });
   void cargarPerfil(usuario.id).then(async (perfil) => {
     // Evita que una respuesta tardía pise una sesión más reciente.
@@ -244,10 +252,15 @@ export async function actualizarLastSeen(): Promise<void> {
  */
 export function useLatido(): void {
   const { usuario } = useSesion();
+  // El id es estable: el SDK sustituye el modelo de authStore (disparando
+  // onChange) cada vez que se actualiza el propio registro, como hace el
+  // latido de lastSeen. Depender del objeto usuario reejecutaba este efecto
+  // en bucle y hacia parpadear la web sin parar.
+  const id = usuario?.id;
   useEffect(() => {
-    if (!usuario) return;
+    if (!id) return;
     actualizarLastSeen();
     const intervalo = setInterval(actualizarLastSeen, 60_000);
     return () => clearInterval(intervalo);
-  }, [usuario]);
+  }, [id]);
 }
